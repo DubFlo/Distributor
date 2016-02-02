@@ -7,7 +7,7 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("test 2bis");
+		System.out.println("test 2ter");
 
 	}
 
