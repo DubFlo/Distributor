@@ -1,5 +1,7 @@
 package vendingmachine.components;
 
+import java.util.List;
+
 import vendingmachine.ui.*;
 import vendingmachine.states.*;
 
@@ -84,9 +86,15 @@ public class Context implements EventListener {
 	}
 
 	@Override
-	public Drink[] getDrinks() {
+	public List<Drink> getDrinks() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setContextListener(ContextListener c) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

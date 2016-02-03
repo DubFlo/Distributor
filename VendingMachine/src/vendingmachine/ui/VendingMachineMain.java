@@ -1,6 +1,7 @@
 package vendingmachine.ui;
 
 import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -11,6 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import vendingMachine.components.ChangeMachine;
+import vendingMachine.components.Drink;
+import vendingMachine.components.Stock;
+import vendingMachine.components.VendingMachineContext;
 import vendingmachine.components.*;
 
 public class VendingMachineMain {
@@ -20,20 +25,15 @@ public class VendingMachineMain {
 	private static boolean configDone = false;
 
 	public static void main(String[] args) {
+		//THREADING ????
 		VendingMachineMain vmMain = new VendingMachineMain();
 		
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-		    	//In the event dispatching thread
-		    	vmMain.c = config(); 
-		    	vmMain.gui = new VendingMachineGUI(vmMain.c);
-		    	vmMain.run();
-		    }
-		});
-		
+    	vmMain.c = config();
+    	vmMain.gui = new VendingMachineGUI(vmMain.c);
+
 	}
 
-	private void run() {
+	private void launch() {
 		// TODO - implement VendingMachineMain.run
 		
 	}
@@ -143,12 +143,42 @@ public class VendingMachineMain {
 		//the program waits here until the user pushes the JButton "create"
 		while (!configDone) {
 			try {
-	            Thread.sleep(200);
+	            Thread.sleep(100);
 	        }
 	        catch (InterruptedException e) {}
 		}
 		
-		return null; //wrong; to test
+		//----------------------------------------------------------
+		//The second part gets all the data from what the user typed
+		//----------------------------------------------------------
+		//fetch the values for the Drinks
+		Drink[] drinkList = new Drink[8];
+		for (int i = 0; i < 8; i++) {
+			drinkList[i] = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
+									Integer.parseInt(drinksPrices[i].getText()));
+		}
+		
+		//fetch the values for the change machine
+		int[] coinsStock = new int[8];
+		boolean[] coinsAccepted = new boolean[8];
+		for (int i = 0; i < 8; i++) {
+			coinsStock[i] = Integer.parseInt(coinsStockValues[i].getText());
+			coinsAccepted[i] = acceptedCoinsBoxes[i].isSelected();
+		}
+		ChangeMachine cm = new ChangeMachine(coinsStock, coinsAccepted);
+		
+		//fetch the values for the stock
+		int sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
+		int cupsNbr = Integer.parseInt(cupsNbrValue.getText());
+		int spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
+		int[] drinkQty = new int[8];
+		for (int i = 0; i < 8; i++) {
+			drinkQty[i] = Integer.parseInt(drinksStocks[i].getText());
+		}
+		
+		Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
+		myFrame.dispose(); //closes the frame
+		return new Context(drinkList, cm, stock);
 	}
 
 }
