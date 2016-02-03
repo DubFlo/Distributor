@@ -26,15 +26,15 @@ public class Stock {
 	}
 
 	public boolean isCupInStock() {
-		return cupsNbr != 0;
+		return cupsNbr > 0;
 	}
 
 	public boolean isSpoonInStock() {
-		return spoonsNbr != 0;
+		return spoonsNbr > 0;
 	}
 
 	public boolean isDrinkInStock(Drink drink) {
-		return drinkQty.get(drink) != 0;
+		return drinkQty.get(drink) > 0;
 	}
 
 }

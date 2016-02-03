@@ -12,8 +12,8 @@ public class VendingMachineGUI implements ContextListener {
 	 * @param observer
 	 */
 	public VendingMachineGUI(EventListener observer) {
-		// TODO - implement VendingMachineGUI.VendingMachineGUI
-		
+		this.observer = observer;
+		observer.setContextListener(this);
 	}
 
 	private void init() {

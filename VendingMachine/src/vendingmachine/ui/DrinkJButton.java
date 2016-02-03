@@ -2,7 +2,7 @@ package vendingmachine.ui;
 
 import java.io.File;
 import javax.swing.*;
-import vendingmachine.components.*;
+import vendingmachine.components.Drink;
 
 public class DrinkJButton extends JButton {
 
