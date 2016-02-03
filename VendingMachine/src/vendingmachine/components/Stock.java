@@ -1,24 +1,20 @@
 package vendingmachine.components;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 public class Stock {
 
 	private int sugarCubesNbr;
 	private int cupsNbr;
 	private int spoonsNbr;
-	private Hashtable<Drink, Integer> drinkQty;
+	private Map<Drink, Integer> drinkQty;
 
-	/**
-	 * 
-	 * @param sugarCubesNbr
-	 * @param cupsNbr
-	 * @param spoonsNbr
-	 * @param drinkQty
-	 */
 	public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Hashtable<Drink, Integer> drinkQty) {
-		// TODO - implement Stock.Stock
-		
+		this.sugarCubesNbr = sugarCubesNbr;
+		this.cupsNbr = cupsNbr;
+		this.spoonsNbr = spoonsNbr;
+		this.drinkQty = drinkQty;
 	}
 
 	/**

@@ -1,21 +1,17 @@
 package vendingmachine.components;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 public class ChangeMachine {
 
-	private Hashtable<Coin, Integer> coinsStock;
-	private Hashtable<Coin, Boolean> acceptedCoins;
+	private Map<Coin, Integer> coinsStock;
+	private Map<Coin, Boolean> acceptedCoins;
 	public static Coin[] COINS;
 
-	/**
-	 * 
-	 * @param coinsStock
-	 * @param acceptedCoins
-	 */
-	public ChangeMachine(int[] coinsStock, boolean[] acceptedCoins) {
-		// TODO - implement ChangeMachine.ChangeMachine
-		
+	public ChangeMachine(Hashtable<Coin, Integer> coinsStock, Hashtable<Coin, Boolean> acceptedCoins) {
+		this.coinsStock = coinsStock;
+		this.acceptedCoins = acceptedCoins;
 	}
 
 	public int[] giveChange() {
