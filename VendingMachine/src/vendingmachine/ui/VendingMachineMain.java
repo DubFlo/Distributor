@@ -1,11 +1,9 @@
 package vendingmachine.ui;
 
 import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -23,7 +21,6 @@ import vendingmachine.components.*;
 public class VendingMachineMain {
 
 	private Context c;
-	private VendingMachineGUI gui;
 	private static boolean configDone = false;
 
 	public static void main(String[] args) throws IOException {
@@ -35,17 +32,12 @@ public class VendingMachineMain {
     	SwingUtilities.invokeLater(new Runnable() {
     		public void run() {
     			try {
-					vmMain.gui = new VendingMachineGUI(vmMain.c);
+					new VendingMachineGUI(vmMain.c);
 				} catch (IOException e) {
 					// TO DO - 
 				}
     		}
     	});
-	}
-
-	private void launch() {
-		// TODO - implement VendingMachineMain.run
-		
 	}
 
 	private static Context config() {
@@ -165,8 +157,8 @@ public class VendingMachineMain {
 		List<Drink> drinkList = new ArrayList<Drink>();
 		Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
 		for (int i = 0; i < 8; i++) {
-			Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
-									Integer.parseInt(drinksPrices[i].getText()));
+			final Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
+									Integer.parseInt(drinksPrices[i].getText())); //final ici est suffisant ????
 			drinkList.add(d);
 			drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
 		}

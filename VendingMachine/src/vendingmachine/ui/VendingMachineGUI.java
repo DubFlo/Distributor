@@ -174,7 +174,8 @@ public class VendingMachineGUI implements ContextListener {
 		
 		//
 		addListeners();
-		observer.changeState(vendingmachine.states.Idle.getInstance());
+		observer.getState().entry(); //moche, mais l'action d'entrée de Idle ne peut se faire que quand 
+									 //tous les Labels ont été définis. ???????
 		
 		//Ending operations
 		JSplitPane leftPane= new JSplitPane();
@@ -193,8 +194,8 @@ public class VendingMachineGUI implements ContextListener {
 	}
 	
 	private void addListeners() {
-		cupButton.addActionListener(e -> observer.takeCup());
-		changeButton.addActionListener(e -> observer.takeChange());
+		cupButton.addActionListener(e -> setCupBool(false));
+		changeButton.addActionListener(e -> setChangeBool(false)); //ou juste setCupBool(false) non ?
 		lessSugar.addActionListener(e -> observer.less());
 		moreSugar.addActionListener(e -> observer.more());
 		okButton.addActionListener(e -> observer.confirm());

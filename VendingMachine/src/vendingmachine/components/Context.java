@@ -9,6 +9,7 @@ import vendingmachine.states.*;
 public class Context implements EventListener {
 
 	private ChangeMachine changeMachine;
+
 	private Stock stock;
 	private List<Drink> drinkList;
 	private HeatingSystem heatingSystem;
@@ -18,17 +19,18 @@ public class Context implements EventListener {
 	private int amountInside;
 	private ContextListener observer;
 
-	public Context(List drinkList, ChangeMachine changeMachine, Stock stock) {
+	public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
 		this.drinkList = drinkList;
 		this.changeMachine = changeMachine;
 		this.stock = stock;
+		this.state = Idle.Instance();
 		
 		//Thread ??
 		heatingSystem = new HeatingSystem();
 	}
 
 	public void changeState(State state) {
-		this.state = state.getInstance();
+		this.state = state;
 		this.state.entry();
 	}
 
@@ -84,7 +86,7 @@ public class Context implements EventListener {
 
 	@Override
 	public void setContextListener(ContextListener o) {
-		observer = o;	
+		state.setContextListener(o);	
 	}
 	
 	public ContextListener getObserver() {
@@ -120,6 +122,22 @@ public class Context implements EventListener {
 
 	private double getTemperature() {
 		return heatingSystem.getTemperature();
+	}
+	
+	public ChangeMachine getChangeMachine() {
+		return changeMachine;
+	}
+
+	public int getAmountInside() {
+		return amountInside;
+	}
+
+	public void setAmountInside(int amountInside) {
+		this.amountInside = amountInside;
+	}
+
+	public Stock getStock() {
+		return stock;
 	}
 	
 }

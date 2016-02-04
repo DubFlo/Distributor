@@ -18,23 +18,22 @@ public class ChangeMachine {
 
 	public byte giveChange(int amount) {	
 		Map<Coin, Integer> coinsStockTemp = coinsStock;
-		long[] moneyToGive = {0,0,0,0,0,0,0,0};
+		long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ????
 		
 		for(int i = 0; i < COINS.length; i++) {
-			
-	            while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
-	                coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) -1);
-	                amount -= COINS[i].VALUE;
-	                moneyToGive[i] += 1;
-	            }	
-			}		
-			if (amount == 0) {
-				coinsStock = coinsStockTemp;
-				return 1;
-			}
-			else {
-				return -1;	
-			}
+            while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
+                coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) -1);
+                amount -= COINS[i].VALUE;
+                moneyToGive[i] += 1;
+            }	
+		}		
+		if (amount == 0) {
+			coinsStock = coinsStockTemp;
+			return 1;
+		}
+		else {
+			return -1;	
+		}
 	}
 	
 	public Map<Coin, Integer> getCoinsStock() {
