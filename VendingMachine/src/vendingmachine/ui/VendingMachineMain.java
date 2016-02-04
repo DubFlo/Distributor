@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -24,7 +25,7 @@ public class VendingMachineMain {
 	private VendingMachineGUI gui;
 	private static boolean configDone = false;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		//THREADING ????
 		VendingMachineMain vmMain = new VendingMachineMain();
 		

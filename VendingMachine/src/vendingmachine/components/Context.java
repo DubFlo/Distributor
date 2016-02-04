@@ -10,6 +10,7 @@ public class Context implements EventListener {
 	private ChangeMachine changeMachine;
 	private Stock stock;
 	private List drinkList;
+	private HeatingSystem heatingSystem;
 	
 	private State state;
 	
@@ -23,6 +24,8 @@ public class Context implements EventListener {
 		this.changeMachine = changeMachine;
 		this.stock = stock;
 		
+		//Thread ??
+		heatingSystem = new HeatingSystem();
 	}
 
 	public void changeState(State state) {
