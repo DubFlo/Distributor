@@ -1,6 +1,7 @@
 package vendingmachine.components;
 
 import java.util.List;
+import java.util.Map;
 
 import vendingmachine.ui.*;
 import vendingmachine.states.*;
@@ -9,13 +10,11 @@ public class Context implements EventListener {
 
 	private ChangeMachine changeMachine;
 	private Stock stock;
-	private List drinkList;
+	private List<Drink> drinkList;
 	private HeatingSystem heatingSystem;
 	
 	private State state;
 	
-	private String northText;
-	private String sugarText;
 	private int amountInside;
 	private ContextListener observer;
 
@@ -40,50 +39,42 @@ public class Context implements EventListener {
 
 	@Override
 	public void drinkButton(Drink drink) {
-		// TODO Auto-generated method stub
-		
+		state.drinkButton(drink, this);
 	}
 
 	@Override
 	public void less() {
-		// TODO Auto-generated method stub
-		
+		state.less();
 	}
 
 	@Override
 	public void more() {
-		// TODO Auto-generated method stub
-		
+		state.more();
 	}
 
 	@Override
 	public void cancel() {
-		// TODO Auto-generated method stub
-		
+		state.cancel(this);
 	}
 
 	@Override
 	public void confirm() {
-		// TODO Auto-generated method stub
-		
+		state.confirm(this);
 	}
 
 	@Override
 	public void coinInserted(Coin coin) {
-		// TODO Auto-generated method stub
-		
+		state.coinInserted(coin, this);
 	}
 
 	@Override
 	public void takeChange() {
-		// TODO Auto-generated method stub
-		
+		state.takeChange();
 	}
 
 	@Override
 	public void takeCup() {
-		// TODO Auto-generated method stub
-		
+		state.takeCup();
 	}
 
 	@Override
@@ -93,12 +84,42 @@ public class Context implements EventListener {
 
 	@Override
 	public void setContextListener(ContextListener o) {
-		observer = o;
-		
+		observer = o;	
 	}
-
+	
+	public ContextListener getObserver() {
+		return observer;
+	}
+	
 	public State getState() {
 		return state;
 	}
 
+	@Override
+	public String getInfo() {
+		String info = "State: " + getState() + "\n";
+		info += "\nDrinks: \n";
+		Map<Drink, Integer> s = stock.getDrinkQty();
+		for (int i = 0; i < 8; i++) {
+			info += drinkList.get(i).getName() + ": " + s.get(drinkList.get(i)) + " available.\n";
+		}
+		
+		info += "\nCoins:\n";
+		for (int i = 0; i < 8; i++) {
+			info += ChangeMachine.COINS_TEXT[i] + ": "
+					+ changeMachine.getCoinsStock().get(ChangeMachine.COINS[i]) + " available.\n";
+		}
+		
+		info += "\nCurrent temperature: " + getTemperature() + "°C\n";
+		info += "\n" + stock.getCupsNbr() + " cup(s) available.\n"
+				+ stock.getSugarCubesNbr() + " sugar cube(s) available.\n"
+				+ stock.getSpoonsNbr() + " spoon(s) available.\n";
+		
+		return info;
+	}
+
+	private double getTemperature() {
+		return heatingSystem.getTemperature();
+	}
+	
 }

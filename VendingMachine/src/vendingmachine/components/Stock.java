@@ -31,5 +31,21 @@ public class Stock {
 	public boolean isDrinkInStock(Drink drink) {
 		return drinkQty.get(drink) > 0;
 	}
+	
+	public Map<Drink, Integer> getDrinkQty() {
+		return drinkQty;
+	}
+
+	public int getSugarCubesNbr() {
+		return sugarCubesNbr;
+	}
+
+	public int getCupsNbr() {
+		return cupsNbr;
+	}
+
+	public int getSpoonsNbr() {
+		return spoonsNbr;
+	}
 
 }

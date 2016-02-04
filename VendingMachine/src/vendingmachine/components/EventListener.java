@@ -1,6 +1,8 @@
 package vendingmachine.components;
 
 import java.util.List;
+
+import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 
 public interface EventListener {
@@ -20,8 +22,12 @@ public interface EventListener {
 	void takeChange();
 
 	void takeCup();
+	
+	void changeState(State state);
 
 	List<Drink> getDrinks();
+	
+	String getInfo();
 
 	void setContextListener(ContextListener c);
 }

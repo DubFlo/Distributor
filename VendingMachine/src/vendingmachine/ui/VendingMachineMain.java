@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -29,9 +30,17 @@ public class VendingMachineMain {
 		//THREADING ????
 		VendingMachineMain vmMain = new VendingMachineMain();
 		
-    	vmMain.c = config();
-    	vmMain.gui = new VendingMachineGUI(vmMain.c);
+		vmMain.c = config();
 
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			try {
+					vmMain.gui = new VendingMachineGUI(vmMain.c);
+				} catch (IOException e) {
+					// TO DO - 
+				}
+    		}
+    	});
 	}
 
 	private void launch() {

@@ -36,8 +36,10 @@ public class ChangeMachine {
 				return -1;	
 			}
 	}
-		
-
+	
+	public Map<Coin, Integer> getCoinsStock() {
+		return coinsStock;
+	}
 
 	public boolean isCoinAccepted(Coin coin) {
 		return acceptedCoins.get(coin);

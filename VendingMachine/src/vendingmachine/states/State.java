@@ -9,7 +9,7 @@ public abstract class State {
 
 	public abstract void entry();
 
-	public abstract State getInstance();
+	public static abstract State getInstance();
 
 	public abstract void drinkButton(Drink drink, Context c);
 

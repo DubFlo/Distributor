@@ -15,13 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import vendingmachine.components.*;
 
@@ -31,16 +25,36 @@ public class VendingMachineGUI implements ContextListener {
 	
 	private JLabel northLabel;
 	private JLabel sugarLabel;
+	JTextArea textArea;
 	
 	private List<DrinkJButton> drinkButtonsList;
 	private List<CoinJButton> coinButtonsList;
 	private JButton cupButton;
 	private JButton changeButton;
+	JButton lessSugar;
+	JButton moreSugar;
+	JButton okButton;
+	JButton cancelButton;
 	
-	private final static String PATH = "src"+File.separator+"resources"+File.separator;
-	private final static BufferedImage cupImage = ImageIO.read(new File(PATH + "cup.jpg"));
-	private final static BufferedImage changeImage = ImageIO.read(new File(PATH + "change.png"));
-
+	private static final String PATH = "src"+File.separator+"resources"+File.separator;
+	private static final BufferedImage cupImage;
+	private static final BufferedImage changeImage;
+	static {
+		BufferedImage cup;
+		BufferedImage change;
+		try {
+			cup = ImageIO.read(new File(PATH + "change.png"));
+			change = ImageIO.read(new File(PATH + "change.png"));
+		}
+		catch (IOException e) {
+			cup = null;
+			change = null;
+			//log
+		}
+		cupImage = cup;
+		changeImage = change;
+	}
+	
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
 		observer.setContextListener(this);
@@ -99,10 +113,10 @@ public class VendingMachineGUI implements ContextListener {
 		sugarLabel.setIcon(new ImageIcon(screenImage));
 		sugarLabel.setHorizontalTextPosition(JLabel.CENTER);
 		
-		JButton lessSugar = new JButton("-");
-		JButton moreSugar = new JButton("+");
-		JButton okButton = new JButton("Confirm");
-		JButton cancelButton = new JButton("Cancel");
+		lessSugar = new JButton("-");
+		moreSugar = new JButton("+");
+		okButton = new JButton("Confirm");
+		cancelButton = new JButton("Cancel");
 		
 		c.gridx = 0;	c.gridy = 0;	c.gridwidth = 2;
 		rightPanel.add(sugarLabel, c);
@@ -134,58 +148,108 @@ public class VendingMachineGUI implements ContextListener {
 		final String[] coinsFiles = {PATH + "2euro.png", PATH + "1euro.png", PATH + "50cent.png",
 				PATH + "20cent.png", PATH + "10cent.png", PATH + "5cent.png", PATH + "2cent.png",
 				PATH + "1cent.png"};
+		for (int i = 0; i < 8; i++) {
+			CoinJButton myButton = new CoinJButton(ChangeMachine.COINS[i], new ImageIcon(coinsFiles[i]));
+			coinButtonsList.add(myButton);
+			coinsPanel.add(myButton);
+		}
 		
+		//JMenuBar
+		JMenuBar menuBar = new JMenuBar();
+		JMenu waterSupplyMenu = new JMenu("Water Supply");
+		JMenu coinsMenu = new JMenu("Coin Stock");
+		JMenu drinksMenu = new JMenu("Drink Stock");
+		JMenu settings = new JMenu("Settings");
+		menuBar.add(waterSupplyMenu);
+		menuBar.add(coinsMenu);
+		menuBar.add(drinksMenu);
+		menuBar.add(settings);
 		
+		//Information area
+		JPanel infoPanel = new JPanel();
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		infoPanel.add(textArea);
+		infoPanel.setBackground(Color.WHITE);
+		
+		//
+		addListeners();
+		observer.changeState(vendingmachine.states.Idle.getInstance());
+		
+		//Ending operations
+		JSplitPane leftPane= new JSplitPane();
+		leftPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		leftPane.setLeftComponent(myPanel);
+		leftPane.setRightComponent(coinsPanel);
+        JSplitPane rightPane = new JSplitPane();
+        rightPane.setLeftComponent(leftPane);
+        rightPane.setRightComponent(infoPanel);
+		myFrame.setJMenuBar(menuBar);
+		myContainer.add(rightPane);
 		
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.pack();
 		myFrame.setVisible(true);
 	}
 	
+	private void addListeners() {
+		cupButton.addActionListener(e -> observer.takeCup());
+		changeButton.addActionListener(e -> observer.takeChange());
+		lessSugar.addActionListener(e -> observer.less());
+		moreSugar.addActionListener(e -> observer.more());
+		okButton.addActionListener(e -> observer.confirm());
+		cancelButton.addActionListener(e -> observer.cancel());
+		
+		for (int i = 0; i < drinkButtonsList.size(); i++) {
+			DrinkJButton d = drinkButtonsList.get(i);
+			d.addActionListener(e -> observer.drinkButton(d.getDrink()));
+		}
+		for (int i = 0; i < coinButtonsList.size(); i++) {
+			CoinJButton b = coinButtonsList.get(i);
+			b.addActionListener(e -> observer.coinInserted(b.getCoin()));
+		}
+		
+	}
+
 	public void updateGUI() {
 		// TODO - implement VendingMachineGUI.updateGUI
 		
 	}
 
-	public void updateInfo() {
-		// TODO - implement VendingMachineGUI.updateInfo
-		
-	}
-
 	@Override
 	public void setNorthText(String msg) {
-		// TODO Auto-generated method stub
-		
+		northLabel.setText(msg);
 	}
 
 	@Override
 	public void setTempNorthText(String msg) {
-		// TODO Auto-generated method stub
-		
+		northLabel.setText(msg);
+		//+++
+		//
+		//
+		//
 	}
 
 	@Override
-	public void setInfo(String txt) {
-		// TODO Auto-generated method stub
-		
+	public void setInfo() {
+		textArea.setText(observer.getInfo());	
 	}
 
 	@Override
 	public void setSugarText(String msg) {
-		// TODO Auto-generated method stub
-		
+		sugarLabel.setText(msg);
 	}
 
 	@Override
-	public void setCupIcon() {
-		// TODO Auto-generated method stub
-		
+	public void setCupBool(boolean b) {
+		if (b) cupButton.setIcon(new ImageIcon(cupImage));
+		else cupButton.setIcon(null);
 	}
 
 	@Override
-	public void setChangeIcon() {
-		// TODO Auto-generated method stub
-		
+	public void setChangeBool(boolean b) {
+		if (b) changeButton.setIcon(new ImageIcon(changeImage));
+		else changeButton.setIcon(null);
 	}
-
+	
 }
