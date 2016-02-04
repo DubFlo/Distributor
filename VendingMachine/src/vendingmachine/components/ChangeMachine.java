@@ -1,6 +1,5 @@
 package vendingmachine.components;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 public class ChangeMachine {
@@ -17,42 +16,28 @@ public class ChangeMachine {
 		this.acceptedCoins = acceptedCoins;
 	}
 
-	public byte giveChange() {
-
-			long[] coinsStockTemp = coinsStock;
-			long[] moneyToGive = {0,0,0,0,0,0,0,0};
-			for(int i = 0; i < COINS.length; i++) {
-
-	            while(amount >= COINS[i] && coinsStockTemp[i] > 0) {	
-
-	                coinsStockTemp[i] -= 1;
-
-	                amount -= COINS[i];
-
+	public byte giveChange(int amount) {	
+		Map<Coin, Integer> coinsStockTemp = coinsStock;
+		long[] moneyToGive = {0,0,0,0,0,0,0,0};
+		
+		for(int i = 0; i < COINS.length; i++) {
+			
+	            while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
+	                coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) -1);
+	                amount -= COINS[i].VALUE;
 	                moneyToGive[i] += 1;
-
 	            }	
-
 			}		
-
 			if (amount == 0) {
-
 				coinsStock = coinsStockTemp;
-
-				return moneyToGive; 
-
+				return 1;
 			}
-
 			else {
-
-				long[] tab = {-1};	
-
-				return tab;
-
+				return -1;	
 			}
-
-		}
 	}
+		
+
 
 	public boolean isCoinAccepted(Coin coin) {
 		return acceptedCoins.get(coin);
