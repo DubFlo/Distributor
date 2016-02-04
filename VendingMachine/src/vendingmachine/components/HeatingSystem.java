@@ -2,10 +2,14 @@ package vendingmachine.components;
 
 public class HeatingSystem {
 
-	private boolean waterSupply = true;
+	private boolean waterSupply;
 	private double temperature;
 	private boolean heating;
 
+	public HeatingSystem() {
+		this.waterSupply = true;
+		this.temperature = 90;
+	}
 	public void setWaterSupply(boolean b) {
 		this.waterSupply = b;
 	}

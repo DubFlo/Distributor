@@ -7,29 +7,27 @@ import vendingmachine.states.*;
 
 public class Context implements EventListener {
 
+	private ChangeMachine changeMachine;
+	private Stock stock;
+	private List drinkList;
+	
+	private State state;
+	
 	private String northText;
 	private String sugarText;
 	private int amountInside;
 	private ContextListener observer;
 
-	/**
-	 * 
-	 * @param drinks
-	 * @param cm
-	 * @param stock
-	 */
-	public Context(Drink[] drinks, ChangeMachine cm, Stock stock) {
-		// TODO - implement Context.Context
+	public Context(List drinkList, ChangeMachine changeMachine, Stock stock) {
+		this.drinkList = drinkList;
+		this.changeMachine = changeMachine;
+		this.stock = stock;
 		
 	}
 
-	/**
-	 * 
-	 * @param state
-	 */
 	public void changeState(State state) {
-		// TODO - implement Context.changeState
-		
+		this.state = state.getInstance();
+		this.state.entry();
 	}
 
 	public void playAlarmSound() {
@@ -87,14 +85,17 @@ public class Context implements EventListener {
 
 	@Override
 	public List<Drink> getDrinks() {
-		// TODO Auto-generated method stub
-		return null;
+		return drinkList;
 	}
 
 	@Override
-	public void setContextListener(ContextListener c) {
-		// TODO Auto-generated method stub
+	public void setContextListener(ContextListener o) {
+		observer = o;
 		
+	}
+
+	public State getState() {
+		return state;
 	}
 
 }

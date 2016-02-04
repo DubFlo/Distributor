@@ -1,6 +1,5 @@
 package vendingmachine.components;
 
-import java.util.Hashtable;
 import java.util.Map;
 
 public class Stock {
@@ -10,17 +9,13 @@ public class Stock {
 	private int spoonsNbr;
 	private Map<Drink, Integer> drinkQty;
 
-	public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Hashtable<Drink, Integer> drinkQty) {
+	public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
 		this.sugarCubesNbr = sugarCubesNbr;
 		this.cupsNbr = cupsNbr;
 		this.spoonsNbr = spoonsNbr;
 		this.drinkQty = drinkQty;
 	}
 
-	/**
-	 * 
-	 * @param sugar
-	 */
 	public boolean isSugarInStock(int sugar) {
 		return sugar <= sugarCubesNbr;
 	}

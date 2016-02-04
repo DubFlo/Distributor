@@ -1,23 +1,29 @@
 package vendingmachine.ui;
 
+import java.awt.Container;
+import java.io.File;
+
+import javax.swing.JFrame;
+
 import vendingmachine.components.*;
 
 public class VendingMachineGUI implements ContextListener {
 
 	private EventListener observer;
-	private String info;
 
-	/**
-	 * 
-	 * @param observer
-	 */
 	public VendingMachineGUI(EventListener observer) {
 		this.observer = observer;
 		observer.setContextListener(this);
+		this.init();
 	}
 
 	private void init() {
-		// TODO - implement VendingMachineGUI.init
+		final String fs = File.separator;
+		
+		//init Frame
+		JFrame myFrame = new JFrame("Vending Machine");
+		Container myContainer = myFrame.getContentPane();
+		
 		
 	}
 

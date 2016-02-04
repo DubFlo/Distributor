@@ -4,6 +4,10 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,10 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import vendingMachine.components.ChangeMachine;
-import vendingMachine.components.Drink;
-import vendingMachine.components.Stock;
-import vendingMachine.components.VendingMachineContext;
 import vendingmachine.components.*;
 
 public class VendingMachineMain {
@@ -152,29 +152,28 @@ public class VendingMachineMain {
 		//The second part gets all the data from what the user typed
 		//----------------------------------------------------------
 		//fetch the values for the Drinks
-		Drink[] drinkList = new Drink[8];
+		List<Drink> drinkList = new ArrayList<Drink>();
+		Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
 		for (int i = 0; i < 8; i++) {
-			drinkList[i] = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
+			Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
 									Integer.parseInt(drinksPrices[i].getText()));
+			drinkList.add(d);
+			drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
 		}
 		
 		//fetch the values for the change machine
-		int[] coinsStock = new int[8];
-		boolean[] coinsAccepted = new boolean[8];
+		Map<Coin, Integer> coinsStock = new Hashtable<Coin, Integer>();
+		Map<Coin, Boolean> coinsAccepted = new Hashtable<Coin, Boolean>();
 		for (int i = 0; i < 8; i++) {
-			coinsStock[i] = Integer.parseInt(coinsStockValues[i].getText());
-			coinsAccepted[i] = acceptedCoinsBoxes[i].isSelected();
+			coinsStock.put(ChangeMachine.COINS[i], Integer.parseInt(coinsStockValues[i].getText()));
+			coinsAccepted.put(ChangeMachine.COINS[i], acceptedCoinsBoxes[i].isSelected());
 		}
 		ChangeMachine cm = new ChangeMachine(coinsStock, coinsAccepted);
 		
-		//fetch the values for the stock
+		//fetch the values for the stock (Drink stock has been done with the drinks)
 		int sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
 		int cupsNbr = Integer.parseInt(cupsNbrValue.getText());
 		int spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
-		int[] drinkQty = new int[8];
-		for (int i = 0; i < 8; i++) {
-			drinkQty[i] = Integer.parseInt(drinksStocks[i].getText());
-		}
 		
 		Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 		myFrame.dispose(); //closes the frame
