@@ -16,6 +16,10 @@ public class Stock {
 		this.drinkQty = drinkQty;
 	}
 
+	public void setSugarCubesNbr(int sugarCubesNbr) {
+		this.sugarCubesNbr = sugarCubesNbr;
+	}
+
 	public boolean isSugarInStock(int sugar) {
 		return sugar <= sugarCubesNbr;
 	}
