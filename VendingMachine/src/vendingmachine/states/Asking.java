@@ -44,6 +44,7 @@ public class Asking extends State {
 	public void confirm(Context c){
 		chosenSugar = 0;
 		c.getStock().setSugarCubesNbr(c.getStock().getSugarCubesNbr()- chosenSugar);
+		c.getChangeMachine().giveChange(amountInside - drinkChosen.getPrice()); 
 		c.changeState(Preparing.Instance());
 	}
 

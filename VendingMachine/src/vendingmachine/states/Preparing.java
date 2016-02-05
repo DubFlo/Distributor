@@ -22,3 +22,5 @@ public class Preparing extends State {
 		observer.setTemporaryNorthText("Not possible to insert coin ");
 	}
 }
+// retirer du stock la boisson à la fin du Timer
+// Changer d'état + lancer la préparation de la boisson

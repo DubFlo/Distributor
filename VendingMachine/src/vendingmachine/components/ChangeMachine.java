@@ -18,7 +18,7 @@ public class ChangeMachine {
 
 	public byte giveChange(int amount) {	
 		Map<Coin, Integer> coinsStockTemp = coinsStock;
-		long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ????
+		long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ???? on l'utilisera apres pour donner la monnaie rendue
 		
 		for(int i = 0; i < COINS.length; i++) {
             while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	

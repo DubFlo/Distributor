@@ -7,6 +7,7 @@ public abstract class State {
 
 	protected ContextListener observer;
 	protected byte chosenSugar = 0;
+	protected Drink drinkChosen;
 	protected int amountInside;
 
 	public void entry() {
