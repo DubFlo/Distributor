@@ -11,17 +11,19 @@ public class Idle extends State {
 		if (instance == null) instance = new Idle();
 		return instance;
 	}
+	
 	@Override
 	public String getDefaultText() {
-		return "Please Make Your Choice";
+		return "Please make your choice";
 	}
+	
 	@Override
 	public void drinkButton(Drink drink, Context c) {
 		if (!c.getStock().isDrinkInStock(drink)) {
 			observer.setTempNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
 		}
 		else if (drink.getPrice() > c.getAmountInside()) {
-			observer.setTempNorthText("Price" + drink.getPrice()/100.0 + " €");
+			observer.setTempNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
 		else if (c.getChangeMachine().giveChange(c.getAmountInside() - drink.getPrice()) == 1) {
 			c.changeState(Preparing.Instance());

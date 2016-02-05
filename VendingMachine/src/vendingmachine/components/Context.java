@@ -1,7 +1,15 @@
 package vendingmachine.components;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import vendingmachine.ui.*;
 import vendingmachine.states.*;
@@ -9,7 +17,6 @@ import vendingmachine.states.*;
 public class Context implements EventListener {
 
 	private ChangeMachine changeMachine;
-
 	private Stock stock;
 	private List<Drink> drinkList;
 	private HeatingSystem heatingSystem;
@@ -18,7 +25,21 @@ public class Context implements EventListener {
 	
 	private int amountInside;
 	private ContextListener observer;
-
+	
+	private static Clip clip;
+	static {
+		//http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
+		String file = "src"+File.separator+"resources"+File.separator+"beep.wav";    
+		AudioInputStream audioInputStream;
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
 		this.drinkList = drinkList;
 		this.changeMachine = changeMachine;
@@ -35,7 +56,10 @@ public class Context implements EventListener {
 	}
 
 	public void playAlarmSound() {
-		// TODO - implement Context.playAlarmSound
+		if (clip.isRunning())
+			clip.stop();
+		clip.setFramePosition(0);
+		clip.start();
 		
 	}
 

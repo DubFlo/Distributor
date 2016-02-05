@@ -12,13 +12,12 @@ public abstract class State {
 	public void entry() {
 		observer.setNorthText(getDefaultText());
 		//observer.setSugarText(getSugarText());
-		
+		observer.setInfo();
 	}
 
 	public abstract String getDefaultText();
 	
-	public abstract void drinkButton(Drink drink, Context c);
-
+	public void drinkButton(Drink drink, Context c) {}
 	public void less() {} //By default does nothing
 	public void more() {} //By default does nothing
 	public void cancel(Context c) {}
@@ -38,6 +37,11 @@ public abstract class State {
 	public void takeCup() {
 		// TODO - implement State.takeCup
 		
+	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName(); //instead of getName() to avoid the package
 	}
 
 }

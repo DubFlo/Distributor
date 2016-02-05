@@ -80,7 +80,7 @@ public class VendingMachineGUI implements ContextListener {
 		myPanel.add(northPanel, BorderLayout.PAGE_START);
 		
 		//Center Panel
-		JPanel centerPanel = new BackgroundJPanel(PATH + "coffee3.png");
+		JPanel centerPanel = new BackgroundJPanel(PATH + "coffee.png");
 		centerPanel.setLayout(new GridLayout(4, 2, 30, 0));
 		drinkButtonsList = new ArrayList<DrinkJButton>();
 		for (int i = 0; i < 8; i++) {
@@ -101,10 +101,11 @@ public class VendingMachineGUI implements ContextListener {
 		myPanel.add(leftPanel, BorderLayout.LINE_START);
 		
 		//Right Panel
-		JPanel rightPanel = new BackgroundJPanel(PATH + "fente-de-luxe.jpg");
+		JPanel rightPanel = new BackgroundJPanel(PATH + "slot.jpg");
 		rightPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH; //A expliquer
+		c.weightx = 1;
 		
 		sugarLabel = new JLabel();
 		sugarLabel.setFont(new Font("courier new", Font.BOLD, 14));
@@ -219,7 +220,7 @@ public class VendingMachineGUI implements ContextListener {
 
 	@Override
 	public void setNorthText(String msg) {
-		northLabel.setText(msg);
+		northLabel.setText(msg.toUpperCase());
 	}
 
 	@Override
