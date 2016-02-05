@@ -17,7 +17,7 @@ public class Idle extends State {
 	public String getDefaultText() {
 		String msg = "Please make your choice";
 		if (amountInside > 0) {
-			msg += (amountInside + " € entered");
+			msg += (" - " + amountInside/100.0 + " € entered");
 		}
 		return msg;
 	}
@@ -25,13 +25,13 @@ public class Idle extends State {
 	@Override
 	public void drinkButton(Drink drink, Context c) {
 		if (!c.getStock().isCupInStock()) {
-			observer.setTempNorthText("Cups are out of stock. No drink can be ordered");
+			observer.setTemporaryNorthText("Cups are out of stock. No drink can be ordered");
 		}
 		if (!c.getStock().isDrinkInStock(drink)) {
-			observer.setTempNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
+			observer.setTemporaryNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
 		}
 		else if (drink.getPrice() > amountInside) {
-			observer.setTempNorthText("Price: " + drink.getPrice()/100.0 + " €");
+			observer.setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
 		else if (c.getChangeMachine().giveChange(amountInside - drink.getPrice()) == 1) {
 			if (drink.isSugar())
@@ -41,7 +41,7 @@ public class Idle extends State {
 			}
 		}
 		else {
-			observer.setTempNorthText("Unable to give the exact change");
+			observer.setTemporaryNorthText("Unable to give the exact change");
 		}
 	}
 	
@@ -51,11 +51,11 @@ public class Idle extends State {
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			amountInside += coin.VALUE;
 			c.getChangeMachine().insertCoin(coin);
-			observer.setTempNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
+			observer.setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 		}
 		else {
 			observer.setChangeBool(true);
-			observer.setTempNorthText("Coin not recognized by the machine");
+			observer.setTemporaryNorthText("Coin not recognized by the machine");
 		}
 		observer.setInfo(); //Le mettre ici ?????
 	}

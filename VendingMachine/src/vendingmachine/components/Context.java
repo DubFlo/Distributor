@@ -57,7 +57,6 @@ public class Context implements EventListener {
 			clip.stop();
 		clip.setFramePosition(0);
 		clip.start();
-		
 	}
 
 	@Override
@@ -124,7 +123,6 @@ public class Context implements EventListener {
 					+ changeMachine.getCoinsStock().get(ChangeMachine.COINS[i]) + " available.\n";
 		}
 		
-		info += "\nCurrent temperature: " + getTemperature() + "°C\n";
 		info += "\n" + stock.getCupsNbr() + " cup(s) available.\n"
 				+ stock.getSugarCubesNbr() + " sugar cube(s) available.\n"
 				+ stock.getSpoonsNbr() + " spoon(s) available.\n";
