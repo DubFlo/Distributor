@@ -25,10 +25,10 @@ public class Asking extends State {
 			observer.setSugarText("Sugar :" + chosenSugar + "/5");
 		}
 		else if (chosenSugar == 5){
-			observer.setTempNorthText("Maximum quantity of sugar : 5");
+			observer.setTemporaryNorthText("Maximum quantity of sugar : 5");
 		}
 		else {
-			observer.setTempNorthText("No more sugar in stock");
+			observer.setTemporaryNorthText("No more sugar in stock");
 		}
 	}
 	

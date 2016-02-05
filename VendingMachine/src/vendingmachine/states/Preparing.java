@@ -19,6 +19,6 @@ public class Preparing extends State {
 	}
 	
 	public void coinInserted(Coin coin, Context c){
-		observer.setTempNorthText("Not possible to insert coin ");
+		observer.setTemporaryNorthText("Not possible to insert coin ");
 	}
 }
