@@ -15,7 +15,11 @@ public class Idle extends State {
 	
 	@Override
 	public String getDefaultText() {
-		return "Please make your choice";
+		String msg = "Please make your choice";
+		if (amountInside > 0) {
+			msg += (amountInside + " € entered");
+		}
+		return msg;
 	}
 	
 	@Override
@@ -26,10 +30,10 @@ public class Idle extends State {
 		if (!c.getStock().isDrinkInStock(drink)) {
 			observer.setTempNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
 		}
-		else if (drink.getPrice() > c.getAmountInside()) {
+		else if (drink.getPrice() > amountInside) {
 			observer.setTempNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
-		else if (c.getChangeMachine().giveChange(c.getAmountInside() - drink.getPrice()) == 1) {
+		else if (c.getChangeMachine().giveChange(amountInside - drink.getPrice()) == 1) {
 			if (drink.isSugar())
 				c.changeState(Asking.Instance());
 			else {
@@ -45,12 +49,14 @@ public class Idle extends State {
 	public void coinInserted(Coin coin, Context c) {
 		super.coinInserted(coin, c);
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
-			c.setAmountInside(c.getAmountInside() + coin.VALUE);
+			amountInside += coin.VALUE;
+			c.getChangeMachine().insertCoin(coin);
 			observer.setTempNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 		}
 		else {
 			observer.setChangeBool(true);
 			observer.setTempNorthText("Coin not recognized by the machine");
 		}
+		observer.setInfo(); //Le mettre ici ?????
 	}
 }

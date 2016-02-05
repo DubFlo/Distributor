@@ -44,4 +44,7 @@ public class ChangeMachine {
 		return acceptedCoins.get(coin);
 	}
 
+	public void insertCoin(Coin coin) {
+		coinsStock.put(coin, coinsStock.get(coin) + 1);
+	}
 }

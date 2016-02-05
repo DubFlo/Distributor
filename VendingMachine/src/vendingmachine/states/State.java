@@ -7,6 +7,7 @@ public abstract class State {
 
 	protected ContextListener observer;
 	protected byte sugar = 0;
+	protected int amountInside;
 
 	public void entry() {
 		observer.setNorthText(getDefaultText());
@@ -38,4 +39,11 @@ public abstract class State {
 		return this.getClass().getSimpleName(); //instead of getName() to avoid the package
 	}
 
+	public int getAmountInside() {
+		return amountInside;
+	}
+
+	public void setAmountInside(int amountInside) {
+		this.amountInside = amountInside;
+	}
 }

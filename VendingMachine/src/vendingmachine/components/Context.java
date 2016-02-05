@@ -23,7 +23,6 @@ public class Context implements EventListener {
 	
 	private State state;
 	
-	private int amountInside;
 	private ContextListener observer;
 	
 	private static Clip clip;
@@ -140,14 +139,6 @@ public class Context implements EventListener {
 	
 	public ChangeMachine getChangeMachine() {
 		return changeMachine;
-	}
-
-	public int getAmountInside() {
-		return amountInside;
-	}
-
-	public void setAmountInside(int amountInside) {
-		this.amountInside = amountInside;
 	}
 
 	public Stock getStock() {
