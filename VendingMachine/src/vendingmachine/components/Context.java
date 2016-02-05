@@ -47,6 +47,7 @@ public class Context implements EventListener {
 		this.heatingSystem = new HeatingSystem();
 	}
 
+	@Override
 	public void changeState(State state) {
 		this.state = state;
 		this.state.entry();
@@ -104,6 +105,7 @@ public class Context implements EventListener {
 		return observer;
 	}
 	
+	@Override
 	public State getState() {
 		return state;
 	}
@@ -130,7 +132,7 @@ public class Context implements EventListener {
 		return info;
 	}
 
-	private double getTemperature() {
+	public double getTemperature() {
 		return heatingSystem.getTemperature();
 	}
 	

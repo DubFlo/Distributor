@@ -31,18 +31,24 @@ public class HeatingSystem {
 		return this.temperature;
 	}
 
-	public void updateTemperature() {
-		updateState();
-		if (heating) {
-			temperature += 3;
-		}
-		
-		else {
-			temperature -= 1;
-		}
-		observer.setTemperature(temperature);
+	public void setTemperature(double temperature) {
+		this.temperature = temperature;
 	}
-	
+
+	public void updateTemperature() {
+		if (waterSupply) {
+			updateState();
+			if (heating) {
+				temperature += 3;
+			}
+
+			else {
+				temperature -= 1; //to improve
+			}
+			observer.setTemperature(temperature);
+		}
+	}
+
 	private void updateState() {
 		if (heating && temperature > MAX_TEMPERATURE) {
 			heating = false;
@@ -55,5 +61,9 @@ public class HeatingSystem {
 
 	public void setObserver(TemperatureListener observer) {
 		this.observer = observer;
+	}
+
+	public boolean isHeating() {
+		return heating;
 	}
 }

@@ -204,7 +204,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	private void addListeners() {
 		cupButton.addActionListener(e -> setCupBool(false));
-		changeButton.addActionListener(e -> setChangeBool(false)); //ou juste setCupBool(false) non ?
+		changeButton.addActionListener(e -> setChangeBool(false));
 		lessSugar.addActionListener(e -> observer.less());
 		moreSugar.addActionListener(e -> observer.more());
 		okButton.addActionListener(e -> observer.confirm());
@@ -254,6 +254,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		else changeButton.setIcon(null);
 	}
 	
+	@Override
 	public void setTemperature(double temperature) {
 		temperatureLabel.setText(temperature + " °C");
 	}
