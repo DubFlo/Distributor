@@ -6,37 +6,31 @@ import vendingmachine.ui.ContextListener;
 public abstract class State {
 
 	protected ContextListener observer;
-	protected boolean changeBool;
-	protected boolean cupBool;
+	protected byte sugar = 0;
 
 	public void entry() {
 		observer.setNorthText(getDefaultText());
-		//observer.setSugarText(getSugarText());
+		observer.setSugarText(getSugarText());
 		observer.setInfo();
 	}
 
-	public abstract String getDefaultText();
+	public void exit() {
+		
+	}
 	
+	public abstract String getDefaultText();
+	public void coinInserted(Coin coin, Context c) {} //toujours fait le bruit de pièces; à faire
+	
+	//These buttons do nothing by default
 	public void drinkButton(Drink drink, Context c) {}
-	public void less() {} //By default does nothing
-	public void more() {} //By default does nothing
+	public void less() {}
+	public void more() {}
 	public void cancel(Context c) {}
 	public void confirm(Context c) {}
-
-	public abstract void coinInserted(Coin coin, Context c);
+	public String getSugarText() {return "";}
 	
 	public void setContextListener(ContextListener o) {
 		observer = o;
-	}
-	
-	public void takeChange() {
-		// TODO - implement State.takeChange
-		
-	}
-
-	public void takeCup() {
-		// TODO - implement State.takeCup
-		
 	}
 	
 	@Override

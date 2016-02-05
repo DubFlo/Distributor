@@ -13,8 +13,6 @@ public interface EventListener {
 	void cancel();
 	void confirm();
 	void coinInserted(Coin coin);
-	void takeChange();
-	void takeCup();
 	
 	void changeState(State state);
 	State getState();

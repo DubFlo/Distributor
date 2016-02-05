@@ -94,16 +94,6 @@ public class Context implements EventListener {
 	}
 
 	@Override
-	public void takeChange() {
-		state.takeChange();
-	}
-
-	@Override
-	public void takeCup() {
-		state.takeCup();
-	}
-
-	@Override
 	public List<Drink> getDrinks() {
 		return drinkList;
 	}

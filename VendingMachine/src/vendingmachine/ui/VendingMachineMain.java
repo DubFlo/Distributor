@@ -153,7 +153,8 @@ public class VendingMachineMain {
 		//----------------------------------------------------------
 		//The second part gets all the data from what the user typed
 		//----------------------------------------------------------
-		//fetch the values for the Drinks
+		
+		//Fetches the values for the drinks
 		List<Drink> drinkList = new ArrayList<Drink>();
 		Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
 		for (int i = 0; i < 8; i++) {
@@ -163,7 +164,7 @@ public class VendingMachineMain {
 			drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
 		}
 		
-		//fetch the values for the change machine
+		//Fetches the values for the change machine
 		Map<Coin, Integer> coinsStock = new Hashtable<Coin, Integer>();
 		Map<Coin, Boolean> coinsAccepted = new Hashtable<Coin, Boolean>();
 		for (int i = 0; i < 8; i++) {
@@ -172,13 +173,13 @@ public class VendingMachineMain {
 		}
 		ChangeMachine cm = new ChangeMachine(coinsStock, coinsAccepted);
 		
-		//fetch the values for the stock (Drink stock has been done with the drinks)
+		//Fetches the values for the stock (the drink stock has been done with the drinks)
 		int sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
 		int cupsNbr = Integer.parseInt(cupsNbrValue.getText());
 		int spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
 		
 		Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
-		myFrame.dispose(); //closes the frame
+		myFrame.dispose(); //closes the configuration frame
 		return new Context(drinkList, cm, stock);
 	}
 

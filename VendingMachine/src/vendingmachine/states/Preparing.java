@@ -6,9 +6,16 @@ public class Preparing extends State {
 
 	private static Preparing instance;
 
+	//Singleton design pattern
+	private Preparing() {}
 	public static Preparing Instance() {
-		// TODO - implement Preparing.Instance
-		
+		if (instance == null) instance = new Preparing();
+		return instance;
+	}
+	
+	@Override
+	public String getDefaultText() {
+		return "Your drink is in preparation...";
 	}
 
 }

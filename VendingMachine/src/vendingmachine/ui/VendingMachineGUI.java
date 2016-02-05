@@ -25,16 +25,16 @@ public class VendingMachineGUI implements ContextListener {
 	
 	private JLabel northLabel;
 	private JLabel sugarLabel;
-	JTextArea textArea;
+	private JTextArea textArea;
 	
 	private List<DrinkJButton> drinkButtonsList;
 	private List<CoinJButton> coinButtonsList;
 	private JButton cupButton;
 	private JButton changeButton;
-	JButton lessSugar;
-	JButton moreSugar;
-	JButton okButton;
-	JButton cancelButton;
+	private JButton lessSugar;
+	private JButton moreSugar;
+	private JButton okButton;
+	private JButton cancelButton;
 	
 	private static final String PATH = "src"+File.separator+"resources"+File.separator;
 	private static final BufferedImage cupImage;

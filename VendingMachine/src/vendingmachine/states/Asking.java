@@ -5,11 +5,17 @@ import vendingmachine.components.*;
 public class Asking extends State {
 
 	private static Asking instance;
-	private byte sugar = 0;
 
+	//Singleton design pattern
+	private Asking() {}
 	public static Asking Instance() {
-		// TODO - implement Asking.Instance
-		
+		if (instance == null) instance = new Asking();
+		return instance;
+	}
+	
+	@Override
+	public String getDefaultText() {
+		return "Choose your sugar quantity on the small screen";
 	}
 
 }

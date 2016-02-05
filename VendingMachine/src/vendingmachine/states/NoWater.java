@@ -6,9 +6,16 @@ public class NoWater extends Problem {
 
 	private static NoWater instance;
 
-	public NoWater Instance() {
-		// TODO - implement NoWater.Instance
-		
+	//Singleton design pattern
+	private NoWater() {}
+	public static NoWater Instance() {
+		if (instance == null) instance = new NoWater();
+		return instance;
+	}
+	
+	@Override
+	public String getDefaultText() {
+		return "Water supply is off. No drink can be ordered";
 	}
 
 }
