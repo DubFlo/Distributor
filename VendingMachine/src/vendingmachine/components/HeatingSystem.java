@@ -1,10 +1,15 @@
 package vendingmachine.components;
 
+import javax.swing.Timer;
+import vendingmachine.ui.TemperatureListener;
+
 public class HeatingSystem {
 
 	private boolean waterSupply;
 	private double temperature;
 	private boolean heating;
+	
+	private TemperatureListener observer;
 	
 	private static final double MIN_TEMPERATURE = 85.0;
 	private static final double MAX_TEMPERATURE = 99.0;
@@ -13,6 +18,9 @@ public class HeatingSystem {
 		this.waterSupply = true;
 		this.temperature = 90;
 		this.heating = false;
+		int delay = 1000; //milliseconds
+		
+		new Timer(delay, e -> this.updateTemperature()).start();
 	}
 	
 	public void setWaterSupply(boolean b) {
@@ -32,6 +40,7 @@ public class HeatingSystem {
 		else {
 			temperature -= 1;
 		}
+		observer.setTemperature(temperature);
 	}
 	
 	private void updateState() {
@@ -44,4 +53,7 @@ public class HeatingSystem {
 		}
 	}
 
+	public void setObserver(TemperatureListener observer) {
+		this.observer = observer;
+	}
 }

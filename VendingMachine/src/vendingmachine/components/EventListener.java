@@ -4,6 +4,7 @@ import java.util.List;
 
 import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
+import vendingmachine.ui.TemperatureListener;
 
 public interface EventListener {
 
@@ -19,5 +20,5 @@ public interface EventListener {
 
 	List<Drink> getDrinks();
 	String getInfo();
-	void setContextListener(ContextListener c);
+	<T extends ContextListener & TemperatureListener> void setListener(T o);
 }

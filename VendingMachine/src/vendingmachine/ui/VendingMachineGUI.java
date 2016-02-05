@@ -58,7 +58,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
-		observer.setContextListener(this);
+		observer.setListener(this);
 		this.init();
 	}
 

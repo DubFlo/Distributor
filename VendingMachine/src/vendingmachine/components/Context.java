@@ -44,9 +44,7 @@ public class Context implements EventListener {
 		this.changeMachine = changeMachine;
 		this.stock = stock;
 		this.state = Idle.Instance();
-		
-		//Thread ??
-		heatingSystem = new HeatingSystem();
+		this.heatingSystem = new HeatingSystem();
 	}
 
 	public void changeState(State state) {
@@ -98,8 +96,9 @@ public class Context implements EventListener {
 	}
 
 	@Override
-	public void setContextListener(ContextListener o) {
-		state.setContextListener(o);	
+	public <T extends ContextListener & TemperatureListener> void setListener(T o) {
+		state.setContextListener(o);
+		heatingSystem.setObserver(o);
 	}
 	
 	public ContextListener getObserver() {
@@ -143,6 +142,10 @@ public class Context implements EventListener {
 
 	public Stock getStock() {
 		return stock;
+	}
+	
+	public HeatingSystem getHeatingSystem() {
+		return heatingSystem;
 	}
 	
 }
