@@ -22,13 +22,13 @@ public class Asking extends State {
 		if (chosenSugar < 5 && c.getStock().isSugarInStock(chosenSugar + 1) )
 		{
 			chosenSugar += 1;
-			observer.setSugarText("Sugar :" + chosenSugar + "/5");
+			c.getObserver().setSugarText("Sugar :" + chosenSugar + "/5");
 		}
 		else if (chosenSugar == 5){
-			observer.setTemporaryNorthText("Maximum quantity of sugar : 5");
+			c.getObserver().setTemporaryNorthText("Maximum quantity of sugar : 5");
 		}
 		else {
-			observer.setTemporaryNorthText("No more sugar in stock");
+			c.getObserver().setTemporaryNorthText("No more sugar in stock");
 		}
 	}
 	
@@ -37,9 +37,10 @@ public class Asking extends State {
 		if (chosenSugar > 0 && c.getStock().isSugarInStock(chosenSugar + 1) )
 		{
 			chosenSugar -= 1;
-			observer.setSugarText("Sugar :" + chosenSugar + "/5");
+			c.getObserver().setSugarText("Sugar :" + chosenSugar + "/5");
 		}
 	}
+	
 	@Override
 	public void confirm(Context c){
 		c.getStock().setSugarCubesNbr(0);

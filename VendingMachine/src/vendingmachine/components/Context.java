@@ -25,15 +25,15 @@ public class Context implements EventListener {
 	
 	private ContextListener observer;
 	
-	private static Clip clip;
+	private static Clip beep;
 	static {
 		//http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
 		String file = "src"+File.separator+"resources"+File.separator+"beep.wav";    
 		AudioInputStream audioInputStream;
 		try {
 			audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
-			clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
+			beep = AudioSystem.getClip();
+			beep.open(audioInputStream);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
@@ -43,21 +43,20 @@ public class Context implements EventListener {
 		this.drinkList = drinkList;
 		this.changeMachine = changeMachine;
 		this.stock = stock;
-		this.state = Idle.Instance();
 		this.heatingSystem = new HeatingSystem();
 	}
 
 	@Override
 	public void changeState(State state) {
 		this.state = state;
-		this.state.entry();
+		this.state.entry(this);
 	}
 
 	public void playAlarmSound() {
-		if (clip.isRunning())
-			clip.stop();
-		clip.setFramePosition(0);
-		clip.start();
+		if (beep.isRunning())
+			beep.stop();
+		beep.setFramePosition(0);
+		beep.start();
 	}
 
 	@Override
@@ -96,15 +95,15 @@ public class Context implements EventListener {
 	}
 
 	@Override
-	public <T extends ContextListener & TemperatureListener> void setListener(T o) {
-		state.setContextListener(o);
+	public <T extends ContextListener & TemperatureListener> void setObserver(T o) {
+		this.observer = o;
 		heatingSystem.setObserver(o);
 	}
 	
 	public ContextListener getObserver() {
 		return observer;
 	}
-	
+
 	@Override
 	public State getState() {
 		return state;

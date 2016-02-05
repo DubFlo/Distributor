@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import vendingmachine.components.*;
+import vendingmachine.states.Idle;
 
 public class VendingMachineGUI implements ContextListener, TemperatureListener {
 
@@ -60,7 +61,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
-		observer.setListener(this);
+		observer.setObserver(this);
 		t = new Timer(1500, e -> this.setNorthText(observer.getState().getDefaultText()));
 		t.setRepeats(false);
 		this.init();
@@ -181,11 +182,6 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		infoPanel.add(infoArea);
 		infoPanel.setBackground(Color.WHITE);
 		
-		//
-		addListeners();
-		observer.getState().entry(); //moche, mais l'action d'entrée de Idle ne peut se faire que quand 
-									 //tous les Labels ont été définis. ???????
-		
 		//Ending operations
 		JSplitPane leftPane= new JSplitPane();
 		leftPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -196,6 +192,9 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
         rightPane.setRightComponent(infoPanel);
 		myFrame.setJMenuBar(menuBar);
 		myContainer.add(rightPane);
+		
+		addListeners();
+		observer.changeState(Idle.Instance()); // moche mais où d'autre ??
 		
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.pack();

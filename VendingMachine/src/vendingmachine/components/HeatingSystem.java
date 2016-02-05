@@ -18,8 +18,8 @@ public class HeatingSystem {
 		this.waterSupply = true;
 		this.temperature = 90;
 		this.heating = false;
-		int delay = 1000; //milliseconds
 		
+		int delay = 1000; //milliseconds
 		new Timer(delay, e -> this.updateTemperature()).start();
 	}
 	

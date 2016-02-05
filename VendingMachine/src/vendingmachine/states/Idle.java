@@ -25,13 +25,13 @@ public class Idle extends State {
 	@Override
 	public void drinkButton(Drink drink, Context c) {
 		if (!c.getStock().isCupInStock()) {
-			observer.setTemporaryNorthText("Cups are out of stock. No drink can be ordered");
+			c.getObserver().setTemporaryNorthText("Cups are out of stock. No drink can be ordered");
 		}
 		if (!c.getStock().isDrinkInStock(drink)) {
-			observer.setTemporaryNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
+			c.getObserver().setTemporaryNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
 		}
 		else if (drink.getPrice() > amountInside) {
-			observer.setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
+			c.getObserver().setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
 		else if (c.getChangeMachine().giveChange(amountInside - drink.getPrice()) == 1) {
 			if (drink.isSugar())
@@ -41,7 +41,7 @@ public class Idle extends State {
 			}
 		}
 		else {
-			observer.setTemporaryNorthText("Unable to give the exact change");
+			c.getObserver().setTemporaryNorthText("Unable to give the exact change");
 		}
 	}
 	
@@ -51,12 +51,12 @@ public class Idle extends State {
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			amountInside += coin.VALUE;
 			c.getChangeMachine().insertCoin(coin);
-			observer.setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
+			c.getObserver().setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 		}
 		else {
-			observer.setChangeBool(true);
-			observer.setTemporaryNorthText("Coin not recognized by the machine");
+			c.getObserver().setChangeBool(true);
+			c.getObserver().setTemporaryNorthText("Coin not recognized by the machine");
 		}
-		observer.setInfo(); //Le mettre ici ?????
+		c.getObserver().setInfo(); //Le mettre ici ?????
 	}
 }

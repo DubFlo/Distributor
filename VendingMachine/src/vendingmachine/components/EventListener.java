@@ -20,5 +20,5 @@ public interface EventListener {
 
 	List<Drink> getDrinks();
 	String getInfo();
-	<T extends ContextListener & TemperatureListener> void setListener(T o);
+	<T extends ContextListener & TemperatureListener> void setObserver(T o);
 }

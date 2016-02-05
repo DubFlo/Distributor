@@ -29,7 +29,7 @@ public class VendingMachineMain {
 		
 		vmMain.c = config();
 
-    	SwingUtilities.invokeLater(new Runnable() {
+    	SwingUtilities.invokeLater(new Runnable() { //juste sur this.init() in GUI ?
     		public void run() {
     			try {
 					new VendingMachineGUI(vmMain.c);

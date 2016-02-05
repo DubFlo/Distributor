@@ -19,6 +19,7 @@ public class Preparing extends State {
 	}
 	
 	public void coinInserted(Coin coin, Context c){
-		observer.setTemporaryNorthText("Not possible to insert coin ");
+		c.getObserver().setTemporaryNorthText("Not possible to insert coin"); 
+		//Si la fente est là, on devrait pouvoir insérer la pièce mais elle ressort directement
 	}
 }
