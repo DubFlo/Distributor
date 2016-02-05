@@ -1,6 +1,6 @@
 package vendingmachine.states;
 
-import vendingmachine.components.*;
+//import vendingmachine.components.*;
 
 public abstract class Problem extends State {
 }

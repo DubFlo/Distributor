@@ -42,7 +42,8 @@ public class Asking extends State {
 	}
 	@Override
 	public void confirm(Context c){
-		c.getStock().setSugarCubesNbr(0);
+		chosenSugar = 0;
+		c.getStock().setSugarCubesNbr(c.getStock().getSugarCubesNbr()- chosenSugar);
 		c.changeState(Preparing.Instance());
 	}
 

@@ -20,7 +20,9 @@ public abstract class State {
 	}
 	
 	public abstract String getDefaultText();
-	public void coinInserted(Coin coin, Context c) {} //toujours fait le bruit de pièces; à faire
+	public void coinInserted(Coin coin, Context c) {
+		observer.setChangeBool(true);
+	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
 	
 	//These buttons do nothing by default
 	public void drinkButton(Drink drink, Context c) {}
