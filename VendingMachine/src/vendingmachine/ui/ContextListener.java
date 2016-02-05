@@ -4,7 +4,7 @@ public interface ContextListener {
 
 	void setNorthText(String msg);
 
-	void setTempNorthText(String msg);
+	void setTemporaryNorthText(String msg);
 
 	void setSugarText(String msg);
 

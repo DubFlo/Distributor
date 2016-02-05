@@ -26,7 +26,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	private JLabel northLabel;
 	private JLabel sugarLabel;
 	private JLabel temperatureLabel;
-	private JTextArea textArea;
+	private JTextArea infoArea;
 	
 	private List<DrinkJButton> drinkButtonsList;
 	private List<CoinJButton> coinButtonsList;
@@ -36,6 +36,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	private JButton moreSugar;
 	private JButton okButton;
 	private JButton cancelButton;
+	
+	private Timer t;
 	
 	private static final String PATH = "src"+File.separator+"resources"+File.separator;
 	private static final BufferedImage cupImage;
@@ -59,6 +61,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
 		observer.setListener(this);
+		t = new Timer(1500, e -> this.setNorthText(observer.getState().getDefaultText()));
+		t.setRepeats(false);
 		this.init();
 	}
 
@@ -75,7 +79,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		northLabel = new JLabel();
 		northLabel.setForeground(Color.RED);
 		northLabel.setFont(new Font("courier new", Font.BOLD, 20));
-		northLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		//northLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		northPanel.add(northLabel);
 		northPanel.setPreferredSize(new Dimension(100, 50));
 		myPanel.add(northPanel, BorderLayout.PAGE_START);
@@ -172,9 +176,9 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		
 		//Information area
 		JPanel infoPanel = new JPanel();
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		infoPanel.add(textArea);
+		infoArea = new JTextArea();
+		infoArea.setEditable(false);
+		infoPanel.add(infoArea);
 		infoPanel.setBackground(Color.WHITE);
 		
 		//
@@ -217,28 +221,20 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		
 	}
 
-	public void updateGUI() {
-		// TODO - implement VendingMachineGUI.updateGUI
-		
-	}
-
 	@Override
 	public void setNorthText(String msg) {
 		northLabel.setText(msg.toUpperCase());
 	}
 
 	@Override
-	public void setTempNorthText(String msg) {
+	public void setTemporaryNorthText(String msg) {
 		northLabel.setText(msg);
-		//+++
-		//
-		//
-		//
+		t.restart();
 	}
 
 	@Override
 	public void setInfo() {
-		textArea.setText(observer.getInfo());	
+		infoArea.setText(observer.getInfo());	
 	}
 
 	@Override
