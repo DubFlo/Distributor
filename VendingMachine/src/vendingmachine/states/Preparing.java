@@ -17,5 +17,8 @@ public class Preparing extends State {
 	public String getDefaultText() {
 		return "Your drink is in preparation...";
 	}
-
+	
+	public void coinInserted(Coin coin, Context c){
+		observer.setTemporaryNorthText("Not possible to insert coin ");
+	}
 }

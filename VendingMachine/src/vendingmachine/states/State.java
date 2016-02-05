@@ -6,7 +6,7 @@ import vendingmachine.ui.ContextListener;
 public abstract class State {
 
 	protected ContextListener observer;
-	protected byte sugar = 0;
+	protected byte chosenSugar = 0;
 	protected int amountInside;
 
 	public void entry() {
@@ -24,9 +24,15 @@ public abstract class State {
 	
 	//These buttons do nothing by default
 	public void drinkButton(Drink drink, Context c) {}
-	public void less() {}
-	public void more() {}
-	public void cancel(Context c) {}
+	public void less(Context c) {}
+	public void more(Context c) {}
+	public void cancel(Context c) {
+		if (amountInside > 0) {
+			c.getChangeMachine().giveChange(amountInside);
+			chosenSugar = 0;
+			c.changeState(Idle.Instance());
+		}
+	}
 	public void confirm(Context c) {}
 	public String getSugarText() {return "";}
 	

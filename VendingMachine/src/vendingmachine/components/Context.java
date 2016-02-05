@@ -67,12 +67,12 @@ public class Context implements EventListener {
 
 	@Override
 	public void less() {
-		state.less();
+		state.less(this);
 	}
 
 	@Override
 	public void more() {
-		state.more();
+		state.more(this);
 	}
 
 	@Override
