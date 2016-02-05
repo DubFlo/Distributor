@@ -19,12 +19,13 @@ import javax.swing.*;
 
 import vendingmachine.components.*;
 
-public class VendingMachineGUI implements ContextListener {
+public class VendingMachineGUI implements ContextListener, TemperatureListener {
 
 	private EventListener observer;
 	
 	private JLabel northLabel;
 	private JLabel sugarLabel;
+	private JLabel temperatureLabel;
 	private JTextArea textArea;
 	
 	private List<DrinkJButton> drinkButtonsList;
@@ -98,6 +99,9 @@ public class VendingMachineGUI implements ContextListener {
 		cupButton.setContentAreaFilled(false);
 		leftPanel.setPreferredSize(new Dimension(100, 550));
 		leftPanel.add(cupButton, BorderLayout.PAGE_END);
+		temperatureLabel = new JLabel("90° C");
+		temperatureLabel.setFont(new Font("courier new", Font.BOLD, 20));
+		leftPanel.add(temperatureLabel, BorderLayout.PAGE_START);
 		myPanel.add(leftPanel, BorderLayout.LINE_START);
 		
 		//Right Panel
@@ -252,6 +256,10 @@ public class VendingMachineGUI implements ContextListener {
 	public void setChangeBool(boolean b) {
 		if (b) changeButton.setIcon(new ImageIcon(changeImage));
 		else changeButton.setIcon(null);
+	}
+	
+	public void setTemperature(double temperature) {
+		temperatureLabel.setText(temperature + " °C");
 	}
 	
 }
