@@ -1,0 +1,11 @@
+13:27:41.752 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 2.0 € inserted.
+13:27:42.092 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 1.0 € inserted.
+13:27:42.501 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.5 € inserted.
+13:27:42.788 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.2 € inserted.
+13:27:43.141 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.1 € inserted.
+13:28:35.513 [main] INFO  vendingmachine.components.Context - New Vending Machine Created
+13:28:46.770 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 2.0 € inserted.
+13:28:55.221 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 1.0 € inserted.
+13:28:55.580 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.5 € inserted.
+13:28:55.901 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.2 € inserted.
+13:28:56.205 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.1 € inserted.

@@ -1,5 +1,8 @@
 package vendingmachine.states;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import vendingmachine.components.*;
 
 public abstract class State {
@@ -8,6 +11,8 @@ public abstract class State {
 	protected int amountInside; //LE METTRE DANS CONTEXT ???!!!
 
 	protected Drink drinkChosen;
+	
+	protected static final Logger log = LogManager.getLogger(State.class);
 
 	public void entry(Context c) {
 		c.getObserver().setNorthText(getDefaultText());

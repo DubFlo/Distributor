@@ -28,7 +28,7 @@ public class Context implements EventListener {
 	
 	private ContextListener observer;
 	
-	private static final Logger log = LogManager.getLogger(VendingMachineGUI.class);
+	private static final Logger log = LogManager.getLogger(Context.class);
 	
 	private static Clip beep;
 	static {
@@ -40,7 +40,7 @@ public class Context implements EventListener {
 			beep = AudioSystem.getClip();
 			beep.open(audioInputStream);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			e.printStackTrace();
+			log.error("beep.wav not properly loaded.");
 		}
 	}
 	
@@ -49,6 +49,7 @@ public class Context implements EventListener {
 		this.changeMachine = changeMachine;
 		this.stock = stock;
 		this.heatingSystem = new HeatingSystem();
+		log.info("New Vending Machine Created");
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class Context implements EventListener {
 	public void playAlarmSound() {
 		if (beep.isRunning())
 			beep.stop();
-		beep.setFramePosition(0);
+		beep.setFramePosition(0); //Rewind the beep
 		beep.start();
 	}
 
