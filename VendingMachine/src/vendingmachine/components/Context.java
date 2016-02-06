@@ -132,9 +132,10 @@ public class Context implements EventListener {
 		}
 		
 		info += "\nCoins:\n";
-		for (int i = 0; i < 8; i++) {
+		Map<Coin, Integer> cs = changeMachine.getCoinsStock();
+		for (int i = 0; i < ChangeMachine.COINS.length; i++) {
 			info += ChangeMachine.COINS_TEXT[i] + ": "
-					+ changeMachine.getCoinsStock().get(ChangeMachine.COINS[i]) + " available.\n";
+					+ cs.get(ChangeMachine.COINS[i]) + " available.\n";
 		}
 		
 		info += "\n" + stock.getCupsNbr() + " cup(s) available.\n"

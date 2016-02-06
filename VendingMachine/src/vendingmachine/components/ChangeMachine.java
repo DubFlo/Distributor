@@ -19,15 +19,15 @@ public class ChangeMachine {
 		this.acceptedCoins = acceptedCoins;
 	}
 
-	public void giveChange() { // à n'utiliser que si isPossibleChange = true	
+	public void giveChange() { // à n'utiliser que si isPossibleChange(amount) == true	
 		coinsStock = coinsStockTemp;		
 	}
 	
 	public boolean isChangePossible(int amount) {
 		coinsStockTemp = coinsStock;
 		//long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ???? on l'utilisera apres pour donner la monnaie rendue						
-		for(int i = 0; i < COINS.length; i++) {
-			while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
+		for (int i = 0; i < COINS.length; i++) {
+			while (amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
 				coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) - 1);
 				amount -= COINS[i].VALUE;
 				//moneyToGive[i] += 1;

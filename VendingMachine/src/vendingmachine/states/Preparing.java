@@ -10,7 +10,7 @@ public class Preparing extends State {
 
 	//Singleton design pattern
 	private Preparing() {
-		//Timer t = new Timer(5000, );
+		//Timer t = new Timer(5000, ???);
 	}
 	
 	public static Preparing Instance() {
@@ -24,7 +24,8 @@ public class Preparing extends State {
 	}
 	
 	public void coinInserted(Coin coin, Context c){
-		c.getObserver().setTemporaryNorthText("Not possible to insert coin"); 
+		super.coinInserted(coin, c);
+		c.getObserver().setTemporaryNorthText("please wait for the end"); 
 		//Si la fente est là, on devrait pouvoir insérer la pièce mais elle ressort directement
 	}
 }
