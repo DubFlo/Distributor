@@ -53,11 +53,13 @@ public class Idle extends State {
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			amountInside += coin.VALUE;
 			c.getChangeMachine().insertCoin(coin);
+			log.info(coin.VALUE/100.0 + " € inserted.");
 			c.getObserver().setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 		}
 		else {
-			c.getObserver().setChangeBool(true);
+			super.coinInserted(coin, c);
 			c.getObserver().setTemporaryNorthText("Coin not recognized by the machine");
+			log.info(coin.VALUE/100.0 + " € inserted but not allowed.");
 		}
 		c.getObserver().setInfo(); //Le mettre ici ?????
 	}
