@@ -56,4 +56,8 @@ public class Asking extends State {
 		return "Sugar: " + chosenSugar + "/5";  //Affichage plus joli ?
 	}
 	
+	public void cancel(Context c) {
+		super.cancel(c);
+		c.changeState(Idle.Instance());
+	}
 }

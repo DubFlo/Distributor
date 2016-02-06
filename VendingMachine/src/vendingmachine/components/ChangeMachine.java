@@ -1,5 +1,6 @@
 package vendingmachine.components;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 public class ChangeMachine {
@@ -24,7 +25,7 @@ public class ChangeMachine {
 	}
 	
 	public boolean isChangePossible(int amount) {
-		coinsStockTemp = coinsStock;
+		coinsStockTemp = copy(coinsStock);
 		//long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ???? on l'utilisera apres pour donner la monnaie rendue						
 		for (int i = 0; i < COINS.length; i++) {
 			while (amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
@@ -47,5 +48,13 @@ public class ChangeMachine {
 
 	public void insertCoin(Coin coin) {
 		coinsStock.put(coin, coinsStock.get(coin) + 1);
+	}
+	
+	private static Map<Coin, Integer> copy(Map<Coin, Integer> t) { //Pas très propre ??? On devrait pas faire ça ???
+		Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
+		for (Coin c: COINS) {
+			res.put(c, new Integer(t.get(c))); //copy of the Integer
+		}
+		return res;
 	}
 }

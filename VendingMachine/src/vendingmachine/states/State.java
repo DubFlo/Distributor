@@ -30,18 +30,22 @@ public abstract class State {
 	public void drinkButton(Drink drink, Context c) {}
 	public void less(Context c) {}
 	public void more(Context c) {}
+	public void confirm(Context c) {}
 	
 	public void cancel(Context c) {
 		if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
 										//Cette condition est toujours vraie mais fait les calculs; bof
-			c.getChangeMachine().giveChange(); //Toujours faisable ???
+			c.getChangeMachine().giveChange();
+			if (c.getAmountInside() > 0) {
+				c.getObserver().setChangeBool(true);
+			}
 			c.setAmountInside(0);
-			//c.getChangeMachine().setAssessChangeDone(false);
-			//c.changeState(Idle.Instance()); //Pourquoi ???
 		}	
 	}
-	public void confirm(Context c) {}
-	public String getSugarText() {return "";}
+	
+	public String getSugarText() {
+		return "";
+	}
 	
 	@Override
 	public String toString() {
