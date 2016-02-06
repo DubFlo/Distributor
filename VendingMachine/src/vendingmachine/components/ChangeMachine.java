@@ -47,7 +47,7 @@ public class ChangeMachine {
 	}
 	public boolean isPossibleChange (int amount){
 		coinsStockTemp = assessChange(amount);
-		return coinsStockTemp.get(COINS[0]) == -1 ;
+		return coinsStockTemp.get(COINS[0]) != -1 ;
 	}
 	public Map<Coin, Integer> getCoinsStock() {
 		return coinsStock;
