@@ -20,19 +20,16 @@ import vendingmachine.components.*;
 
 public class VendingMachineMain {
 
-	private Context c;
 	private static boolean configDone = false;
 
 	public static void main(String[] args) throws IOException {
 		//THREADING ????
-		VendingMachineMain vmMain = new VendingMachineMain();
-		
-		vmMain.c = config();
+		Context c = config();
 
     	SwingUtilities.invokeLater(new Runnable() { //juste sur this.init() in GUI ?
     		public void run() {
     			try {
-					new VendingMachineGUI(vmMain.c);
+					new VendingMachineGUI(c);
 				} catch (IOException e) {
 					// TO DO - 
 				}

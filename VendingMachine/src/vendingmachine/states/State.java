@@ -7,18 +7,22 @@ public abstract class State {
 	protected byte chosenSugar = 0; //Pourquoi le redéfinir dans Asking ? //AUSSI DANS CONTEXT ???
 	protected int amountInside; //LE METTRE DANS CONTEXT ???!!!
 
+	protected Drink drinkChosen;
+
 	public void entry(Context c) {
 		c.getObserver().setNorthText(getDefaultText());
 		c.getObserver().setSugarText(getSugarText());
 		c.getObserver().setInfo();
 	}
 
-	public void exit() {
+	public void exit() { //Utile ?
 		
 	}
 	
 	public abstract String getDefaultText();
-	public void coinInserted(Coin coin, Context c) {} //toujours fait le bruit de pièces; à faire
+	public void coinInserted(Coin coin, Context c) {
+		c.getObserver().setChangeBool(true);
+	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
 	
 	//These buttons do nothing by default
 	public void drinkButton(Drink drink, Context c) {}

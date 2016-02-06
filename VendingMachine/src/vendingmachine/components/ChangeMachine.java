@@ -6,6 +6,7 @@ public class ChangeMachine {
 
 	private Map<Coin, Integer> coinsStock;
 	private Map<Coin, Boolean> acceptedCoins;
+	
 	public final static Coin[] COINS = {Coin.COIN200, Coin.COIN100, 
 		Coin.COIN50, Coin.COIN20, Coin.COIN10, Coin.COIN5, Coin.COIN2, Coin.COIN1};
 	public static final String[] COINS_TEXT = {"2 €", "1 €", 
@@ -18,8 +19,8 @@ public class ChangeMachine {
 
 	public byte giveChange(int amount) {	
 		Map<Coin, Integer> coinsStockTemp = coinsStock;
-		long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ????
-		
+		long[] moneyToGive = {0,0,0,0,0,0,0,0}; //utilité ???? on l'utilisera apres pour donner la monnaie rendue
+												//Alors Hashmap non ?
 		for(int i = 0; i < COINS.length; i++) {
             while(amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {	
                 coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) -1);

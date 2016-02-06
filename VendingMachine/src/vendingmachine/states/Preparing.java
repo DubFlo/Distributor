@@ -23,3 +23,5 @@ public class Preparing extends State {
 		//Si la fente est là, on devrait pouvoir insérer la pièce mais elle ressort directement
 	}
 }
+// retirer du stock la boisson à la fin du Timer
+// Changer d'état + lancer la préparation de la boisson

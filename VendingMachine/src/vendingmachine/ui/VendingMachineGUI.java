@@ -80,7 +80,6 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		northLabel = new JLabel();
 		northLabel.setForeground(Color.RED);
 		northLabel.setFont(new Font("courier new", Font.BOLD, 20));
-		//northLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		northPanel.add(northLabel);
 		northPanel.setPreferredSize(new Dimension(100, 50));
 		myPanel.add(northPanel, BorderLayout.PAGE_START);

@@ -17,7 +17,7 @@ public class Idle extends State {
 	public String getDefaultText() {
 		String msg = "Please make your choice";
 		if (amountInside > 0) {
-			msg += (" - " + amountInside/100.0 + " € entered");
+			msg += (" (" + amountInside/100.0 + " € entered)");
 		}
 		return msg;
 	}
@@ -34,9 +34,12 @@ public class Idle extends State {
 			c.getObserver().setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
 		else if (c.getChangeMachine().giveChange(amountInside - drink.getPrice()) == 1) {
+			// si changePossible
 			if (drink.isSugar())
 				c.changeState(Asking.Instance());
 			else {
+				c.getChangeMachine().giveChange(amountInside - drink.getPrice());
+				amountInside = 0;
 				c.changeState(Preparing.Instance());
 			}
 		}
@@ -47,7 +50,6 @@ public class Idle extends State {
 	
 	@Override
 	public void coinInserted(Coin coin, Context c) {
-		super.coinInserted(coin, c);
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			amountInside += coin.VALUE;
 			c.getChangeMachine().insertCoin(coin);
