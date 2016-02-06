@@ -41,11 +41,13 @@ public class HeatingSystem {
 			if (heating) {
 				temperature += 3;
 			}
-
 			else {
 				temperature -= 1; //to improve
 			}
-			observer.setTemperature(temperature);
+			
+			if (observer != null) {
+				observer.setTemperature(temperature);
+			}
 		}
 	}
 
