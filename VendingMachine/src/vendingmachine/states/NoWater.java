@@ -1,6 +1,6 @@
 package vendingmachine.states;
 
-//import vendingmachine.components.*;
+import vendingmachine.components.*;
 
 public class NoWater extends Problem {
 
@@ -14,7 +14,7 @@ public class NoWater extends Problem {
 	}
 	
 	@Override
-	public String getDefaultText() {
+	public String getDefaultText(Context c) {
 		return "Water supply is off. No drink can be ordered";
 	}
 

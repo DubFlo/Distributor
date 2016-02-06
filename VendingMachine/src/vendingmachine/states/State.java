@@ -7,15 +7,12 @@ import vendingmachine.components.*;
 
 public abstract class State {
 
-	protected byte chosenSugar = 0; //Pourquoi le redéfinir dans Asking ? //AUSSI DANS CONTEXT ???
-	protected int amountInside; //LE METTRE DANS CONTEXT ???!!!
-
 	protected Drink drinkChosen;
 	
-	protected static final Logger log = LogManager.getLogger(State.class);
+	protected static final Logger log = LogManager.getLogger("State");
 
 	public void entry(Context c) {
-		c.getObserver().setNorthText(getDefaultText());
+		c.getObserver().setNorthText(getDefaultText(c));
 		c.getObserver().setSugarText(getSugarText());
 		c.getObserver().setInfo();
 	}
@@ -24,7 +21,7 @@ public abstract class State {
 		
 	}
 	
-	public abstract String getDefaultText();
+	public abstract String getDefaultText(Context c);
 	public void coinInserted(Coin coin, Context c) {
 		c.getObserver().setChangeBool(true);
 	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
@@ -35,12 +32,12 @@ public abstract class State {
 	public void more(Context c) {}
 	
 	public void cancel(Context c) {
-		if (amountInside > 0) {
-			c.getChangeMachine().giveChange(amountInside); //Toujours faisable ???
-			chosenSugar = 0;
-			amountInside = 0;
-			c.getChangeMachine().assessChangeDone = false;
-			c.changeState(Idle.Instance());
+		if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
+										//Cette condition est toujours vraie mais fait les calculs; bof
+			c.getChangeMachine().giveChange(); //Toujours faisable ???
+			c.setAmountInside(0);
+			//c.getChangeMachine().setAssessChangeDone(false);
+			//c.changeState(Idle.Instance()); //Pourquoi ???
 		}	
 	}
 	public void confirm(Context c) {}
@@ -51,11 +48,4 @@ public abstract class State {
 		return this.getClass().getSimpleName(); //instead of getName() to avoid the package name
 	}
 
-	public int getAmountInside() {
-		return amountInside;
-	}
-
-	public void setAmountInside(int amountInside) {
-		this.amountInside = amountInside;
-	}
 }

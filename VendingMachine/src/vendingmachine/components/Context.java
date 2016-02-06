@@ -25,10 +25,11 @@ public class Context implements EventListener {
 	private HeatingSystem heatingSystem;
 	
 	private State state;
+	private int amountInside;
 	
 	private ContextListener observer;
 	
-	private static final Logger log = LogManager.getLogger(Context.class);
+	private static final Logger log = LogManager.getLogger("Context");
 	
 	private static Clip beep;
 	static {
@@ -114,10 +115,16 @@ public class Context implements EventListener {
 	public State getState() {
 		return state;
 	}
+	
+	@Override
+	public String getNorthText() {
+		return state.getDefaultText(this);
+	}
 
 	@Override
 	public String getInfo() {
 		String info = "State: " + getState() + "\n";
+		info += "\n" + amountInside/100.0 + " € inserted.\n";
 		info += "\nDrinks: \n";
 		Map<Drink, Integer> s = stock.getDrinkQty();
 		for (int i = 0; i < 8; i++) {
@@ -151,6 +158,14 @@ public class Context implements EventListener {
 	
 	public HeatingSystem getHeatingSystem() {
 		return heatingSystem;
+	}
+
+	public int getAmountInside() {
+		return amountInside;
+	}
+
+	public void setAmountInside(int amountInside) {
+		this.amountInside = amountInside;
 	}
 	
 }

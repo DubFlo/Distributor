@@ -1,6 +1,6 @@
 package vendingmachine.states;
 
-//import vendingmachine.components.*;
+import vendingmachine.components.*;
 
 public class ColdWater extends Problem {
 
@@ -14,7 +14,7 @@ public class ColdWater extends Problem {
 	}
 	
 	@Override
-	public String getDefaultText() {
+	public String getDefaultText(Context c) {
 		return "Water is too cold. Please wait a moment...";
 	}
 

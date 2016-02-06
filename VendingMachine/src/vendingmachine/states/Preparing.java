@@ -1,5 +1,7 @@
 package vendingmachine.states;
 
+import javax.swing.Timer;
+
 import vendingmachine.components.*;
 
 public class Preparing extends State {
@@ -7,14 +9,17 @@ public class Preparing extends State {
 	private static Preparing instance;
 
 	//Singleton design pattern
-	private Preparing() {}
+	private Preparing() {
+		//Timer t = new Timer(5000, );
+	}
+	
 	public static Preparing Instance() {
 		if (instance == null) instance = new Preparing();
 		return instance;
 	}
 	
 	@Override
-	public String getDefaultText() {
+	public String getDefaultText(Context c) {
 		return "Your drink is in preparation...";
 	}
 	

@@ -17,6 +17,7 @@ public interface EventListener {
 	
 	void changeState(State state);
 	State getState();
+	String getNorthText();
 
 	List<Drink> getDrinks();
 	String getInfo();

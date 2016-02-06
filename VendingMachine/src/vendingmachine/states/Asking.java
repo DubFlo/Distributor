@@ -5,7 +5,7 @@ import vendingmachine.components.*;
 public class Asking extends State {
 
 	private static Asking instance;
-	private byte chosenSugar = 0;
+	private byte chosenSugar = 0; //Dans Context aussi ?
 	
 	//Singleton design pattern
 	private Asking() {}
@@ -15,7 +15,7 @@ public class Asking extends State {
 	}
 	
 	@Override
-	public String getDefaultText() {
+	public String getDefaultText(Context c) {
 		return "Choose your sugar quantity with + and -";
 	}
 	
@@ -45,9 +45,9 @@ public class Asking extends State {
 	public void confirm(Context c){
 		chosenSugar = 0;
 		c.getStock().setSugarCubesNbr(c.getStock().getSugarCubesNbr() - chosenSugar);
-		c.getChangeMachine().giveChange(amountInside - drinkChosen.getPrice()); //drinkChosen pas initialisée
-												//Problème car dans State ??? (à tester)
-		amountInside = 0;
+		//On a vérifié que le change était possible dans Idle()
+		c.getChangeMachine().giveChange(); //drinkChosen pas initialisée (inutile depuis le changement de giveChange)
+		c.setAmountInside(0);
 		c.changeState(Preparing.Instance());
 	}
 

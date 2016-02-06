@@ -38,7 +38,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	private JButton okButton;
 	private JButton cancelButton;
 	
-	private Timer t;
+	private Timer timer;
 	
 	private static final String PATH = "src"+File.separator+"resources"+File.separator;
 	private static final BufferedImage cupImage;
@@ -62,8 +62,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
 		observer.setObserver(this);
-		t = new Timer(1500, e -> this.setNorthText(observer.getState().getDefaultText()));
-		t.setRepeats(false);
+		timer = new Timer(1500, e -> setNorthText(observer.getNorthText()));
+		timer.setRepeats(false);
 		this.init();
 	}
 
@@ -227,7 +227,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	@Override
 	public void setTemporaryNorthText(String msg) {
 		northLabel.setText(msg);
-		t.restart();
+		timer.restart();
 	}
 
 	@Override
