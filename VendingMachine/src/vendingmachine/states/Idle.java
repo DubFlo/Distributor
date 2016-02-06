@@ -33,8 +33,7 @@ public class Idle extends State {
 		else if (drink.getPrice() > amountInside) {
 			c.getObserver().setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}
-		else if (c.getChangeMachine().giveChange(amountInside - drink.getPrice()) == 1) {
-			// si changePossible
+		else if (c.getChangeMachine().isPossibleChange(amountInside - drink.getPrice()) ) {
 			if (drink.isSugar())
 				c.changeState(Asking.Instance());
 			else {
