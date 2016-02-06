@@ -36,7 +36,7 @@ public class ChangeMachine {
 	
 		return (amount == 0) ? true : false;
 	}
-	
+
 	public Map<Coin, Integer> getCoinsStock() {
 		return coinsStock;
 	}
