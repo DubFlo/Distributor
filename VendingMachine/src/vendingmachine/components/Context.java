@@ -11,6 +11,9 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import vendingmachine.ui.*;
 import vendingmachine.states.*;
 
@@ -24,6 +27,8 @@ public class Context implements EventListener {
 	private State state;
 	
 	private ContextListener observer;
+	
+	private static final Logger log = LogManager.getLogger(VendingMachineGUI.class);
 	
 	private static Clip beep;
 	static {
