@@ -33,6 +33,7 @@ public abstract class State {
 		if (amountInside > 0) {
 			c.getChangeMachine().giveChange(amountInside); //Toujours faisable ???
 			chosenSugar = 0;
+			amountInside = 0;
 			c.getChangeMachine().assessChangeDone = false;
 			c.changeState(Idle.Instance());
 		}	
