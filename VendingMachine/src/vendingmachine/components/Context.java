@@ -27,6 +27,7 @@ public class Context implements EventListener {
 	private State state;
 	private int amountInside;
 	private boolean cupInside;
+	private Drink chosenDrink;
 	
 	private ContextListener observer;
 	
@@ -57,12 +58,12 @@ public class Context implements EventListener {
 	}
 
 	@Override
-	public void changeState(State state) {
-		if (this.state != null) {
-			this.state.exit(this);
+	public void changeState(State newState) {
+		if (state != null) {
+			state.exit(this);
 		}
-		this.state = state;
-		this.state.entry(this);
+		state = newState;
+		state.entry(this);
 	}
 
 	public void playAlarmSound() {
@@ -188,6 +189,14 @@ public class Context implements EventListener {
 	@Override
 	public void setChangeBool(boolean b) {
 		observer.setChangeBool(b);
+	}
+
+	public Drink getChosenDrink() {
+		return chosenDrink;
+	}
+
+	public void setChosenDrink(Drink chosenDrink) {
+		this.chosenDrink = chosenDrink;
 	}
 	
 }

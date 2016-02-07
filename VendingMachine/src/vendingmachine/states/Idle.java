@@ -23,21 +23,22 @@ public class Idle extends State {
 	}
 	
 	@Override
-	public void drinkButton(Drink drink, Context c) {
+	public void drinkButton(Drink d, Context c) {
 		if (!c.getStock().isCupInStock()) { //Géré dans NoCup ??
 			c.getObserver().setTemporaryNorthText("Cups are out of stock. No drink can be ordered");
 		}
-		else if (!c.getStock().isDrinkInStock(drink)) {
-			c.getObserver().setTemporaryNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
+		else if (!c.getStock().isDrinkInStock(d)) {
+			c.getObserver().setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice()/100.0 + " €)");
 		}
 		else if (c.isCupInside()) {
 			c.getObserver().setTemporaryNorthText("Please remove the drink before ordering");
 		}
-		else if (drink.getPrice() > c.getAmountInside()) {
-			c.getObserver().setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
+		else if (d.getPrice() > c.getAmountInside()) {
+			c.getObserver().setTemporaryNorthText("Price: " + d.getPrice()/100.0 + " €");
 		}
-		else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - drink.getPrice())) {
-			if (drink.isSugar())
+		else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
+			c.setChosenDrink(d);
+			if (d.isSugar())
 				c.changeState(Asking.Instance());
 			else {
 				c.getChangeMachine().giveChange();
