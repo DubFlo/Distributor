@@ -51,5 +51,21 @@ public class Stock {
 	public int getSpoonsNbr() {
 		return spoonsNbr;
 	}
+	
+	public void removeCup() {
+		cupsNbr -= 1;
+	}
+	
+	public void removeSpoon() {
+		spoonsNbr -= 1;
+	}
 
+	public void removeSugarCubes(byte chosenSugar) {
+		sugarCubesNbr -= chosenSugar;	
+	}
+
+	public void removeDrink(Drink d) {
+		drinkQty.put(d, drinkQty.get(d) - 1);
+		
+	}
 }

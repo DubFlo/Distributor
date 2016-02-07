@@ -28,6 +28,12 @@ public class Preparing extends State {
 	@Override
 	public void exit(Context c) {
 		 c.setCupBool(true);
+		 c.getStock().removeCup();
+		 if (c.getStock().getCupsNbr() == 0) { //!!!! si le nombre de cup est initialisé à 0, comment faire ? !!!!!!
+			 c.changeState(NoCup.Instance());
+		 }
+		 c.getStock().removeSpoon(); //deal with 0 spoon here !!!!!!
+		 c.getStock().removeDrink(c.getChosenDrink());
 	}
 	
 	@Override
