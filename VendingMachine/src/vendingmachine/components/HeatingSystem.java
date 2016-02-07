@@ -2,21 +2,23 @@ package vendingmachine.components;
 
 import javax.swing.Timer;
 import vendingmachine.ui.TemperatureListener;
-
+import java.lang.Math.*;
 public class HeatingSystem {
 
 	private boolean waterSupply;
 	private double temperature;
 	private boolean heating;
+	private static int timeCooling = 0;
+	private static int timeWarming = 0;
 	
 	private TemperatureListener observer;
 	
-	private static final double MIN_TEMPERATURE = 85.0;
-	private static final double MAX_TEMPERATURE = 99.0;
+	private static final double MIN_TEMPERATURE = 90.0;
+	private static final double MAX_TEMPERATURE = 96.0;
 
 	public HeatingSystem() {
 		this.waterSupply = true;
-		this.temperature = 90;
+		this.temperature = 97;
 		this.heating = false;
 		
 		int delay = 1000; //milliseconds
@@ -40,9 +42,11 @@ public class HeatingSystem {
 			updateState();
 			if (heating) {
 				temperature += 3;
+				timeWarming += 1;
 			}
 			else {
-				temperature -= 1; //to improve
+				timeCooling += 1;
+				temperature -= 75 * Math.pow((61/75.0),(timeCooling/400.0)) * (1- Math.pow(61/75.0, 1/400.0)); 
 			}
 			
 			if (observer != null) {
@@ -54,10 +58,12 @@ public class HeatingSystem {
 	private void updateState() {
 		if (heating && temperature > MAX_TEMPERATURE) {
 			heating = false;
+			timeWarming = 0;
 		}
 		
 		else if (!heating && temperature < MIN_TEMPERATURE) {
 			heating = true;
+			timeCooling = 0;
 		}
 	}
 
