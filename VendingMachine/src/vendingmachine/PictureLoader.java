@@ -24,6 +24,7 @@ public class PictureLoader {
 	public static final BufferedImage southPanel;
 	public static final BufferedImage drinkButton;
 	public static final BufferedImage euro2, euro1, cent50, cent20, cent10, cent5, cent2, cent1;
+	
 	static {
 		BufferedImage cup;
 		try {
@@ -31,7 +32,7 @@ public class PictureLoader {
 			}
 		catch (IOException e) {
 			cup = null;
-			log.error("change.png not properly loaded.");
+			log.error("cup.jpg not properly loaded.");
 		}
 		
 		BufferedImage change;
