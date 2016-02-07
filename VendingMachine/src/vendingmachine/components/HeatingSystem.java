@@ -41,8 +41,8 @@ public class HeatingSystem {
 		if (waterSupply) {
 			updateState();
 			if (heating) {
-				temperature += 3;
 				timeWarming += 1;
+				temperature += -90 * Math.pow((-61/90.0),(timeCooling/400.0)) * (1- Math.pow(-61/90.0, 1/400.0));
 			}
 			else {
 				timeCooling += 1;
