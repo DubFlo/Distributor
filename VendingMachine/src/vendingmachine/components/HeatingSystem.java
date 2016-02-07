@@ -18,7 +18,7 @@ public class HeatingSystem {
 
 	public HeatingSystem() {
 		this.waterSupply = true;
-		this.temperature = 97;
+		this.temperature = 90.1;
 		this.heating = false;
 		
 		int delay = 1000; //milliseconds
@@ -42,7 +42,8 @@ public class HeatingSystem {
 			updateState();
 			if (heating) {
 				timeWarming += 1;
-				temperature += -90 * Math.pow((-61/90.0),(timeCooling/400.0)) * (1- Math.pow(-61/90.0, 1/400.0));
+				temperature += (-90) * (Math.exp(-0.0405*(timeWarming + 1))- Math.exp(-0.0405*timeWarming));
+				//http://luciole.ca/gilles/mat265/chap3/var-temp.html
 			}
 			else {
 				timeCooling += 1;
