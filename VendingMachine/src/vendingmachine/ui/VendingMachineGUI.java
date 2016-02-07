@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -254,7 +255,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	@Override
 	public void setTemperature(double temperature) {
-		temperatureLabel.setText(temperature + " °C");
+		DecimalFormat f = new DecimalFormat("#.#");
+		temperatureLabel.setText(f.format(temperature) + " °C");
 	}
 	
 }

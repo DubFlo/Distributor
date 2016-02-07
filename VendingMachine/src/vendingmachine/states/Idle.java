@@ -25,16 +25,16 @@ public class Idle extends State {
 	@Override
 	public void drinkButton(Drink d, Context c) {
 		if (!c.getStock().isCupInStock()) { //Géré dans NoCup ??
-			c.getObserver().setTemporaryNorthText("Cups are out of stock. No drink can be ordered");
+			c.changeState(NoCup.Instance());
 		}
 		else if (!c.getStock().isDrinkInStock(d)) {
-			c.getObserver().setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice()/100.0 + " €)");
+			c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice()/100.0 + " €)");
 		}
 		else if (c.isCupInside()) {
-			c.getObserver().setTemporaryNorthText("Please remove the drink before ordering");
+			c.setTemporaryNorthText("Please remove the drink before ordering");
 		}
 		else if (d.getPrice() > c.getAmountInside()) {
-			c.getObserver().setTemporaryNorthText("Price: " + d.getPrice()/100.0 + " €");
+			c.setTemporaryNorthText("Price: " + d.getPrice()/100.0 + " €");
 		}
 		else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
 			c.setChosenDrink(d);
@@ -47,7 +47,7 @@ public class Idle extends State {
 			}
 		}
 		else {
-			c.getObserver().setTemporaryNorthText("Unable to give the exact change");
+			c.setTemporaryNorthText("Unable to give the exact change");
 		}
 	}
 	
@@ -56,14 +56,14 @@ public class Idle extends State {
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			c.setAmountInside(c.getAmountInside() + coin.VALUE);
 			c.getChangeMachine().insertCoin(coin);
-			c.getObserver().setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
+			c.setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 			log.info(coin.VALUE/100.0 + " € inserted.");
 		}
 		else {
 			super.coinInserted(coin, c);
-			c.getObserver().setTemporaryNorthText("Coin not recognized by the machine");
+			c.setTemporaryNorthText("Coin not recognized by the machine");
 			log.info(coin.VALUE/100.0 + " € inserted but not allowed.");
 		}
-		c.getObserver().setInfo(); //Le mettre ici ?????
+		c.setInfo(); //Le mettre ici ?????
 	}
 }

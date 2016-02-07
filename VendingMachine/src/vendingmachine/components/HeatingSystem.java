@@ -2,7 +2,7 @@ package vendingmachine.components;
 
 import javax.swing.Timer;
 import vendingmachine.ui.TemperatureListener;
-import java.lang.Math.*;
+
 public class HeatingSystem {
 
 	private boolean waterSupply;
