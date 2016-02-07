@@ -179,4 +179,15 @@ public class Context implements EventListener {
 		this.amountInside = amountInside;
 	}
 	
+	@Override
+	public void setCupBool(boolean b) {
+		observer.setCupBool(b);
+		cupInside = b;
+	}
+
+	@Override
+	public void setChangeBool(boolean b) {
+		observer.setChangeBool(b);
+	}
+	
 }

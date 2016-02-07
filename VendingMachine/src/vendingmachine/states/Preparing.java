@@ -27,7 +27,7 @@ public class Preparing extends State {
 	
 	@Override
 	public void exit(Context c) {
-		 c.getObserver().setCupBool(true);
+		 c.setCupBool(true);
 	}
 	
 	@Override

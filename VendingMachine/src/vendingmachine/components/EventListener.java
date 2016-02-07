@@ -18,6 +18,8 @@ public interface EventListener {
 	void changeState(State state);
 	State getState();
 	String getNorthText();
+	void setCupBool(boolean b);
+	void setChangeBool(boolean b);
 
 	List<Drink> getDrinks();
 	String getInfo();

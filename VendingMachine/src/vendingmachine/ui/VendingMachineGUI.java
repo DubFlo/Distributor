@@ -201,8 +201,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	}
 	
 	private void addListeners() {
-		cupButton.addActionListener(e -> setCupBool(false));
-		changeButton.addActionListener(e -> setChangeBool(false));
+		cupButton.addActionListener(e -> observer.setCupBool(false));
+		changeButton.addActionListener(e -> observer.setChangeBool(false));
 		lessSugar.addActionListener(e -> observer.less());
 		moreSugar.addActionListener(e -> observer.more());
 		okButton.addActionListener(e -> observer.confirm());
