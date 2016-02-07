@@ -1,7 +1,8 @@
 package vendingmachine.ui;
 
-import java.io.File;
 import javax.swing.*;
+
+import vendingmachine.PictureLoader;
 import vendingmachine.components.Drink;
 
 public class DrinkJButton extends JButton {
@@ -13,7 +14,7 @@ public class DrinkJButton extends JButton {
 		super();
 		this.drink = drink;
 		setText(drink.getName());
-		setIcon(new ImageIcon("src"+File.separator+"resources"+File.separator+"redButton.png"));
+		setIcon(new ImageIcon(PictureLoader.drinkButton));
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 		setHorizontalTextPosition(JButton.CENTER);

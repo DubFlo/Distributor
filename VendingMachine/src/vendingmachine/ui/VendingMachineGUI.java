@@ -9,15 +9,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
+import vendingmachine.*;
 import vendingmachine.components.*;
 import vendingmachine.states.Idle;
 
@@ -41,25 +41,6 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	private Timer timer;
 	
-	private static final String PATH = "src"+File.separator+"resources"+File.separator;
-	private static final BufferedImage cupImage;
-	private static final BufferedImage changeImage;
-	static {
-		BufferedImage cup;
-		BufferedImage change;
-		try {
-			cup = ImageIO.read(new File(PATH + "cup.jpg"));
-			change = ImageIO.read(new File(PATH + "change.png"));
-		}
-		catch (IOException e) {
-			cup = null;
-			change = null;
-			//log
-		}
-		cupImage = cup;
-		changeImage = change;
-	}
-	
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
 		observer.setObserver(this);
@@ -77,16 +58,17 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		JPanel myPanel = new JPanel(new BorderLayout());
 		
 		//North Panel
-		JPanel northPanel = new BackgroundJPanel(PATH + "displayPanel.jpg");;
+		JPanel northPanel = new BackgroundJPanel(PictureLoader.displayPanel);;
 		northLabel = new JLabel();
 		northLabel.setForeground(Color.RED);
-		northLabel.setFont(new Font("courier new", Font.BOLD, 20));
+		northLabel.setFont(FontLoader.DIGITAL_FONT);
+		northLabel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		northPanel.add(northLabel);
 		northPanel.setPreferredSize(new Dimension(100, 50));
 		myPanel.add(northPanel, BorderLayout.PAGE_START);
 		
 		//Center Panel
-		JPanel centerPanel = new BackgroundJPanel(PATH + "coffee.png");
+		JPanel centerPanel = new BackgroundJPanel(PictureLoader.coffee);
 		centerPanel.setLayout(new GridLayout(4, 2, 30, 0));
 		drinkButtonsList = new ArrayList<DrinkJButton>();
 		for (int i = 0; i < 8; i++) {
@@ -97,7 +79,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		myPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		//Left Panel
-		JPanel leftPanel = new BackgroundJPanel(PATH + "leftPanel.png");
+		JPanel leftPanel = new BackgroundJPanel(PictureLoader.leftPanel);
 		leftPanel.setLayout(new BorderLayout());
 		cupButton = new JButton();
 		cupButton.setBorder(BorderFactory.createEmptyBorder());
@@ -110,17 +92,16 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		myPanel.add(leftPanel, BorderLayout.LINE_START);
 		
 		//Right Panel
-		JPanel rightPanel = new BackgroundJPanel(PATH + "slot.jpg");
+		JPanel rightPanel = new BackgroundJPanel(PictureLoader.slot);
 		rightPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH; //A expliquer
 		c.weightx = 1;
 		
 		sugarLabel = new JLabel();
-		sugarLabel.setFont(new Font("courier new", Font.BOLD, 14));
+		sugarLabel.setFont(FontLoader.DIGITAL_FONT.deriveFont(16f));
 		sugarLabel.setForeground(Color.RED);
-		BufferedImage screenImage = ImageIO.read(new File(PATH + "displaySugar.jpg"));
-		sugarLabel.setIcon(new ImageIcon(screenImage));
+		sugarLabel.setIcon(new ImageIcon(PictureLoader.sugarDisplay));
 		sugarLabel.setHorizontalTextPosition(JLabel.CENTER);
 		
 		lessSugar = new JButton("-");
@@ -142,7 +123,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		myPanel.add(rightPanel, BorderLayout.LINE_END);
 		
 		//South Panel
-		JPanel southPanel = new BackgroundJPanel(PATH + "southPanel.png");
+		JPanel southPanel = new BackgroundJPanel(PictureLoader.southPanel);
 		southPanel.setLayout(new BorderLayout());
 		changeButton = new JButton();
 		changeButton.setBorder(BorderFactory.createEmptyBorder());
@@ -155,11 +136,12 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		JPanel coinsPanel = new JPanel(new GridLayout(4, 2, 5, 5));
 		coinsPanel.setBackground(Color.WHITE);
 		coinButtonsList = new ArrayList<CoinJButton>();
-		final String[] coinsFiles = {PATH + "2euro.png", PATH + "1euro.png", PATH + "50cent.png",
-				PATH + "20cent.png", PATH + "10cent.png", PATH + "5cent.png", PATH + "2cent.png",
-				PATH + "1cent.png"};
+		BufferedImage[] coinsImages = {PictureLoader.euro2, PictureLoader.euro1, PictureLoader.cent50,
+			PictureLoader.cent20, PictureLoader.cent10, PictureLoader.cent5, PictureLoader.cent2,
+			PictureLoader.cent1};
 		for (int i = 0; i < 8; i++) {
-			CoinJButton myButton = new CoinJButton(ChangeMachine.COINS[i], new ImageIcon(coinsFiles[i]));
+			CoinJButton myButton = new CoinJButton(
+					ChangeMachine.COINS[i], new ImageIcon(coinsImages[i]));
 			coinButtonsList.add(myButton);
 			coinsPanel.add(myButton);
 		}
@@ -243,13 +225,13 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 
 	@Override
 	public void setCupBool(boolean b) {
-		if (b) cupButton.setIcon(new ImageIcon(cupImage));
+		if (b) cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
 		else cupButton.setIcon(null);
 	}
 
 	@Override
 	public void setChangeBool(boolean b) {
-		if (b) changeButton.setIcon(new ImageIcon(changeImage));
+		if (b) changeButton.setIcon(new ImageIcon(PictureLoader.changeImage));
 		else changeButton.setIcon(null);
 	}
 	
