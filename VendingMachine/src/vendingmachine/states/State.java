@@ -38,6 +38,7 @@ public abstract class State {
 				c.getObserver().setChangeBool(true);
 			}
 			c.setAmountInside(0);
+			c.getState().entry(c);
 			//c.getObserver().setInfo(); //Pas très propre mais il faut actualiser l'UI
 		}	
 	}
