@@ -58,6 +58,7 @@ public class Asking extends State {
 	
 	public void cancel(Context c) {
 		super.cancel(c);
+		chosenSugar = 0;
 		c.changeState(Idle.Instance());
 	}
 }
