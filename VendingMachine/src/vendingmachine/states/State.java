@@ -17,9 +17,7 @@ public abstract class State {
 		c.getObserver().setInfo();
 	}
 
-	public void exit() { //Utile ?
-		
-	}
+	public void exit(Context c) {}
 	
 	public abstract String getDefaultText(Context c);
 	public void coinInserted(Coin coin, Context c) {
@@ -40,6 +38,7 @@ public abstract class State {
 				c.getObserver().setChangeBool(true);
 			}
 			c.setAmountInside(0);
+			//c.getObserver().setInfo(); //Pas très propre mais il faut actualiser l'UI
 		}	
 	}
 	

@@ -47,7 +47,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		BufferedImage cup;
 		BufferedImage change;
 		try {
-			cup = ImageIO.read(new File(PATH + "change.png"));
+			cup = ImageIO.read(new File(PATH + "cup.jpg"));
 			change = ImageIO.read(new File(PATH + "change.png"));
 		}
 		catch (IOException e) {

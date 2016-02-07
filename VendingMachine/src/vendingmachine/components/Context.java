@@ -55,6 +55,9 @@ public class Context implements EventListener {
 
 	@Override
 	public void changeState(State state) {
+		if (this.state != null) {
+			this.state.exit(this);
+		}
 		this.state = state;
 		this.state.entry(this);
 	}

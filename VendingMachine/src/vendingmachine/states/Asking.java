@@ -48,7 +48,7 @@ public class Asking extends State {
 		//On a vérifié que le change était possible dans Idle()
 		c.getChangeMachine().giveChange(); //drinkChosen pas initialisée (inutile depuis le changement de giveChange)
 		c.setAmountInside(0);
-		c.changeState(Preparing.Instance());
+		c.changeState(Preparing.Instance(c));
 	}
 
 	@Override
@@ -58,6 +58,7 @@ public class Asking extends State {
 	
 	public void cancel(Context c) {
 		super.cancel(c);
+		chosenSugar = 0;
 		c.changeState(Idle.Instance());
 	}
 }

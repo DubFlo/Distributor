@@ -39,7 +39,7 @@ public class Idle extends State {
 			else {
 				c.getChangeMachine().giveChange();
 				c.setAmountInside(0);
-				c.changeState(Preparing.Instance());
+				c.changeState(Preparing.Instance(c));
 			}
 		}
 		else {

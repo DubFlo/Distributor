@@ -7,15 +7,26 @@ import vendingmachine.components.*;
 public class Preparing extends State {
 
 	private static Preparing instance;
+	private static Timer timer; //Le mettre static ?
 
 	//Singleton design pattern
-	private Preparing() {
-		//Timer t = new Timer(5000, ???);
+	private Preparing(Context c) { //Pas propre de passer le context en paramètre 
+								   //mais comment sinon changer son état après 5 secondes?
+		int delay = 2000;
+		timer = new Timer(delay, e -> c.changeState(Idle.Instance()));
 	}
 	
-	public static Preparing Instance() {
-		if (instance == null) instance = new Preparing();
+	public static Preparing Instance(Context c) {
+		if (instance == null) {
+			instance = new Preparing(c);
+		}
+		timer.restart();
 		return instance;
+	}
+	
+	@Override
+	public void exit(Context c) {
+		 c.getObserver().setCupBool(true);
 	}
 	
 	@Override
@@ -25,7 +36,7 @@ public class Preparing extends State {
 	
 	public void coinInserted(Coin coin, Context c){
 		super.coinInserted(coin, c);
-		c.getObserver().setTemporaryNorthText("please wait for the end"); 
+		c.getObserver().setTemporaryNorthText("Please wait for the end of the preparation..."); 
 		//Si la fente est là, on devrait pouvoir insérer la pièce mais elle ressort directement
 	}
 }

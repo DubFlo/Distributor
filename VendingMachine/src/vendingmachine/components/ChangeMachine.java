@@ -21,7 +21,7 @@ public class ChangeMachine {
 	}
 
 	public void giveChange() { // à n'utiliser que si isPossibleChange(amount) == true	
-		coinsStock = coinsStockTemp;		
+		coinsStock = copy(coinsStockTemp);		
 	}
 	
 	public boolean isChangePossible(int amount) {
