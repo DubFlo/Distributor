@@ -12,9 +12,10 @@ public abstract class State {
 	protected static final Logger log = LogManager.getLogger("State");
 
 	public void entry(Context c) {
-		c.getObserver().setNorthText(getDefaultText(c));
-		c.getObserver().setSugarText(getSugarText());
-		c.getObserver().setInfo();
+		c.setNorthText(getDefaultText(c));
+		c.setSugarText(getSugarText(c));
+		c.setInfo();
+		log.info("State " + this.getClass().getSimpleName() + " entered.");
 	}
 
 	public void exit(Context c) {}
@@ -22,6 +23,7 @@ public abstract class State {
 	public abstract String getDefaultText(Context c);
 	public void coinInserted(Coin coin, Context c) {
 		c.setChangeBool(true);
+		log.info(coin.VALUE/100.0 + " € inserted but not allowed.");
 	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
 	
 	//These buttons do nothing by default
@@ -42,7 +44,7 @@ public abstract class State {
 		}	
 	}
 	
-	public String getSugarText() {
+	public String getSugarText(Context c) {
 		return "";
 	}
 	

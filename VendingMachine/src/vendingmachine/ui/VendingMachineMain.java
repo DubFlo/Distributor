@@ -69,7 +69,7 @@ public class VendingMachineMain {
 			drinksSugar[i] = new JCheckBox();
 			drinksSugar[i].setSelected(true);
 			drinksPrices[i] = new JTextField("100", 5);
-			drinksStocks[i] = new JTextField("10", 5);
+			drinksStocks[i] = new JTextField("5", 5);
 			c.gridx = 0;
 			myPane.add(drinksNames[i], c);
 			c.gridx = 1;
@@ -93,7 +93,7 @@ public class VendingMachineMain {
 		JCheckBox[] acceptedCoinsBoxes = new JCheckBox[8];
 		for (int i = 0; i < 8; i++) {
 			c.gridy = 10 + i;
-			coinsStockValues[i] = new JTextField("10", 4);
+			coinsStockValues[i] = new JTextField("5", 4);
 			acceptedCoinsBoxes[i] = new JCheckBox();
 			if (i <= 4) {
 				acceptedCoinsBoxes[i].setSelected(true);
@@ -110,9 +110,9 @@ public class VendingMachineMain {
 		JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
 		JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
 		JLabel spoonsNbrLabel = new JLabel("Number of spoons availables: ");
-		JTextField sugarCubesNbrValue = new JTextField("100", 4);
-		JTextField cupsNbrValue = new JTextField("100", 4);
-		JTextField spoonsNbrValue = new JTextField("200", 4);
+		JTextField sugarCubesNbrValue = new JTextField("20", 4);
+		JTextField cupsNbrValue = new JTextField("10", 4);
+		JTextField spoonsNbrValue = new JTextField("9", 4);
 		
 		c.gridy = 19;	c.gridx = 0;
 		myPane.add(sugarCubesNbrLabel, c);

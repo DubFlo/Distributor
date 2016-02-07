@@ -7,11 +7,11 @@ public interface ContextListener {
 	void setTemporaryNorthText(String msg);
 
 	void setSugarText(String msg);
+	
+	void setInfo(String msg);
 
 	void setCupBool(boolean b);
 
 	void setChangeBool(boolean b);
-
-	void setInfo();
 
 }

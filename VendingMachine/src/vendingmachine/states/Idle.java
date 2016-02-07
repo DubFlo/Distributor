@@ -17,7 +17,7 @@ public class Idle extends State {
 	public String getDefaultText(Context c) {
 		String msg = "Please make your choice";
 		if (c.getAmountInside() > 0) {
-			msg += (" (" + c.getAmountInside()/100.0 + " € entered)");
+			msg += " (" + c.getAmountInside()/100.0 + " € entered)";
 		}
 		return msg;
 	}
@@ -29,6 +29,7 @@ public class Idle extends State {
 		}
 		else if (!c.getStock().isDrinkInStock(d)) {
 			c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice()/100.0 + " €)");
+			log.warn("Attempt to order " + d.getName() + " but no left in stock.");
 		}
 		else if (c.isCupInside()) {
 			c.setTemporaryNorthText("Please remove the drink before ordering");
@@ -41,13 +42,14 @@ public class Idle extends State {
 			if (d.isSugar())
 				c.changeState(Asking.Instance());
 			else {
-				c.getChangeMachine().giveChange();
-				c.setAmountInside(0);
+				c.giveChange();
+				log.info(d.getName() + " ordered.");
 				c.changeState(Preparing.Instance(c));
 			}
 		}
 		else {
 			c.setTemporaryNorthText("Unable to give the exact change");
+			log.warn(d.getName() + " ordered but machine unable to give the exact change.");
 		}
 	}
 	
@@ -62,7 +64,6 @@ public class Idle extends State {
 		else {
 			super.coinInserted(coin, c);
 			c.setTemporaryNorthText("Coin not recognized by the machine");
-			log.info(coin.VALUE/100.0 + " € inserted but not allowed.");
 		}
 		c.setInfo(); //Le mettre ici ?????
 	}

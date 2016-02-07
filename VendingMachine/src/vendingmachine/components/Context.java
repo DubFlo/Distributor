@@ -28,6 +28,7 @@ public class Context implements EventListener {
 	private int amountInside;
 	private boolean cupInside;
 	private Drink chosenDrink;
+	private byte chosenSugar;
 	
 	private ContextListener observer;
 	
@@ -52,8 +53,11 @@ public class Context implements EventListener {
 		this.changeMachine = changeMachine;
 		this.stock = stock;
 		this.heatingSystem = new HeatingSystem();
+		
 		this.amountInside = 0;
+		this.chosenSugar = 0;
 		this.cupInside = false;
+		
 		log.info("New Vending Machine Created");
 	}
 
@@ -102,7 +106,19 @@ public class Context implements EventListener {
 	public void coinInserted(Coin coin) {
 		state.coinInserted(coin, this);
 	}
+	
+	@Override
+	public void takeCup() {
+		setCupBool(false);
+		log.info("Cup taken.");
+	}
 
+	@Override
+	public void takeChange() {
+		setChangeBool(false);
+		log.info("Change taken.");
+	}
+	
 	@Override
 	public List<Drink> getDrinks() {
 		return drinkList;
@@ -204,7 +220,38 @@ public class Context implements EventListener {
 	}
 
 	public void setInfo() {
-		observer.setInfo();
+		observer.setInfo(getInfo());
+	}
+
+	public void setSugarText(String msg) {
+		observer.setSugarText(msg);
+	}
+
+	public byte getChosenSugar() {
+		return chosenSugar;
+	}
+
+	public void decrementChosenSugar() {
+		chosenSugar -= 1;
+	}
+
+	public void resetChosenSugar() {
+		chosenSugar = 0;
 	}
 	
+	public void incrementChosenSugar() {
+		chosenSugar += 1;
+	}
+
+	public void setNorthText(String msg) {
+		observer.setNorthText(msg);
+	}
+	
+	public void giveChange() {
+		changeMachine.giveChange();
+		if (amountInside > 0) {
+			setChangeBool(true);
+		}
+		amountInside = 0;
+	}
 }

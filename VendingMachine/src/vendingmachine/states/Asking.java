@@ -5,13 +5,10 @@ import vendingmachine.components.*;
 public class Asking extends State {
 
 	private static Asking instance;
-	private byte chosenSugar; //Dans Context aussi ?
+	private static final byte MAX_SUGAR = 5;
 	
 	//Singleton design pattern
-	private Asking() {
-		chosenSugar = 0;
-	}
-	
+	private Asking() {}
 	public static Asking Instance() {
 		if (instance == null) instance = new Asking();
 		return instance;
@@ -24,44 +21,43 @@ public class Asking extends State {
 	
 	@Override
 	public void more(Context c) {
-		if (chosenSugar < 5 && c.getStock().isSugarInStock(chosenSugar + 1)) {
-			chosenSugar += 1;
-			c.getObserver().setSugarText(getSugarText()); //Faire plus simple ??
+		if (c.getChosenSugar() < MAX_SUGAR && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
+			c.incrementChosenSugar();
+			c.setSugarText(getSugarText(c)); //Faire plus simple ??
 		}
-		else if (chosenSugar == 5){
-			c.getObserver().setTemporaryNorthText("Maximum quantity of sugar : 5");
+		else if (c.getChosenSugar() == MAX_SUGAR){
+			c.setTemporaryNorthText("Maximum quantity of sugar : " + MAX_SUGAR);
 		}
 		else {
-			c.getObserver().setTemporaryNorthText("No more sugar in stock");
+			c.setTemporaryNorthText("No more sugar in stock");
 		}
 	}
 	
 	@Override
 	public void less (Context c) {
-		if (chosenSugar > 0 && c.getStock().isSugarInStock(chosenSugar + 1)) {
-			chosenSugar -= 1;
-			c.getObserver().setSugarText(getSugarText());
+		if (c.getChosenSugar() > 0 && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
+			c.decrementChosenSugar();
+			c.setSugarText(getSugarText(c));
 		}
 	}
 	
 	@Override
 	public void confirm(Context c){
-		c.getStock().removeSugarCubes(chosenSugar);
-		c.getChangeMachine().giveChange();  //On a vérifié que le change était possible dans Idle()
-		c.setAmountInside(0);
-		chosenSugar = 0;
+		c.getStock().removeSugarCubes(c.getChosenSugar());
+		c.giveChange();  //On a vérifié que le change était possible dans Idle()
+		c.resetChosenSugar();
 		c.changeState(Preparing.Instance(c));
 	}
 
 	@Override
-	public String getSugarText() {
-		return "Sugar: " + chosenSugar + "/5";  //Affichage plus joli ?
+	public String getSugarText(Context c) {
+		return "Sugar: " + c.getChosenSugar() + "/" + MAX_SUGAR;  //Affichage plus joli ?
 	}
 	
 	@Override
 	public void cancel(Context c) {
 		super.cancel(c);
-		chosenSugar = 0;
+		c.resetChosenSugar();
 		c.changeState(Idle.Instance());
 	}
 }
