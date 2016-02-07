@@ -35,6 +35,8 @@ public class Preparing extends State {
 		 }
 		 c.getStock().removeSpoon(); //deal with 0 spoon here !!!!!!
 		 c.getStock().removeDrink(c.getChosenDrink());
+		 c.playAlarmSound();
+		 c.setTemporaryNorthText("Your drink is ready !");
 		 log.info(c.getChosenDrink().getName() + " prepared.");
 	}
 	

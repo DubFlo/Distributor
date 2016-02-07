@@ -1,19 +1,12 @@
 package vendingmachine.components;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import vendingmachine.SoundLoader;
 import vendingmachine.ui.*;
 import vendingmachine.states.*;
 
@@ -33,20 +26,6 @@ public class Context implements EventListener {
 	private ContextListener observer;
 	
 	private static final Logger log = LogManager.getLogger("Context");
-	
-	private static Clip beep;
-	static {
-		//http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
-		String file = "src"+File.separator+"resources"+File.separator+"beep.wav";    
-		AudioInputStream audioInputStream;
-		try {
-			audioInputStream = AudioSystem.getAudioInputStream(new File(file).getAbsoluteFile());
-			beep = AudioSystem.getClip();
-			beep.open(audioInputStream);
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-			log.error("beep.wav not properly loaded.");
-		}
-	}
 	
 	public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
 		this.drinkList = drinkList;
@@ -71,10 +50,7 @@ public class Context implements EventListener {
 	}
 
 	public void playAlarmSound() {
-		if (beep.isRunning())
-			beep.stop();
-		beep.setFramePosition(0); //Rewind the beep
-		beep.start();
+		SoundLoader.beep();
 	}
 
 	@Override
