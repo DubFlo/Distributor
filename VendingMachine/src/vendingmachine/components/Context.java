@@ -26,6 +26,7 @@ public class Context implements EventListener {
 	
 	private State state;
 	private int amountInside;
+	private boolean cupInside;
 	
 	private ContextListener observer;
 	
@@ -50,6 +51,8 @@ public class Context implements EventListener {
 		this.changeMachine = changeMachine;
 		this.stock = stock;
 		this.heatingSystem = new HeatingSystem();
+		this.amountInside = 0;
+		this.cupInside = false;
 		log.info("New Vending Machine Created");
 	}
 
@@ -158,6 +161,10 @@ public class Context implements EventListener {
 
 	public Stock getStock() {
 		return stock;
+	}
+	
+	public boolean isCupInside() {
+		return cupInside;
 	}
 	
 	public HeatingSystem getHeatingSystem() {

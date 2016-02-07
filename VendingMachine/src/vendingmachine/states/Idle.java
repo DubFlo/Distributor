@@ -30,6 +30,9 @@ public class Idle extends State {
 		else if (!c.getStock().isDrinkInStock(drink)) {
 			c.getObserver().setTemporaryNorthText("Drink out of stock (otherwise " + drink.getPrice()/100.0 + " €)");
 		}
+		else if (c.isCupInside()) {
+			c.getObserver().setTemporaryNorthText("Please remove the drink before ordering");
+		}
 		else if (drink.getPrice() > c.getAmountInside()) {
 			c.getObserver().setTemporaryNorthText("Price: " + drink.getPrice()/100.0 + " €");
 		}

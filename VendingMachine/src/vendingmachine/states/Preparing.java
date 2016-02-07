@@ -14,6 +14,7 @@ public class Preparing extends State {
 								   //mais comment sinon changer son état après 5 secondes?
 		int delay = 2000;
 		timer = new Timer(delay, e -> c.changeState(Idle.Instance()));
+		timer.setRepeats(false);
 	}
 	
 	public static Preparing Instance(Context c) {
