@@ -226,13 +226,13 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	@Override
 	public void setCupBool(boolean b) {
 		if (b) cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
-		else cupButton.setIcon(null);
+		else cupButton.setIcon(null); //replace with a black picture ??
 	}
 
 	@Override
 	public void setChangeBool(boolean b) {
 		if (b) changeButton.setIcon(new ImageIcon(PictureLoader.changeImage));
-		else changeButton.setIcon(null);
+		else changeButton.setIcon(null); //idem ??
 	}
 	
 	@Override

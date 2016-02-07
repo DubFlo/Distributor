@@ -50,7 +50,7 @@ public class Context implements EventListener {
 	}
 
 	public void playAlarmSound() {
-		SoundLoader.beep();
+		SoundLoader.play(SoundLoader.beep);
 	}
 
 	@Override
@@ -93,6 +93,7 @@ public class Context implements EventListener {
 	@Override
 	public void takeChange() {
 		setChangeBool(false);
+		SoundLoader.cling.stop();
 		log.info("Change taken.");
 	}
 	
@@ -229,7 +230,13 @@ public class Context implements EventListener {
 		if (amountInside > 0) {
 			setChangeBool(true);
 		}
+		SoundLoader.play(SoundLoader.cling);
 		amountInside = 0;
+	}
+
+	public void insertCoin(Coin coin) {
+		changeMachine.insertCoin(coin);
+		SoundLoader.play(SoundLoader.fop);
 	}
 	
 }

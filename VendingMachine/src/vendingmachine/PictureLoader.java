@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class PictureLoader {
 	
 	private static final String PATH = "src" + File.separator + "resources" + File.separator;
-	private static final Logger log = LogManager.getLogger("Context");
+	private static final Logger log = LogManager.getLogger("PictureLoader");
 	
 	public static final BufferedImage cupImage;
 	public static final BufferedImage changeImage;
@@ -22,7 +22,7 @@ public class PictureLoader {
 	public static final BufferedImage slot;
 	public static final BufferedImage sugarDisplay;
 	public static final BufferedImage southPanel;
-	public static final BufferedImage drinkButton;
+	public static final BufferedImage drinkButton; //bouton plus clair pour mieux lire ???
 	public static final BufferedImage euro2, euro1, cent50, cent20, cent10, cent5, cent2, cent1;
 	
 	static {
@@ -115,6 +115,7 @@ public class PictureLoader {
 			cen2 = null;	cen1 = null;
 			log.error("Some coin image not properly loaded.");
 		}
+		
 		cupImage = cup;
 		changeImage = change;
 		displayPanel = display;

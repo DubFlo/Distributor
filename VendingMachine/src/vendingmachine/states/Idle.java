@@ -57,7 +57,7 @@ public class Idle extends State {
 	public void coinInserted(Coin coin, Context c) {
 		if (c.getChangeMachine().isCoinAccepted(coin)) {
 			c.setAmountInside(c.getAmountInside() + coin.VALUE);
-			c.getChangeMachine().insertCoin(coin);
+			c.insertCoin(coin);
 			c.setTemporaryNorthText(Double.toString(coin.VALUE/100.0) + " € inserted");
 			log.info(coin.VALUE/100.0 + " € inserted.");
 		}

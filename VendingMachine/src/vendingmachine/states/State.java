@@ -24,7 +24,7 @@ public abstract class State {
 	public void coinInserted(Coin coin, Context c) {
 		c.setChangeBool(true);
 		log.info(coin.VALUE/100.0 + " € inserted but not allowed.");
-	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
+	} //afficher le montant rendu; à faire
 	
 	//These buttons do nothing by default
 	public void drinkButton(Drink drink, Context c) {}
@@ -35,12 +35,8 @@ public abstract class State {
 	public void cancel(Context c) {
 		if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
 										//Cette condition est toujours vraie mais fait les calculs; bof
-			c.getChangeMachine().giveChange();
-			if (c.getAmountInside() > 0) {
-				c.setChangeBool(true);
-			}
-			c.setAmountInside(0);
-			c.getState().entry(c);
+			c.giveChange();
+			c.getState().entry(c); //ou this.entry(c) non ???
 		}	
 	}
 	

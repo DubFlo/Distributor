@@ -10,13 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 public class FontLoader {
 	
-	public static final Font DIGITAL_FONT;
 	private static final Logger log = LogManager.getLogger("FontLoader");
+	private static final String PATH = "assets" + File.separator + "fonts" + File.separator;
+	public static final Font DIGITAL_FONT;
 	
 	static {
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/digitalFont.ttf"));
+			font = Font.createFont(Font.TRUETYPE_FONT, new File(PATH + "digitalFont.ttf"));
 			font = font.deriveFont(24f);
 		} catch (IOException | FontFormatException e) {
 			font = null;
