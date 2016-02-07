@@ -42,7 +42,7 @@ public class HeatingSystem {
 			updateState();
 			if (heating) {
 				timeWarming += 1;
-				temperature += (-90) * (Math.exp(-0.0405*(timeWarming + 1))- Math.exp(-0.0405*timeWarming));
+				temperature += (-10) * (Math.exp(-0.0405*(timeWarming + 1))- Math.exp(-0.0405*timeWarming));
 				//http://luciole.ca/gilles/mat265/chap3/var-temp.html
 			}
 			else {
