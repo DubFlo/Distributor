@@ -30,10 +30,12 @@ public class Preparing extends State {
 		 c.setCupBool(true);
 		 c.getStock().removeCup();
 		 if (c.getStock().getCupsNbr() == 0) { //!!!! si le nombre de cup est initialisé à 0, comment faire ? !!!!!!
+			 									//laisser première condition dans Idle ???
 			 c.changeState(NoCup.Instance());
 		 }
 		 c.getStock().removeSpoon(); //deal with 0 spoon here !!!!!!
 		 c.getStock().removeDrink(c.getChosenDrink());
+		 log.info(c.getChosenDrink().getName() + " prepared.");
 	}
 	
 	@Override
@@ -44,9 +46,6 @@ public class Preparing extends State {
 	@Override
 	public void coinInserted(Coin coin, Context c){
 		super.coinInserted(coin, c);
-		c.getObserver().setTemporaryNorthText("Please wait for the end of the preparation..."); 
-		//Si la fente est là, on devrait pouvoir insérer la pièce mais elle ressort directement
+		c.setTemporaryNorthText("Please wait for the end of the preparation..."); 
 	}
 }
-// retirer du stock la boisson à la fin du Timer
-// Changer d'état + lancer la préparation de la boisson

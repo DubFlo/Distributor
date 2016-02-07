@@ -202,8 +202,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	}
 	
 	private void addListeners() {
-		cupButton.addActionListener(e -> observer.setCupBool(false));
-		changeButton.addActionListener(e -> observer.setChangeBool(false));
+		cupButton.addActionListener(e -> observer.takeCup());
+		changeButton.addActionListener(e -> observer.takeChange());
 		lessSugar.addActionListener(e -> observer.less());
 		moreSugar.addActionListener(e -> observer.more());
 		okButton.addActionListener(e -> observer.confirm());
@@ -227,18 +227,18 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 
 	@Override
 	public void setTemporaryNorthText(String msg) {
-		northLabel.setText(msg);
+		northLabel.setText(msg.toUpperCase());
 		timer.restart();
 	}
 
 	@Override
-	public void setInfo() {
-		infoArea.setText(observer.getInfo());	
+	public void setInfo(String msg) {
+		infoArea.setText(msg);	
 	}
 
 	@Override
 	public void setSugarText(String msg) {
-		sugarLabel.setText(msg);
+		sugarLabel.setText(msg.toUpperCase());
 	}
 
 	@Override

@@ -14,6 +14,8 @@ public interface EventListener {
 	void cancel();
 	void confirm();
 	void coinInserted(Coin coin);
+	void takeCup();
+	void takeChange();
 	
 	void changeState(State state);
 	State getState();
@@ -24,4 +26,5 @@ public interface EventListener {
 	List<Drink> getDrinks();
 	String getInfo();
 	<T extends ContextListener & TemperatureListener> void setObserver(T o);
+
 }
