@@ -1,88 +1,49 @@
-13:27:41.752 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 2.0 € inserted.
-13:27:42.092 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 1.0 € inserted.
-13:27:42.501 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.5 € inserted.
-13:27:42.788 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.2 € inserted.
-13:27:43.141 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.1 € inserted.
-13:28:35.513 [main] INFO  vendingmachine.components.Context - New Vending Machine Created
-13:28:46.770 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 2.0 € inserted.
-13:28:55.221 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 1.0 € inserted.
-13:28:55.580 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.5 € inserted.
-13:28:55.901 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.2 € inserted.
-13:28:56.205 [AWT-EventQueue-0] INFO  vendingmachine.states.State - 0.1 € inserted.
-13:57:02.553 [main] INFO  Context - New Vending Machine Created
-13:57:04.242 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-13:57:04.834 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
-13:57:05.219 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-13:57:05.523 [AWT-EventQueue-0] INFO  State - 0.2 € inserted.
-14:22:08.750 [main] INFO  Context - New Vending Machine Created
-14:22:10.541 [AWT-EventQueue-0] INFO  State - 0.01 € inserted but not allowed.
-14:22:13.868 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-14:22:14.187 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:22:14.715 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
-14:22:15.020 [AWT-EventQueue-0] INFO  State - 0.2 € inserted.
-14:40:35.066 [main] INFO  Context - New Vending Machine Created
-14:40:36.918 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:40:37.494 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
-14:40:40.230 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-14:51:25.557 [main] INFO  Context - New Vending Machine Created
-14:51:27.057 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:51:27.505 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
-14:51:28.008 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-14:51:28.448 [AWT-EventQueue-0] INFO  State - 0.2 € inserted.
-14:51:41.926 [main] INFO  Context - New Vending Machine Created
-14:51:43.234 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:51:44.035 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
-14:51:46.395 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-14:51:47.387 [AWT-EventQueue-0] INFO  State - 0.2 € inserted.
-14:52:57.413 [main] INFO  Context - New Vending Machine Created
-14:52:58.795 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:53:51.289 [main] INFO  Context - New Vending Machine Created
-14:53:53.881 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:55:32.253 [main] INFO  Context - New Vending Machine Created
-14:55:33.772 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:33.987 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:34.283 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:34.436 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:34.588 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:34.740 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:34.876 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:35.036 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:35.196 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:35.356 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:35.539 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:35.979 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:36.147 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:36.292 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:36.419 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:55:43.581 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
-14:58:31.669 [main] INFO  Context - New Vending Machine Created
-14:58:33.424 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-14:58:35.711 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:35.879 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.017 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.159 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.369 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.528 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.657 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.801 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:36.936 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:37.224 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:37.352 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:37.504 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:37.625 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:37.887 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.032 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.175 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.312 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.463 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.760 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-14:58:38.952 [AWT-EventQueue-0] INFO  State - 0.1 € inserted.
-15:05:21.418 [main] INFO  Context - New Vending Machine Created
-15:05:24.198 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-15:10:46.641 [main] INFO  Context - New Vending Machine Created
-15:10:48.434 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-15:11:14.563 [main] INFO  Context - New Vending Machine Created
-15:12:13.295 [main] INFO  Context - New Vending Machine Created
-15:12:14.932 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
-15:12:29.099 [main] INFO  Context - New Vending Machine Created
-15:12:31.870 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+18:43:34.617 [main] INFO  Context - New Vending Machine Created
+18:45:02.567 [main] INFO  Context - New Vending Machine Created
+18:47:22.719 [main] INFO  Context - New Vending Machine Created
+18:47:45.998 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+18:49:21.181 [main] INFO  Context - New Vending Machine Created
+18:50:35.939 [main] INFO  Context - New Vending Machine Created
+18:50:49.442 [main] INFO  Context - New Vending Machine Created
+18:51:01.509 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+18:58:41.568 [main] INFO  Context - New Vending Machine Created
+18:58:44.265 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:06.718 [main] INFO  Context - New Vending Machine Created
+19:00:08.067 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:08.194 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:08.338 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:08.489 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:08.675 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:08.850 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:48.545 [main] INFO  Context - New Vending Machine Created
+19:00:50.839 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:51.047 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:51.255 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:51.479 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:00:51.943 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+19:04:06.772 [main] INFO  Context - New Vending Machine Created
+19:04:10.646 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:30:53.406 [main] INFO  Context - New Vending Machine Created
+12:31:02.024 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:42:17.729 [main] INFO  Context - New Vending Machine Created
+12:42:19.459 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:42:22.124 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
+12:47:27.009 [main] INFO  Context - New Vending Machine Created
+12:48:43.418 [main] INFO  Context - New Vending Machine Created
+12:49:34.060 [main] INFO  Context - New Vending Machine Created
+12:50:03.697 [main] INFO  Context - New Vending Machine Created
+12:50:06.160 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:50:07.272 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:50:10.476 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
+12:50:24.931 [main] INFO  Context - New Vending Machine Created
+12:50:26.230 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:50:26.717 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:54:12.352 [main] INFO  Context - New Vending Machine Created
+12:54:13.884 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:54:14.517 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
+12:54:14.973 [AWT-EventQueue-0] INFO  State - 0.5 € inserted.
+12:54:39.363 [main] INFO  Context - New Vending Machine Created
+12:54:40.992 [AWT-EventQueue-0] INFO  State - 1.0 € inserted.
+12:55:32.629 [main] INFO  Context - New Vending Machine Created
+12:55:34.758 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
+12:55:34.909 [AWT-EventQueue-0] INFO  State - 2.0 € inserted.
