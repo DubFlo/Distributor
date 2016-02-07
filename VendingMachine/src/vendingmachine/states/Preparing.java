@@ -41,6 +41,7 @@ public class Preparing extends State {
 		return "Your drink is in preparation...";
 	}
 	
+	@Override
 	public void coinInserted(Coin coin, Context c){
 		super.coinInserted(coin, c);
 		c.getObserver().setTemporaryNorthText("Please wait for the end of the preparation..."); 

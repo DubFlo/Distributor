@@ -198,5 +198,13 @@ public class Context implements EventListener {
 	public void setChosenDrink(Drink chosenDrink) {
 		this.chosenDrink = chosenDrink;
 	}
+
+	public void setTemporaryNorthText(String msg) {
+		observer.setTemporaryNorthText(msg);
+	}
+
+	public void setInfo() {
+		observer.setInfo();
+	}
 	
 }

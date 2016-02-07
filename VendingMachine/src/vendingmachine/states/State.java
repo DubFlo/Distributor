@@ -21,7 +21,7 @@ public abstract class State {
 	
 	public abstract String getDefaultText(Context c);
 	public void coinInserted(Coin coin, Context c) {
-		c.getObserver().setChangeBool(true);
+		c.setChangeBool(true);
 	} //toujours fait le bruit de pièces + afficher le montant rendu; à faire
 	
 	//These buttons do nothing by default
@@ -35,11 +35,10 @@ public abstract class State {
 										//Cette condition est toujours vraie mais fait les calculs; bof
 			c.getChangeMachine().giveChange();
 			if (c.getAmountInside() > 0) {
-				c.getObserver().setChangeBool(true);
+				c.setChangeBool(true);
 			}
 			c.setAmountInside(0);
 			c.getState().entry(c);
-			//c.getObserver().setInfo(); //Pas très propre mais il faut actualiser l'UI
 		}	
 	}
 	

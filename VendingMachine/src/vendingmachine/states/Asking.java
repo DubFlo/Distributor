@@ -47,9 +47,9 @@ public class Asking extends State {
 	@Override
 	public void confirm(Context c){
 		c.getStock().removeSugarCubes(chosenSugar);
-		chosenSugar = 0;
 		c.getChangeMachine().giveChange();  //On a vérifié que le change était possible dans Idle()
 		c.setAmountInside(0);
+		chosenSugar = 0;
 		c.changeState(Preparing.Instance(c));
 	}
 
@@ -58,6 +58,7 @@ public class Asking extends State {
 		return "Sugar: " + chosenSugar + "/5";  //Affichage plus joli ?
 	}
 	
+	@Override
 	public void cancel(Context c) {
 		super.cancel(c);
 		chosenSugar = 0;
