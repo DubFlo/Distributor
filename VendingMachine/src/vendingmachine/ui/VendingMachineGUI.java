@@ -9,7 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	public static final int NBR_DRINKS = 8; //Plutôt dans le Context ?
 	
-	public VendingMachineGUI(EventListener observer) throws IOException {
+	public VendingMachineGUI(EventListener observer) {
 		this.observer = observer;
 		observer.setObserver(this);
 		timer = new Timer(1500, e -> setNorthText(observer.getNorthText()));
@@ -51,7 +51,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		this.init();
 	}
 
-	private void init() throws IOException {
+	private void init() {
 		//Initializes Frame
 		JFrame myFrame = new JFrame("Vending Machine");
 		Container myContainer = myFrame.getContentPane();
@@ -167,7 +167,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		infoPanel.setBackground(Color.WHITE);
 		
 		//Ending operations
-		JSplitPane leftPane= new JSplitPane();
+		JSplitPane leftPane = new JSplitPane();
 		leftPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		leftPane.setLeftComponent(myPanel);
 		leftPane.setRightComponent(coinsPanel);
