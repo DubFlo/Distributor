@@ -14,7 +14,7 @@ public class Context implements EventListener {
 
 	private ChangeMachine changeMachine;
 	private Stock stock;
-	private List<Drink> drinkList;
+	private List<Drink> drinkList; //Plutôt Collection pour pas d'ordre ????
 	private HeatingSystem heatingSystem;
 	
 	private State state;
