@@ -128,7 +128,7 @@ public class Context implements EventListener {
 		info += "\n" + amountInside/100.0 + " € inserted.\n";
 		info += "\nDrinks: \n";
 		Map<Drink, Integer> s = stock.getDrinkQty();
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < VendingMachineGUI.NBR_DRINKS; i++) {
 			info += drinkList.get(i).getName() + ": " + s.get(drinkList.get(i)) + " available.\n";
 		}
 		
@@ -183,6 +183,7 @@ public class Context implements EventListener {
 	@Override
 	public void setChangeBool(boolean b) {
 		observer.setChangeBool(b);
+		if (b) SoundLoader.play(SoundLoader.cling);
 	}
 
 	public Drink getChosenDrink() {

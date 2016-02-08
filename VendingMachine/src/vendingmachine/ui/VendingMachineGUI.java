@@ -41,6 +41,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 	
 	private Timer timer;
 	
+	public static final int NBR_DRINKS = 8; //Plutôt dans le Context ?
+	
 	public VendingMachineGUI(EventListener observer) throws IOException {
 		this.observer = observer;
 		observer.setObserver(this);
@@ -58,7 +60,7 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		JPanel myPanel = new JPanel(new BorderLayout());
 		
 		//North Panel
-		JPanel northPanel = new BackgroundJPanel(PictureLoader.displayPanel);;
+		JPanel northPanel = new BackgroundJPanel(PictureLoader.displayPanel);
 		northLabel = new JLabel();
 		northLabel.setForeground(Color.RED);
 		northLabel.setFont(FontLoader.DIGITAL_FONT);
@@ -69,9 +71,9 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		
 		//Center Panel
 		JPanel centerPanel = new BackgroundJPanel(PictureLoader.coffee);
-		centerPanel.setLayout(new GridLayout(4, 2, 30, 0));
+		centerPanel.setLayout(new GridLayout((NBR_DRINKS + 1)/2, 2, 30, 0));
 		drinkButtonsList = new ArrayList<DrinkJButton>();
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < NBR_DRINKS; i++) {
 			DrinkJButton myButton = new DrinkJButton(observer.getDrinks().get(i));
 			drinkButtonsList.add(myButton);
 			centerPanel.add(myButton);
@@ -133,13 +135,13 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 		southPanel.setPreferredSize(new Dimension(600, 100));
 		
 		//coins buttons
-		JPanel coinsPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+		JPanel coinsPanel = new JPanel(new GridLayout((ChangeMachine.COINS.length+1)/2, 2, 5, 5));
 		coinsPanel.setBackground(Color.WHITE);
 		coinButtonsList = new ArrayList<CoinJButton>();
 		BufferedImage[] coinsImages = {PictureLoader.euro2, PictureLoader.euro1, PictureLoader.cent50,
 			PictureLoader.cent20, PictureLoader.cent10, PictureLoader.cent5, PictureLoader.cent2,
 			PictureLoader.cent1};
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < coinsImages.length; i++) {
 			CoinJButton myButton = new CoinJButton(
 					ChangeMachine.COINS[i], new ImageIcon(coinsImages[i]));
 			coinButtonsList.add(myButton);
