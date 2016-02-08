@@ -1,9 +1,7 @@
 package vendingmachine.ui;
 
-import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -18,17 +16,13 @@ public class VendingMachineMain {
 
 	private static boolean configDone = false;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		//THREADING ????
 		Context c = config();
 
     	SwingUtilities.invokeLater(new Runnable() { //juste sur this.init() in GUI ?
     		public void run() {
-    			try {
-					new VendingMachineGUI(c);
-				} catch (IOException e) {
-					// TO DO - 
-				}
+				new VendingMachineGUI(c);
     		}
     	});
 	}

@@ -1,6 +1,9 @@
 package vendingmachine.ui;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+
 import vendingmachine.components.Coin;
 
 public class CoinJButton extends JButton {
