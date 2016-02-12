@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AbstractDocument;
 
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Coin;
@@ -27,7 +28,7 @@ public class VendingMachineMain {
 
   private static boolean configDone = false;
 
-  private static Context config() {
+  private static Context config() { //!!!! Number too large or empty field ??????
     // -----------------------------------
     // This first part creates the menu UI
     // -----------------------------------
@@ -36,6 +37,7 @@ public class VendingMachineMain {
     myFrame.setTitle("Vending Machine Initialization");
     myPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
+    MyDocumentFilter myDocumentFilter = new MyDocumentFilter();
 
     final int NBR_DRINKS = VendingMachineGUI.NBR_DRINKS;
     final int NBR_COINS = ChangeMachine.NBR_COINS;
@@ -54,8 +56,7 @@ public class VendingMachineMain {
     JTextField[] drinksNames = new JTextField[NBR_DRINKS]; // Limiter la
     // longueur
     JCheckBox[] drinksSugar = new JCheckBox[NBR_DRINKS];
-    JTextField[] drinksPrices = new JTextField[NBR_DRINKS]; // Restreindre à
-    // des entiers
+    JTextField[] drinksPrices = new JTextField[NBR_DRINKS];
     JTextField[] drinksStocks = new JTextField[NBR_DRINKS];
 
     for (int i = 0; i < NBR_DRINKS; i++) {
@@ -69,7 +70,9 @@ public class VendingMachineMain {
         drinksSugar[i].setSelected(true);
       }
       drinksPrices[i] = new JTextField("100", 5);
+      ((AbstractDocument)drinksPrices[i].getDocument()).setDocumentFilter(myDocumentFilter);   
       drinksStocks[i] = new JTextField("5", 5);
+      ((AbstractDocument)drinksStocks[i].getDocument()).setDocumentFilter(myDocumentFilter); 
       c.gridx = 0;
       myPanel.add(drinksNames[i], c);
       c.gridx = 1;
@@ -94,6 +97,7 @@ public class VendingMachineMain {
     for (int i = 0; i < NBR_COINS; i++) {
       c.gridy = 10 + i;
       coinsStockValues[i] = new JTextField("5", 4);
+      ((AbstractDocument)coinsStockValues[i].getDocument()).setDocumentFilter(myDocumentFilter); 
       acceptedCoinsBoxes[i] = new JCheckBox();
       if (i < NBR_COINS - 3) { // to refuse coins too small by default
         acceptedCoinsBoxes[i].setSelected(true);
@@ -111,8 +115,11 @@ public class VendingMachineMain {
     JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
     JLabel spoonsNbrLabel = new JLabel("Number of spoons availables: ");
     JTextField sugarCubesNbrValue = new JTextField("20", 4);
+    ((AbstractDocument)sugarCubesNbrValue.getDocument()).setDocumentFilter(myDocumentFilter); 
     JTextField cupsNbrValue = new JTextField("10", 4);
+    ((AbstractDocument)cupsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter); 
     JTextField spoonsNbrValue = new JTextField("8", 4);
+    ((AbstractDocument)spoonsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter); 
 
     c.gridy = NBR_DRINKS + NBR_COINS + 3;
     c.gridx = 0;

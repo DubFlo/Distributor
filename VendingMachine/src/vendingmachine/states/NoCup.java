@@ -13,7 +13,7 @@ public class NoCup extends Problem {
     return instance;
   }
 
-  // Singleton design pattern
+  // Singleton design pattern A RETIRER OU DEPLACER DU CACA
   private NoCup() {
   }
 

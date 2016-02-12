@@ -50,7 +50,6 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
   private JButton lessSugar;
   private JButton moreSugar;
   private JButton okButton;
-
   private JButton cancelButton;
 
   private Timer timer;
