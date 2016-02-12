@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class ChangeMachine {
 
-  public static final int NBR_COINS = 8;
   public static final Coin[] COINS = { Coin.COIN200, Coin.COIN100, Coin.COIN50, Coin.COIN20,
     Coin.COIN10, Coin.COIN5, Coin.COIN2, Coin.COIN1 };
 

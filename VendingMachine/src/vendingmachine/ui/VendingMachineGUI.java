@@ -77,7 +77,6 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
       CoinJButton b = coinButtonsList.get(i);
       b.addActionListener(e -> observer.coinInserted(b.getCoin()));
     }
-
   }
 
   public void init() {
