@@ -25,7 +25,7 @@ public class PictureLoader {
   public static final BufferedImage drinkButton; // bouton plus clair pour mieux lire ???
   public static final BufferedImage euro2, euro1, cent50, cent20, cent10, cent5, cent2, cent1;
   // ImageIcon + blackBackground ?
-  
+
   static {
     BufferedImage cup;
     try {

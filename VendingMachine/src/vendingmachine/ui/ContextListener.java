@@ -1,7 +1,7 @@
 package vendingmachine.ui;
 
 public interface ContextListener {
-
+  
   void setChangeBool(boolean b);
 
   void setCupBool(boolean b);

@@ -17,6 +17,8 @@ public interface EventListener {
   void confirm();
 
   void drinkButton(Drink drink);
+  
+  int getNbrDrinks();
 
   List<Drink> getDrinks();
 

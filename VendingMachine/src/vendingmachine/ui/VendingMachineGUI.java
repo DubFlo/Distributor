@@ -31,13 +31,11 @@ import vendingmachine.FontLoader;
 import vendingmachine.PictureLoader;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.EventListener;
-import vendingmachine.states.Idle;
+import vendingmachine.states.Idle; //Moyen !!
 
 public class VendingMachineGUI extends JFrame implements ContextListener, TemperatureListener {
 
   private static final long serialVersionUID = 1L;
-
-  public static final int NBR_DRINKS = 8; // Plutôt dans le Context ?
 
   private EventListener observer;
   private JLabel northLabel;
@@ -101,9 +99,9 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
     // Center Panel
     JPanel centerPanel = new BackgroundJPanel(PictureLoader.coffee);
-    centerPanel.setLayout(new GridLayout((NBR_DRINKS + 1) / 2, 2, 30, 0));
+    centerPanel.setLayout(new GridLayout((observer.getNbrDrinks() + 1) / 2, 2, 30, 0));
     drinkButtonsList = new ArrayList<DrinkJButton>();
-    for (int i = 0; i < NBR_DRINKS; i++) {
+    for (int i = 0; i < observer.getNbrDrinks(); i++) {
       DrinkJButton myButton = new DrinkJButton(observer.getDrinks().get(i));
       drinkButtonsList.add(myButton);
       centerPanel.add(myButton);

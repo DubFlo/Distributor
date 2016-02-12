@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,13 +28,20 @@ import vendingmachine.components.Stock;
 public class Configuration extends JFrame {
 
   private static final long serialVersionUID = 1L;
-  private static final String[] COLUMNS_TITLES = { "Enter here the drinks names: ", "Contains sugar ?",
-    "Price (in cents)  ", "Initial stock" };
-  private static final String[] COINS_TITLES = { "Coins and their values: ", "Initial stock",
+  
+  private static final String[] COLUMNS_TITLES = { "Enter here the drinks names: ", "Contains sugar?",
+    "Price (in cents): ", "Initial stock:" };
+  private static final String[] COINS_TITLES = { "Coins and their values: ", "Initial stock: ",
     "Accepted by the machine?" };
   public static final String[] DEFAULT_DRINKS = { "Black Coffee", "Cappuccino", "Hot Chocolate", "Hot Milk",
     "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup" };
+  private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
+  private JPanel myPanel;
+  
+  private JLabel drinkNbrLabel; //Pas d'instance ?
+  private JComboBox<Integer> drinkNbrComboBox;
+  
   private JTextField[] drinksNames;
   private JCheckBox[] drinksSugar;
   private JTextField[] drinksPrices;
@@ -41,7 +49,7 @@ public class Configuration extends JFrame {
   private JTextField[] coinsStockValues;
   private JCheckBox[] acceptedCoinsBoxes;
 
-  private JLabel sugarCubesNbrLabel;
+  private JLabel sugarCubesNbrLabel; //Pas d'instance ?
   private JLabel cupsNbrLabel;
   private JLabel spoonsNbrLabel;
   private JTextField sugarCubesNbrValue;
@@ -55,20 +63,47 @@ public class Configuration extends JFrame {
   private ChangeMachine changeMachine;
   private Stock stock;
 
-  public void init() {
+  public Configuration() {
+    super();
     setTitle("Vending Machine Initialization");
-    JPanel myPanel = new JPanel();
+    
+    drinkNbrComboBox = new JComboBox<Integer>(NBR_DRINKS_LIST);
+    drinkNbrComboBox.setSelectedIndex(7); //to have 8 drinks as a default value
+    drinkNbrComboBox.addActionListener(e -> again());
+    
+    drinkNbrLabel = new JLabel("Number of drinks (between 1 and 10): ");
+    sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
+    cupsNbrLabel = new JLabel("Number of cups available: ");
+    spoonsNbrLabel = new JLabel("Number of spoons availables: ");
+    problemLabel = new JLabel();
+    problemLabel.setForeground(Color.RED);
+    createButton = new JButton("Click here to begin the simulation!");
+    createButton.addActionListener(e -> check());
+  }
+  
+  private void again() {
+    getContentPane().removeAll();
+    init();
+  }
+  
+  public void init() {
+    myPanel = new JPanel();
     myPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     MyDocumentFilter myDocumentFilter = new MyDocumentFilter();
 
-    final int NBR_DRINKS = VendingMachineGUI.NBR_DRINKS; //Est-ce propre ou juste l'écrire à chaque fois ?
+    final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
     final int NBR_COINS = ChangeMachine.COINS.length;
 
-    c.gridy = 0;
+    c.gridy = 0;  c.gridx = 0;
+    myPanel.add(drinkNbrLabel);
+    c.gridx = 1;
+    myPanel.add(drinkNbrComboBox);
+    
+    c.gridy += 1; c.gridx = 0;
     for (int i = 0; i < COLUMNS_TITLES.length; i++) {
-      c.gridx += 1;
       myPanel.add(new JLabel(COLUMNS_TITLES[i]), c);
+      c.gridx += 1;
     }
 
     drinksNames = new JTextField[NBR_DRINKS];
@@ -124,9 +159,6 @@ public class Configuration extends JFrame {
       myPanel.add(acceptedCoinsBoxes[i], c);
     }
 
-    sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
-    cupsNbrLabel = new JLabel("Number of cups available: ");
-    spoonsNbrLabel = new JLabel("Number of spoons availables: ");
     sugarCubesNbrValue = new JTextField("20", 4);
     ((AbstractDocument)sugarCubesNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
     cupsNbrValue = new JTextField("10", 4);
@@ -152,13 +184,9 @@ public class Configuration extends JFrame {
     c.gridx = 1;
     myPanel.add(spoonsNbrValue, c);
 
-    createButton = new JButton("Click here to begin the simulation !");
-    problemLabel = new JLabel();
-    problemLabel.setForeground(Color.RED);
     c.gridy += 1;
     c.gridx = 0;
     c.gridwidth = GridBagConstraints.REMAINDER;
-    createButton.addActionListener(e -> check());
     myPanel.add(createButton, c);
     c.gridy += 1;
     myPanel.add(problemLabel, c);
@@ -167,7 +195,7 @@ public class Configuration extends JFrame {
     JScrollPane scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
     add(scrPane);
 
-    myPanel.setBorder(new EmptyBorder(10, 10, 18, 10));
+    myPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
     setVisible(true);
@@ -178,7 +206,7 @@ public class Configuration extends JFrame {
     drinkList = new ArrayList<Drink>();
     Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
     try {
-      for (int i = 0; i < VendingMachineGUI.NBR_DRINKS; i++) {
+      for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
         final Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
             Integer.parseInt(drinksPrices[i].getText())); // final ici est suffisant ?
         drinkList.add(d);
@@ -220,7 +248,7 @@ public class Configuration extends JFrame {
     }
     stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    Context c = new Context(drinkList, changeMachine, stock);
+    Context c = new Context((Integer)drinkNbrComboBox.getSelectedItem(), drinkList, changeMachine, stock);
     VendingMachineGUI gui = new VendingMachineGUI(c);
     dispose();
 
@@ -230,4 +258,5 @@ public class Configuration extends JFrame {
   private String getProblemText(String part) {
     return "Error while parsing " + part + " info. Fields can't be empty. Integers can't be larger than 2^31.";
   }
+  
 }

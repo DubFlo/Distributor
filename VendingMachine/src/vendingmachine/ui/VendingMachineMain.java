@@ -11,7 +11,7 @@ public class VendingMachineMain {
       public void run() {
         config.init();
       }
-    }); 
+    });
   }
 
 }

@@ -10,13 +10,14 @@ import vendingmachine.SoundLoader;
 import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
-import vendingmachine.ui.VendingMachineGUI;
 
 public class Context implements EventListener {
 
   private static final Logger log = LogManager.getLogger("Context");
+  
   private ChangeMachine changeMachine;
   private Stock stock;
+  public final int NBR_DRINKS;
   private List<Drink> drinkList; // Plutôt Collection pour pas d'ordre ????
 
   private HeatingSystem heatingSystem;
@@ -29,7 +30,8 @@ public class Context implements EventListener {
 
   private ContextListener observer;
 
-  public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
+  public Context(int nbrDrinks, List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
+    this.NBR_DRINKS = nbrDrinks;
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
@@ -105,9 +107,9 @@ public class Context implements EventListener {
     StringBuilder sb = new StringBuilder();
     sb.append("State: ").append(getState()).append("\n");
     sb.append("\n").append(amountInside / 100.0).append(" € inserted.\n");
-    sb.append("\nDrinks: \n");
+    sb.append("\nDrink(s): \n");
     Map<Drink, Integer> s = stock.getDrinkQty();
-    for (int i = 0; i < VendingMachineGUI.NBR_DRINKS; i++) {
+    for (int i = 0; i < NBR_DRINKS; i++) {
       sb.append(drinkList.get(i).getName()).append(": ").append(s.get(drinkList.get(i)))
       .append(" available.\n");
     }
@@ -244,6 +246,11 @@ public class Context implements EventListener {
     setCupBool(false);
     SoundLoader.beep.stop(); // stop the sound effect is the cup is taken.
     log.info("Cup taken.");
+  }
+
+  @Override
+  public int getNbrDrinks() {
+    return NBR_DRINKS;
   }
 
 }
