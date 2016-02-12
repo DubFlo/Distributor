@@ -8,23 +8,36 @@ import vendingmachine.ui.TemperatureListener;
 
 public interface EventListener {
 
-	void drinkButton(Drink drink);
-	void less();
-	void more();
-	void cancel();
-	void confirm();
-	void coinInserted(Coin coin);
-	void takeCup();
-	void takeChange();
-	
-	void changeState(State state);
-	State getState();
-	String getNorthText();
-	void setCupBool(boolean b);
-	void setChangeBool(boolean b);
+  void cancel();
 
-	List<Drink> getDrinks();
-	String getInfo();
-	<T extends ContextListener & TemperatureListener> void setObserver(T o);
+  void changeState(State state);
+
+  void coinInserted(Coin coin);
+
+  void confirm();
+
+  void drinkButton(Drink drink);
+
+  List<Drink> getDrinks();
+
+  String getInfo();
+
+  String getNorthText();
+
+  State getState();
+
+  void less();
+
+  void more();
+
+  void setChangeBool(boolean b);
+
+  void setCupBool(boolean b);
+
+  <T extends ContextListener & TemperatureListener> void setObserver(T o);
+
+  void takeChange();
+
+  void takeCup();
 
 }

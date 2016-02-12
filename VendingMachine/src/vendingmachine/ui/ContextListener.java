@@ -2,16 +2,16 @@ package vendingmachine.ui;
 
 public interface ContextListener {
 
-	void setNorthText(String msg);
+  void setChangeBool(boolean b);
 
-	void setTemporaryNorthText(String msg);
+  void setCupBool(boolean b);
 
-	void setSugarText(String msg);
-	
-	void setInfo(String msg);
+  void setInfo(String msg);
 
-	void setCupBool(boolean b);
+  void setNorthText(String msg);
 
-	void setChangeBool(boolean b);
+  void setSugarText(String msg);
+
+  void setTemporaryNorthText(String msg);
 
 }

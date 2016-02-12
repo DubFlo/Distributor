@@ -1,21 +1,25 @@
 package vendingmachine.states;
 
-import vendingmachine.components.*;
+import vendingmachine.components.Context;
 
 public class NoWater extends Problem {
 
-	private static NoWater instance;
+  private static NoWater instance;
 
-	//Singleton design pattern
-	private NoWater() {}
-	public static NoWater Instance() {
-		if (instance == null) instance = new NoWater();
-		return instance;
-	}
-	
-	@Override
-	public String getDefaultText(Context c) {
-		return "Water supply is off. No drink can be ordered";
-	}
+  public static NoWater instance() {
+    if (instance == null) {
+      instance = new NoWater();
+    }
+    return instance;
+  }
+
+  // Singleton design pattern
+  private NoWater() {
+  }
+
+  @Override
+  public String getDefaultText(Context c) {
+    return "Water supply is off. No drink can be ordered";
+  }
 
 }
