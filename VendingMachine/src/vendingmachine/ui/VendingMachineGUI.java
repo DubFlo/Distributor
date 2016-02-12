@@ -33,7 +33,9 @@ import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.EventListener;
 import vendingmachine.states.Idle;
 
-public class VendingMachineGUI implements ContextListener, TemperatureListener {
+public class VendingMachineGUI extends JFrame implements ContextListener, TemperatureListener {
+
+  private static final long serialVersionUID = 1L;
 
   public static final int NBR_DRINKS = 8; // Plutôt dans le Context ?
 
@@ -81,8 +83,8 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
 
   public void init() {
     // Initializes Frame
-    JFrame myFrame = new JFrame("Vending Machine");
-    Container myContainer = myFrame.getContentPane();
+    setTitle("Vending Machine");
+    Container myContainer = getContentPane();
 
     // Main Panel
     JPanel myPanel = new JPanel(new BorderLayout());
@@ -212,15 +214,15 @@ public class VendingMachineGUI implements ContextListener, TemperatureListener {
     JSplitPane rightPane = new JSplitPane();
     rightPane.setLeftComponent(leftPane);
     rightPane.setRightComponent(infoPanel);
-    myFrame.setJMenuBar(menuBar);
     myContainer.add(rightPane);
+    setJMenuBar(menuBar);
 
     addListeners();
     observer.changeState(Idle.instance()); // moche mais où d'autre ??
 
-    myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    myFrame.pack();
-    myFrame.setVisible(true);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    pack();
+    setVisible(true);
   }
 
   @Override
