@@ -86,4 +86,8 @@ public class HeatingSystem {
       }
     }
   }
+
+  public boolean isWaterSupplyEnabled() {
+    return waterSupply;
+  }
 }

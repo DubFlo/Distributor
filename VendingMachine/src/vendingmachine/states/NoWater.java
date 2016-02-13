@@ -19,7 +19,7 @@ public class NoWater extends Problem {
 
   @Override
   public String getDefaultText(Context c) {
-    return "Water supply is off. No drink can be ordered";
+    return "Water supply off. No drink can be ordered";
   }
 
 }

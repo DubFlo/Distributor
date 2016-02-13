@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -29,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import vendingmachine.FontLoader;
 import vendingmachine.PictureLoader;
@@ -130,10 +130,14 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     cupButton = new JButton();
     cupButton.setBorder(BorderFactory.createEmptyBorder());
     cupButton.setContentAreaFilled(false);
-    leftPanel.setPreferredSize(new Dimension(100, 550));
+    leftPanel.setPreferredSize(new Dimension(120, 550));
     leftPanel.add(cupButton, BorderLayout.PAGE_END);
     temperatureLabel = new JLabel("90° C");
-    temperatureLabel.setFont(new Font("courier new", Font.BOLD, 20));
+    temperatureLabel.setFont(FontLoader.DIGITAL_FONT);
+    temperatureLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    temperatureLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+    temperatureLabel.setBackground(Color.WHITE);
+    temperatureLabel.setOpaque(true);
     leftPanel.add(temperatureLabel, BorderLayout.PAGE_START);
     myPanel.add(leftPanel, BorderLayout.LINE_START);
 

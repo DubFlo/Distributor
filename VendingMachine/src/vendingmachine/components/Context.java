@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import vendingmachine.SoundLoader;
+import vendingmachine.states.ColdWater;
+import vendingmachine.states.NoWater;
 import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
@@ -260,6 +262,11 @@ public class Context implements EventListener {
 
   @Override
   public void setWaterSupply(boolean b) {
+    if (!b && heatingSystem.isWaterSupplyEnabled()) {
+      changeState(NoWater.instance());
+    } else if (b && !heatingSystem.isWaterSupplyEnabled()) {
+      changeState(ColdWater.instance());
+    }
     heatingSystem.setWaterSupply(b);
   }
 
