@@ -34,7 +34,7 @@ public class Configuration extends JFrame {
   private static final String[] COINS_TITLES = { "Coins and their values: ", "Initial stock: ",
     "Accepted by the machine?" };
   private static final String[] DEFAULT_DRINKS = { "Black Coffee", "Cappuccino", "Hot Chocolate",
-    "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup" };
+    "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup", "Hot Water", "Oolong Tea" };
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
   private JPanel myPanel;
@@ -80,18 +80,51 @@ public class Configuration extends JFrame {
     sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
     cupsNbrLabel = new JLabel("Number of cups available: ");
     spoonsNbrLabel = new JLabel("Number of spoons availables: ");
+    
     sugarCubesNbrValue = new JTextField("20", 4);
     ((AbstractDocument)sugarCubesNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
     cupsNbrValue = new JTextField("10", 4);
     ((AbstractDocument)cupsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
     spoonsNbrValue = new JTextField("8", 4);
     ((AbstractDocument)spoonsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
+    
     problemLabel = new JLabel();
     problemLabel.setForeground(Color.RED);
+    
     createButton = new JButton("Click here to begin the simulation!");
     createButton.addActionListener(e -> check());
+    
     coinsStockValues = new JTextField[ChangeMachine.COINS.length];
     acceptedCoinsBoxes = new JCheckBox[ChangeMachine.COINS.length];
+    
+    drinksNames = new JTextField[10]; //A factoriser pour pas le refaire à chaque fois ???
+    drinksSugar = new JCheckBox[10];
+    drinksPrices = new JTextField[10];
+    drinksStocks = new JTextField[10];
+    
+    for (int i = 0; i < 10; i++) {
+      drinksNames[i] = new JTextField(18);
+      if (i < DEFAULT_DRINKS.length) {
+        drinksNames[i].setText(DEFAULT_DRINKS[i]);
+      }
+      drinksSugar[i] = new JCheckBox();
+      if (i < 6) {
+        drinksSugar[i].setSelected(true);
+      }
+      drinksPrices[i] = new JTextField("100", 5);
+      ((AbstractDocument)drinksPrices[i].getDocument()).setDocumentFilter(myDocumentFilter);
+      drinksStocks[i] = new JTextField("5", 5);
+      ((AbstractDocument)drinksStocks[i].getDocument()).setDocumentFilter(myDocumentFilter);
+    }
+    
+    for (int i = 0; i < ChangeMachine.COINS.length; i++) {
+      coinsStockValues[i] = new JTextField("5", 4);
+      ((AbstractDocument)coinsStockValues[i].getDocument()).setDocumentFilter(myDocumentFilter);
+      acceptedCoinsBoxes[i] = new JCheckBox();
+      if (i < ChangeMachine.COINS.length - 3) { // to refuse coins too small by default
+        acceptedCoinsBoxes[i].setSelected(true);
+      }
+    }
   }
 
   private void again() {
@@ -118,26 +151,8 @@ public class Configuration extends JFrame {
       c.gridx += 1;
     }
 
-    drinksNames = new JTextField[NBR_DRINKS]; //A factoriser pour pas le refaire à chaque fois ???
-    drinksSugar = new JCheckBox[NBR_DRINKS];
-    drinksPrices = new JTextField[NBR_DRINKS];
-    drinksStocks = new JTextField[NBR_DRINKS];
-
     for (int i = 0; i < NBR_DRINKS; i++) {
-      c.gridy += 1;
-      drinksNames[i] = new JTextField(18);
-      if (i < DEFAULT_DRINKS.length) {
-        drinksNames[i].setText(DEFAULT_DRINKS[i]);
-      }
-      drinksSugar[i] = new JCheckBox();
-      if (i < 6) {
-        drinksSugar[i].setSelected(true);
-      }
-      drinksPrices[i] = new JTextField("100", 5);
-      ((AbstractDocument)drinksPrices[i].getDocument()).setDocumentFilter(myDocumentFilter);
-      drinksStocks[i] = new JTextField("5", 5);
-      ((AbstractDocument)drinksStocks[i].getDocument()).setDocumentFilter(myDocumentFilter);
-      c.gridx = 0;
+      c.gridy += 1; c.gridx = 0;
       myPanel.add(drinksNames[i], c);
       c.gridx = 1;
       myPanel.add(drinksSugar[i], c);
@@ -147,21 +162,14 @@ public class Configuration extends JFrame {
       myPanel.add(drinksStocks[i], c);
     }
 
-    c.gridy += 1;
-    for (int i = 0; i < COINS_TITLES.length; i++) {
-      c.gridx = i;
-      myPanel.add(new JLabel(COINS_TITLES[i]), c);
+    c.gridy += 1; c.gridx = 0;
+    for (String s: COINS_TITLES) {
+      c.gridx += 1;
+      myPanel.add(new JLabel(s), c);
     }
 
     for (int i = 0; i < NBR_COINS; i++) {
-      c.gridy += 1;
-      coinsStockValues[i] = new JTextField("5", 4);
-      ((AbstractDocument)coinsStockValues[i].getDocument()).setDocumentFilter(myDocumentFilter);
-      acceptedCoinsBoxes[i] = new JCheckBox();
-      if (i < NBR_COINS - 3) { // to refuse coins too small by default
-        acceptedCoinsBoxes[i].setSelected(true);
-      }
-      c.gridx = 0;
+      c.gridy += 1; c.gridx = 0;
       myPanel.add(new JLabel(ChangeMachine.COINS_TEXT[i]), c);
       c.gridx = 1;
       myPanel.add(coinsStockValues[i], c);
