@@ -15,10 +15,16 @@ public class Idle extends State {
     return instance;
   }
 
-  // Singleton design pattern
-  private Idle() {
-  }
+  private Idle() {}
 
+  @Override
+  public void entry(Context c) {
+    super.entry(c);
+    if (c.getStock().getCupsNbr() == 0) {
+      c.changeState(NoCup.instance());
+    }
+  }
+  
   @Override
   public void coinInserted(Coin coin, Context c) {
     if (c.getChangeMachine().isCoinAccepted(coin)) {
@@ -35,7 +41,7 @@ public class Idle extends State {
 
   @Override
   public void drinkButton(Drink d, Context c) {
-    if (!c.getStock().isCupInStock()) { // Géré dans NoCup ??
+    if (!c.getStock().isCupInStock()) {
       c.changeState(NoCup.instance());
     } else if (!c.getStock().isDrinkInStock(d)) {
       c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " €)");

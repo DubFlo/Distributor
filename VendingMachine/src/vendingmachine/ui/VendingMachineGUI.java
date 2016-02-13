@@ -22,6 +22,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
@@ -216,9 +217,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
     // Information area
     JPanel infoPanel = new JPanel();
+    JScrollPane scrInfoPanel = new JScrollPane(infoPanel);
     infoArea = new JTextArea();
     infoArea.setEditable(false);
     infoPanel.add(infoArea);
+    
     infoPanel.setBackground(Color.WHITE);
 
     // Ending operations
@@ -228,13 +231,14 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     leftPane.setRightComponent(coinsPanel);
     JSplitPane rightPane = new JSplitPane();
     rightPane.setLeftComponent(leftPane);
-    rightPane.setRightComponent(infoPanel);
+    rightPane.setRightComponent(scrInfoPanel);
     myContainer.add(rightPane);
     setJMenuBar(menuBar);
 
     addListeners();
     observer.changeState(Idle.instance()); // moche mais où d'autre ??
 
+    setMinimumSize(new Dimension(400, 400));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
     setLocationRelativeTo(null);

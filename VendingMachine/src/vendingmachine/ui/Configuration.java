@@ -241,15 +241,15 @@ public class Configuration extends JFrame {
     Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
     try {
       for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
-        if (drinksNames[i].getText().equals("")) {
-          throw new NumberFormatException(); //Pas propre, pas la bonne exception ???
+        if (drinksNames[i].getText().equals("") || drinksNames[i].getText().length() > 18) {
+          throw new IllegalArgumentException(); //Pas propre, pas la bonne exception ???
         }
         final Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
             Integer.parseInt(drinksPrices[i].getText())); // final ici est suffisant ?
         drinkList.add(d);
         drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
       }
-    } catch (NumberFormatException e) {
+    } catch (IllegalArgumentException e) {
       problemLabel.setText(getProblemText("drink"));
       pack(); //propre ??
       return;
@@ -294,7 +294,8 @@ public class Configuration extends JFrame {
   }
 
   private String getProblemText(String part) {
-    return "Error while parsing " + part + " info. Fields can't be empty. Integers can't be larger than 2^31.";
+    return "<html>Error while parsing " + part + " info. Fields can't be empty.<br>"
+        + "Names can't be longer than 18 characters. Integers can't be larger than 2^31.</html>";
   }
 
 }

@@ -35,14 +35,9 @@ public class Preparing extends State {
   public void exit(Context c) {
     c.setCupBool(true);
     c.getStock().removeCup();
-    if (c.getStock().getCupsNbr() == 0) { // !!!! si le nombre de cup est
-      // initialisé à 0, comment faire
-      // ? !!!!!!
-      // laisser première condition
-      // dans Idle ???
-      c.changeState(NoCup.instance());
+    if (c.getChosenDrink().isSugar()) {
+      c.getStock().removeSpoon(); // deal with 0 spoon here !!!!!!
     }
-    c.getStock().removeSpoon(); // deal with 0 spoon here !!!!!!
     c.getStock().removeDrink(c.getChosenDrink());
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
