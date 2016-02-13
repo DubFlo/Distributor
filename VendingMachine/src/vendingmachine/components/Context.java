@@ -46,6 +46,7 @@ public class Context implements EventListener {
 
   @Override
   public void cancel() {
+    SoundLoader.play(SoundLoader.click);
     state.cancel(this);
   }
 
@@ -65,6 +66,7 @@ public class Context implements EventListener {
 
   @Override
   public void confirm() {
+    SoundLoader.play(SoundLoader.click);
     state.confirm(this);
   }
 
@@ -74,6 +76,7 @@ public class Context implements EventListener {
 
   @Override
   public void drinkButton(Drink drink) {
+    SoundLoader.play(SoundLoader.click);
     state.drinkButton(drink, this);
   }
 
@@ -174,11 +177,13 @@ public class Context implements EventListener {
 
   @Override
   public void less() {
+    SoundLoader.play(SoundLoader.click);
     state.less(this);
   }
 
   @Override
   public void more() {
+    SoundLoader.play(SoundLoader.click);
     state.more(this);
   }
 
@@ -237,7 +242,7 @@ public class Context implements EventListener {
   @Override
   public void takeChange() {
     setChangeBool(false);
-    SoundLoader.cling.stop();
+    SoundLoader.cling.stop(); // stop the sound effect is the change is taken.
     log.info("Change taken.");
   }
 

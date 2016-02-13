@@ -20,6 +20,7 @@ public class SoundLoader {
   public static final Clip beep;
   public static final Clip cling;
   public static final Clip fop;
+  public static final Clip click;
 
   static {
     // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
@@ -62,10 +63,24 @@ public class SoundLoader {
       log.error("fop.wav not properly loaded.");
     }
     fop = fo;
+    
+    //https://www.freesound.org/people/kwahmah_02/sounds/256116/
+    Clip cl;
+    AudioInputStream clStream;
+    try {
+      clStream = AudioSystem.getAudioInputStream(new File(PATH + "click.wav"));
+      cl = AudioSystem.getClip();
+      cl.open(clStream);
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+      cl = null;
+      log.error("click.wav not properly loaded.");
+      e.printStackTrace();
+    }
+    click = cl;
   }
 
   public static void play(Clip clip) {
-    if (clip != null) { // to work if something hasn't loaded properly
+    if (clip != null) { // works if something hasn't loaded properly
       if (clip.isRunning()) {
         clip.stop();
       }
