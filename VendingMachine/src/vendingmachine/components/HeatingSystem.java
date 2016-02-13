@@ -2,27 +2,33 @@ package vendingmachine.components;
 
 import javax.swing.Timer;
 
+import vendingmachine.states.ColdWater;
+import vendingmachine.states.Idle;
 import vendingmachine.ui.TemperatureListener;
 
 public class HeatingSystem {
 
-  private int timeCooling;
-  private int timeWarming;
   private static final double MIN_TEMPERATURE = 90.0;
   private static final double MAX_TEMPERATURE = 96.0;
+  private static final double COLD_LIMIT = 80.0;
+  
   private boolean waterSupply;
 
   private double temperature;
+  private int timeCooling;
+  private int timeWarming;
 
   private boolean heating;
   private TemperatureListener observer;
+  private Context context;
   
   private Timer t;
 
-  public HeatingSystem() {
+  public HeatingSystem(Context context) {
     this.waterSupply = true;
     this.temperature = 90.1;
     this.heating = false;
+    this.context = context;
 
     this.timeCooling = 0;
     this.timeWarming = 0;
@@ -52,7 +58,7 @@ public class HeatingSystem {
 
   public void setWaterSupply(boolean b) {
     if (!waterSupply && b) {
-      temperature = 20;
+      temperature = 75; //Hot water a bit too cold is reintroduced in the system //A CHANGER
       t.restart();
     } else if (waterSupply && !b) {
       setTemperature(-1);
@@ -69,9 +75,15 @@ public class HeatingSystem {
       heating = true;
       timeCooling = 0;
     }
+    
+    if (context.getState() == ColdWater.instance() && temperature >= COLD_LIMIT) {
+      context.changeState(Idle.instance());
+    } else if (context.getState() != ColdWater.instance() && temperature < COLD_LIMIT) {
+      context.changeState(ColdWater.instance());
+    }
   }
 
-  public void updateTemperature() {
+  public void updateTemperature() { //formules incorrectes !!!!
     if (waterSupply) {
       updateState();
       if (heating) {
@@ -89,5 +101,9 @@ public class HeatingSystem {
 
   public boolean isWaterSupplyEnabled() {
     return waterSupply;
+  }
+  
+  public void drinkOrdered() {
+    temperature = (9*temperature + 20)/10;
   }
 }

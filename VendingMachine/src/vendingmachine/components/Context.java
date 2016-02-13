@@ -37,7 +37,7 @@ public class Context implements EventListener {
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
-    this.heatingSystem = new HeatingSystem();
+    this.heatingSystem = new HeatingSystem(this);
 
     this.amountInside = 0;
     this.chosenSugar = 0;

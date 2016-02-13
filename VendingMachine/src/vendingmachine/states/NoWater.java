@@ -14,8 +14,7 @@ public class NoWater extends Problem {
   }
 
   // Singleton design pattern
-  private NoWater() {
-  }
+  private NoWater() {}
 
   @Override
   public String getDefaultText(Context c) {

@@ -43,6 +43,7 @@ public class Preparing extends State {
       }
     }
     c.getStock().removeDrink(c.getChosenDrink());
+    c.getHeatingSystem().drinkOrdered();
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
     log.info(c.getChosenDrink().getName() + " prepared.");
