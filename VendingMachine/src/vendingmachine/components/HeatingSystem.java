@@ -11,6 +11,7 @@ public class HeatingSystem {
   private static final double MIN_TEMPERATURE = 90.0;
   private static final double MAX_TEMPERATURE = 96.0;
   private static final double COLD_LIMIT = 80.0;
+  private static final double RUNNING_WATER_TEMPERATURE = 60.0;
   
   private boolean waterSupply;
 
@@ -58,7 +59,7 @@ public class HeatingSystem {
 
   public void setWaterSupply(boolean b) {
     if (!waterSupply && b) {
-      temperature = 75; //Hot water a bit too cold is reintroduced in the system //A CHANGER
+      temperature = RUNNING_WATER_TEMPERATURE; //Hot running water is reintroduced in the system
       t.restart();
     } else if (waterSupply && !b) {
       setTemperature(-1);
@@ -104,6 +105,6 @@ public class HeatingSystem {
   }
   
   public void drinkOrdered() {
-    temperature = (9*temperature + 20)/10;
+    temperature = (4*temperature + RUNNING_WATER_TEMPERATURE)/5;
   }
 }
