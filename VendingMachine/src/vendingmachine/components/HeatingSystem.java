@@ -52,9 +52,7 @@ public class HeatingSystem {
     if (heating && temperature > MAX_TEMPERATURE) {
       heating = false;
       timeWarming = 0;
-    }
-
-    else if (!heating && temperature < MIN_TEMPERATURE) {
+    } else if (!heating && temperature < MIN_TEMPERATURE) {
       heating = true;
       timeCooling = 0;
     }

@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -51,6 +52,15 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private JButton moreSugar;
   private JButton okButton;
   private JButton cancelButton;
+  
+  private JMenuBar menuBar;
+  private JMenu waterSupplyMenu;
+  //A faire
+  private JMenu coinsMenu;
+  private JMenu drinksMenu;
+  private JMenu settings;
+  private JMenuItem newVM;
+  private JMenuItem quit;
 
   private Timer timer;
 
@@ -77,6 +87,10 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
       CoinJButton b = coinButtonsList.get(i);
       b.addActionListener(e -> observer.coinInserted(b.getCoin()));
     }
+    
+    newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
+    quit.addActionListener(e -> dispose());
+    
   }
 
   public void init() {
@@ -186,16 +200,19 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     }
 
     // JMenuBar
-    JMenuBar menuBar = new JMenuBar();
-    JMenu waterSupplyMenu = new JMenu("Water Supply");
-    JMenu coinsMenu = new JMenu("Coin Stock");
-    JMenu drinksMenu = new JMenu("Drink Stock");
-    JMenu settings = new JMenu("Settings");
-    // A faire
+    menuBar = new JMenuBar();
+    waterSupplyMenu = new JMenu("Water Supply");
+    coinsMenu = new JMenu("Coin Stock");
+    drinksMenu = new JMenu("Drink Stock");
+    settings = new JMenu("Settings");
+    newVM = new JMenuItem("New Vending Machine");
+    quit = new JMenuItem("Quit");
     menuBar.add(waterSupplyMenu);
     menuBar.add(coinsMenu);
     menuBar.add(drinksMenu);
     menuBar.add(settings);
+    settings.add(newVM);
+    settings.add(quit);
 
     // Information area
     JPanel infoPanel = new JPanel();
@@ -220,6 +237,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 

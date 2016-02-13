@@ -29,12 +29,12 @@ public class Configuration extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
-  private static final String[] COLUMNS_TITLES = { "Enter here the drinks names: ", "Contains sugar?",
-    "Price (in cents): ", "Initial stock:" };
+  private static final String[] COLUMNS_TITLES = { "Enter here the drinks names: ",
+    "Contains sugar?", "Price (in cents): ", "Initial stock:" };
   private static final String[] COINS_TITLES = { "Coins and their values: ", "Initial stock: ",
     "Accepted by the machine?" };
-  public static final String[] DEFAULT_DRINKS = { "Black Coffee", "Cappuccino", "Hot Chocolate", "Hot Milk",
-    "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup" };
+  private static final String[] DEFAULT_DRINKS = { "Black Coffee", "Cappuccino", "Hot Chocolate",
+    "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup" };
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
   private JPanel myPanel;
@@ -201,6 +201,7 @@ public class Configuration extends JFrame {
     myPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 
@@ -254,7 +255,8 @@ public class Configuration extends JFrame {
     }
     stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    Context c = new Context((Integer)drinkNbrComboBox.getSelectedItem(), drinkList, changeMachine, stock);
+    Context c = new Context(
+        (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, changeMachine, stock);
     VendingMachineGUI gui = new VendingMachineGUI(c);
     dispose();
 

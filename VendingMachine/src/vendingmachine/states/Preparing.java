@@ -8,7 +8,7 @@ import vendingmachine.components.Context;
 public class Preparing extends State {
 
   private static Preparing instance;
-  private static Timer timer; // Le mettre static ?
+  private static Timer timer; // Le mettre d'instance ? Ne marche pas
 
   public static Preparing instance(Context c) {
     if (instance == null) {
