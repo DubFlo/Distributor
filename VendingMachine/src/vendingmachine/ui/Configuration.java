@@ -3,11 +3,13 @@ package vendingmachine.ui;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
 
@@ -29,10 +32,10 @@ public class Configuration extends JFrame {
 
   private static final long serialVersionUID = 1L;
 
-  private static final String[] COLUMNS_TITLES = { "Enter here the drinks names: ",
-    "Contains sugar?", "Price (in cents): ", "Initial stock:" };
-  private static final String[] COINS_TITLES = { "Coins and their values: ", "Initial stock: ",
-    "Accepted by the machine?" };
+  private static final String[] COLUMNS_TITLES = { "  Enter here the drinks names:  ",
+    "  Contains sugar?  ", "  Price (in cents):  ", "  Initial stock:  " };
+  private static final String[] COINS_TITLES = { "Coins and their values:  ", "  Initial stock:  ",
+    "  Accepted by the machine?  " };
   private static final String[] DEFAULT_DRINKS = { "Black Coffee", "Cappuccino", "Hot Chocolate",
     "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup", "Hot Water", "Oolong Tea" };
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -135,72 +138,91 @@ public class Configuration extends JFrame {
   public void init() {
     myPanel = new JPanel();
     myPanel.setLayout(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
+    GridBagConstraints c1 = new GridBagConstraints();
+    c1.insets = new Insets(5, 5, 5, 5);
 
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
     final int NBR_COINS = ChangeMachine.COINS.length;
 
-    c.gridy = 0;  c.gridx = 0;
-    myPanel.add(drinkNbrLabel);
-    c.gridx = 1;
-    myPanel.add(drinkNbrComboBox);
-
-    c.gridy += 1; c.gridx = 0;
+    c1.gridy = 0;
+    myPanel.add(drinkNbrLabel, c1);
+    c1.gridy = 1;
+    myPanel.add(drinkNbrComboBox, c1);
+    
+    JPanel drinkPanel = new JPanel(new GridBagLayout());
+    Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
+    drinkPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Drink Information"));
+    GridBagConstraints c2 = new GridBagConstraints();
+    c2.gridy = 0; c2.gridx = 0;
     for (int i = 0; i < COLUMNS_TITLES.length; i++) {
-      myPanel.add(new JLabel(COLUMNS_TITLES[i]), c);
-      c.gridx += 1;
+      drinkPanel.add(new JLabel(COLUMNS_TITLES[i]), c2);
+      c2.gridx += 1;
     }
 
     for (int i = 0; i < NBR_DRINKS; i++) {
-      c.gridy += 1; c.gridx = 0;
-      myPanel.add(drinksNames[i], c);
-      c.gridx = 1;
-      myPanel.add(drinksSugar[i], c);
-      c.gridx = 2;
-      myPanel.add(drinksPrices[i], c);
-      c.gridx = 3;
-      myPanel.add(drinksStocks[i], c);
+      c2.gridy += 1; c2.gridx = 0;
+      drinkPanel.add(drinksNames[i], c2);
+      c2.gridx = 1;
+      drinkPanel.add(drinksSugar[i], c2);
+      c2.gridx = 2;
+      drinkPanel.add(drinksPrices[i], c2);
+      c2.gridx = 3;
+      drinkPanel.add(drinksStocks[i], c2);
     }
-
-    c.gridy += 1; c.gridx = 0;
+    
+    c1.gridy = 2;
+    myPanel.add(drinkPanel, c1);
+    
+    JPanel coinPanel = new JPanel(new GridBagLayout());
+    coinPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Coin Information"));
+    GridBagConstraints c3 = new GridBagConstraints();
+    c3.gridy += 1; c3.gridx = 0;
     for (String s: COINS_TITLES) {
-      c.gridx += 1;
-      myPanel.add(new JLabel(s), c);
+      coinPanel.add(new JLabel(s), c3);
+      c3.gridx += 1;
     }
 
     for (int i = 0; i < NBR_COINS; i++) {
-      c.gridy += 1; c.gridx = 0;
-      myPanel.add(new JLabel(ChangeMachine.COINS_TEXT[i]), c);
-      c.gridx = 1;
-      myPanel.add(coinsStockValues[i], c);
-      c.gridx = 2;
-      myPanel.add(acceptedCoinsBoxes[i], c);
+      c3.gridy += 1; c3.gridx = 0;
+      coinPanel.add(new JLabel(ChangeMachine.COINS_TEXT[i]), c3);
+      c3.gridx = 1;
+      coinPanel.add(coinsStockValues[i], c3);
+      c3.gridx = 2;
+      coinPanel.add(acceptedCoinsBoxes[i], c3);
     }
 
-    c.gridy += 1;
-    c.gridx = 0;
-    myPanel.add(sugarCubesNbrLabel, c);
-    c.gridx = 1;
-    myPanel.add(sugarCubesNbrValue, c);
+    c1.gridy = 3;
+    myPanel.add(coinPanel, c1);
+    
+    JPanel stockPanel = new JPanel(new GridBagLayout());
+    stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
+    GridBagConstraints c4 = new GridBagConstraints();
+    c4.gridy = 0;
+    c4.gridx = 0;
+    stockPanel.add(sugarCubesNbrLabel, c4);
+    c4.gridx = 1;
+    stockPanel.add(sugarCubesNbrValue, c4);
 
-    c.gridy += 1;
-    c.gridx = 0;
-    myPanel.add(cupsNbrLabel, c);
-    c.gridx = 1;
-    myPanel.add(cupsNbrValue, c);
+    c4.gridy += 1;
+    c4.gridx = 0;
+    stockPanel.add(cupsNbrLabel, c4);
+    c4.gridx = 1;
+    stockPanel.add(cupsNbrValue, c4);
 
-    c.gridy += 1;
-    c.gridx = 0;
-    myPanel.add(spoonsNbrLabel, c);
-    c.gridx = 1;
-    myPanel.add(spoonsNbrValue, c);
+    c4.gridy += 1;
+    c4.gridx = 0;
+    stockPanel.add(spoonsNbrLabel, c4);
+    c4.gridx = 1;
+    stockPanel.add(spoonsNbrValue, c4);
 
-    c.gridy += 1;
-    c.gridx = 0;
-    c.gridwidth = GridBagConstraints.REMAINDER;
-    myPanel.add(createButton, c);
-    c.gridy += 1;
-    myPanel.add(problemLabel, c);
+    c1.gridy = 4;
+    myPanel.add(stockPanel, c1);
+    
+    c1.gridy = 5; c1.gridx = 0;
+    c1.gridwidth = GridBagConstraints.REMAINDER;
+    myPanel.add(createButton, c1);
+    c1.gridy = 6;
+    myPanel.add(problemLabel, c1);
 
     add(myPanel);
     scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
