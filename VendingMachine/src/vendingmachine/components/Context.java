@@ -258,4 +258,9 @@ public class Context implements EventListener {
     return NBR_DRINKS;
   }
 
+  @Override
+  public void setWaterSupply(boolean b) {
+    heatingSystem.setWaterSupply(b);
+  }
+
 }

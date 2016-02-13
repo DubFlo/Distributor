@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -56,7 +57,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   
   private JMenuBar menuBar;
   private JMenu waterSupplyMenu;
-  //A faire
+  private JCheckBoxMenuItem waterSupplyCheckBox;
   private JMenu coinsMenu;
   private JMenu drinksMenu;
   private JMenu settings;
@@ -91,7 +92,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     
     newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
     quit.addActionListener(e -> dispose());
-    
+    waterSupplyCheckBox.addActionListener(e -> observer.setWaterSupply(waterSupplyCheckBox.isSelected()));
   }
 
   public void init() {
@@ -203,12 +204,14 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     // JMenuBar
     menuBar = new JMenuBar();
     waterSupplyMenu = new JMenu("Water Supply");
+    waterSupplyCheckBox = new JCheckBoxMenuItem("Water supply enabled", true);
     coinsMenu = new JMenu("Coin Stock");
     drinksMenu = new JMenu("Drink Stock");
     settings = new JMenu("Settings");
     newVM = new JMenuItem("New Vending Machine");
     quit = new JMenuItem("Quit");
     menuBar.add(waterSupplyMenu);
+    waterSupplyMenu.add(waterSupplyCheckBox);
     menuBar.add(coinsMenu);
     menuBar.add(drinksMenu);
     menuBar.add(settings);
@@ -280,8 +283,12 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
   @Override
   public void setTemperature(double temperature) {
+    if (temperature == -1) {
+      temperatureLabel.setText("NO WATER");
+    } else {
     DecimalFormat f = new DecimalFormat("#.#");
     temperatureLabel.setText(f.format(temperature) + " °C");
+    }
   }
 
   @Override

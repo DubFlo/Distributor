@@ -37,6 +37,8 @@ public interface EventListener {
   void setCupBool(boolean b);
 
   <T extends ContextListener & TemperatureListener> void setObserver(T o);
+  
+  void setWaterSupply(boolean b);
 
   void takeChange();
 

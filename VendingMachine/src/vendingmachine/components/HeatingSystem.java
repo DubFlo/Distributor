@@ -16,6 +16,8 @@ public class HeatingSystem {
 
   private boolean heating;
   private TemperatureListener observer;
+  
+  private Timer t;
 
   public HeatingSystem() {
     this.waterSupply = true;
@@ -25,7 +27,8 @@ public class HeatingSystem {
     this.timeCooling = 0;
     this.timeWarming = 0;
     int delay = 1000; // milliseconds
-    new Timer(delay, e -> this.updateTemperature()).start();
+    t = new Timer(delay, e -> this.updateTemperature());
+    t.start();
   }
 
   public double getTemperature() {
@@ -42,9 +45,19 @@ public class HeatingSystem {
 
   public void setTemperature(double temperature) {
     this.temperature = temperature;
+    if (observer != null) {
+      observer.setTemperature(this.temperature);
+    }
   }
 
   public void setWaterSupply(boolean b) {
+    if (!waterSupply && b) {
+      temperature = 20;
+      t.restart();
+    } else if (waterSupply && !b) {
+      setTemperature(-1);
+      t.stop();
+    }
     this.waterSupply = b;
   }
 
@@ -63,17 +76,13 @@ public class HeatingSystem {
       updateState();
       if (heating) {
         timeWarming += 1;
-        temperature += (-10)
-            * (Math.exp(-0.0405 * (timeWarming + 1)) - Math.exp(-0.0405 * timeWarming));
+        setTemperature(temperature + (-10)
+            * (Math.exp(-0.0405 * (timeWarming + 1)) - Math.exp(-0.0405 * timeWarming)));
         // http://luciole.ca/gilles/mat265/chap3/var-temp.html
       } else {
         timeCooling += 1;
-        temperature -= 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
-            * (1 - Math.pow(61 / 75.0, 1 / 400.0));
-      }
-
-      if (observer != null) {
-        observer.setTemperature(temperature);
+        setTemperature(temperature - 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
+            * (1 - Math.pow(61 / 75.0, 1 / 400.0)));
       }
     }
   }
