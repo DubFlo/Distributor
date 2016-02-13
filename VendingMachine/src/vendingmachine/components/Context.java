@@ -155,10 +155,10 @@ public class Context implements EventListener {
 
   public void giveChange() {
     changeMachine.giveChange();
-    if (amountInside > 0) {
+    if (amountInside > chosenDrink.getPrice()) {
       setChangeBool(true);
+      SoundLoader.play(SoundLoader.cling);
     }
-    SoundLoader.play(SoundLoader.cling);
     amountInside = 0;
   }
 

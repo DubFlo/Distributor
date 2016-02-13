@@ -2,6 +2,7 @@ package vendingmachine.states;
 
 import javax.swing.Timer;
 
+import vendingmachine.SoundLoader;
 import vendingmachine.components.Coin;
 import vendingmachine.components.Context;
 
@@ -15,12 +16,13 @@ public class Preparing extends State {
       instance = new Preparing(c);
     }
     timer.restart();
+    SoundLoader.play(SoundLoader.filling);
     return instance;
   }
 
   // Singleton design pattern
   private Preparing(Context c) {
-    int delay = 2000;
+    int delay = (int) (SoundLoader.filling.getMicrosecondLength()/1000);
     timer = new Timer(delay, e -> c.changeState(Idle.instance()));
     timer.setRepeats(false);
   }
@@ -36,7 +38,9 @@ public class Preparing extends State {
     c.setCupBool(true);
     c.getStock().removeCup();
     if (c.getChosenDrink().isSugar()) {
-      c.getStock().removeSpoon(); // deal with 0 spoon here !!!!!!
+      if (!(c.getStock().getSpoonsNbr() == 0)) {
+        c.getStock().removeSpoon(); // deal with 0 spoon here !!!!!!
+      }
     }
     c.getStock().removeDrink(c.getChosenDrink());
     c.playAlarmSound();

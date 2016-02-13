@@ -21,6 +21,7 @@ public class SoundLoader {
   public static final Clip cling;
   public static final Clip fop;
   public static final Clip click;
+  public static final Clip filling;
 
   static {
     // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
@@ -77,6 +78,19 @@ public class SoundLoader {
       e.printStackTrace();
     }
     click = cl;
+    
+    Clip fi;
+    AudioInputStream fiStream;
+    try {
+      fiStream = AudioSystem.getAudioInputStream(new File(PATH + "filling.wav"));
+      fi = AudioSystem.getClip();
+      fi.open(fiStream);
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+      fi = null;
+      log.error("filling.wav not properly loaded.");
+      e.printStackTrace();
+    }
+    filling = fi;
   }
 
   public static void play(Clip clip) {
