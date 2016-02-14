@@ -15,8 +15,7 @@ public class Asking extends State {
   }
 
   // Singleton design pattern
-  private Asking() {
-  }
+  private Asking() {}
 
   @Override
   public void cancel(Context c) {

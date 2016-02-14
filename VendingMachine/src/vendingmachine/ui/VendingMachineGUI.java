@@ -91,8 +91,26 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     }
     
     newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
-    quit.addActionListener(e -> dispose());
+    quit.addActionListener(e -> System.exit(0));
     waterSupplyCheckBox.addActionListener(e -> observer.setWaterSupply(waterSupplyCheckBox.isSelected()));
+  }
+  
+  private void createMenuBar() {
+    menuBar = new JMenuBar();
+    waterSupplyMenu = new JMenu("Water Supply");
+    waterSupplyCheckBox = new JCheckBoxMenuItem("Water supply enabled", true);
+    coinsMenu = new JMenu("Coin Stock");
+    drinksMenu = new JMenu("Drink Stock");
+    settings = new JMenu("Settings");
+    newVM = new JMenuItem("New Vending Machine");
+    quit = new JMenuItem("Quit");
+    menuBar.add(waterSupplyMenu);
+    waterSupplyMenu.add(waterSupplyCheckBox);
+    menuBar.add(coinsMenu);
+    menuBar.add(drinksMenu);
+    menuBar.add(settings);
+    settings.add(newVM);
+    settings.add(quit);
   }
 
   public void init() {
@@ -206,21 +224,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     }
 
     // JMenuBar
-    menuBar = new JMenuBar();
-    waterSupplyMenu = new JMenu("Water Supply");
-    waterSupplyCheckBox = new JCheckBoxMenuItem("Water supply enabled", true);
-    coinsMenu = new JMenu("Coin Stock");
-    drinksMenu = new JMenu("Drink Stock");
-    settings = new JMenu("Settings");
-    newVM = new JMenuItem("New Vending Machine");
-    quit = new JMenuItem("Quit");
-    menuBar.add(waterSupplyMenu);
-    waterSupplyMenu.add(waterSupplyCheckBox);
-    menuBar.add(coinsMenu);
-    menuBar.add(drinksMenu);
-    menuBar.add(settings);
-    settings.add(newVM);
-    settings.add(quit);
+    createMenuBar();
 
     // Information area
     JPanel infoPanel = new JPanel();

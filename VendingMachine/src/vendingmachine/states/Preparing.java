@@ -9,13 +9,13 @@ import vendingmachine.components.Context;
 public class Preparing extends State {
 
   private static Preparing instance;
-  private static Timer timer; // Le mettre d'instance ? Ne marche pas
+  private Timer timer;
 
   public static Preparing instance(Context c) {
     if (instance == null) {
       instance = new Preparing(c);
     }
-    timer.restart();
+    instance.timer.restart();
     SoundLoader.play(SoundLoader.filling);
     return instance;
   }
@@ -23,18 +23,17 @@ public class Preparing extends State {
   // Singleton design pattern
   private Preparing(Context c) {
     int delay = (int) (SoundLoader.filling.getMicrosecondLength()/1000);
-    timer = new Timer(delay, e -> c.changeState(Idle.instance()));
+    timer = new Timer(delay, e -> preparingOver(c));
     timer.setRepeats(false);
   }
 
   @Override
   public void coinInserted(Coin coin, Context c) {
     super.coinInserted(coin, c);
-    c.setTemporaryNorthText("Please wait for the end of the preparation...");
+    c.setTemporaryNorthText("Wait for the end of the preparation...");
   }
 
-  @Override
-  public void exit(Context c) {
+  private void preparingOver(Context c) {
     c.setCupBool(true);
     c.getStock().removeCup();
     if (c.getChosenDrink().isSugar()) {
@@ -47,8 +46,9 @@ public class Preparing extends State {
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
     log.info(c.getChosenDrink().getName() + " prepared.");
+    c.changeState(Idle.instance());
   }
-
+  
   @Override
   public String getDefaultText(Context c) {
     return "Your drink is in preparation...";

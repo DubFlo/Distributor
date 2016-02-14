@@ -59,7 +59,7 @@ public class HeatingSystem {
 
   public void setWaterSupply(boolean b) {
     if (!waterSupply && b) {
-      temperature = RUNNING_WATER_TEMPERATURE; //Hot running water is reintroduced in the system
+      temperature = RUNNING_WATER_TEMPERATURE; //Running water is reintroduced in the system
       t.restart();
     } else if (waterSupply && !b) {
       setTemperature(-1);
@@ -86,7 +86,6 @@ public class HeatingSystem {
 
   public void updateTemperature() { //formules incorrectes !!!!
     if (waterSupply) {
-      updateState();
       if (heating) {
         timeWarming += 1;
         setTemperature(temperature + (-10)
@@ -97,6 +96,7 @@ public class HeatingSystem {
         setTemperature(temperature - 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
             * (1 - Math.pow(61 / 75.0, 1 / 400.0)));
       }
+      updateState();
     }
   }
 
@@ -106,5 +106,6 @@ public class HeatingSystem {
   
   public void drinkOrdered() {
     temperature = (4*temperature + RUNNING_WATER_TEMPERATURE)/5;
+    updateState();
   }
 }

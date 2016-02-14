@@ -54,9 +54,6 @@ public class Context implements EventListener {
 
   @Override
   public void changeState(State newState) {
-    if (state != null) {
-      state.exit(this);
-    }
     state = newState;
     state.entry(this);
   }
@@ -157,10 +154,17 @@ public class Context implements EventListener {
 
   public void giveChange() {
     changeMachine.giveChange();
-    if (amountInside > chosenDrink.getPrice()) {
+    if (amountInside > chosenDrink.getPrice()) { //erreur car cancel() peut appeler cette méthode sans avoir choisi de boisson...
       setChangeBool(true);
       SoundLoader.play(SoundLoader.cling);
     }
+    amountInside = 0;
+  }
+  
+  public void giveChangeOnCancel() {
+    changeMachine.giveChange();
+    setChangeBool(true);
+    SoundLoader.play(SoundLoader.cling);
     amountInside = 0;
   }
 

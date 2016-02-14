@@ -14,7 +14,7 @@ public abstract class State {
   public void cancel(Context c) {
     if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
       // Cette condition est toujours vraie mais fait les calculs; bof
-      c.giveChange();
+      c.giveChangeOnCancel();
       c.getState().entry(c); // ou this.entry(c) non ???
     }
   }
@@ -36,9 +36,6 @@ public abstract class State {
     c.setSugarText(getSugarText(c));
     c.setInfo();
     log.info("State " + this.getClass().getSimpleName() + " entered.");
-  }
-
-  public void exit(Context c) {
   }
 
   public abstract String getDefaultText(Context c);
