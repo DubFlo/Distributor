@@ -4,6 +4,7 @@ import javax.swing.Timer;
 
 import vendingmachine.states.ColdWater;
 import vendingmachine.states.Idle;
+import vendingmachine.states.NoWater;
 import vendingmachine.ui.TemperatureListener;
 
 public class HeatingSystem {
@@ -60,9 +61,11 @@ public class HeatingSystem {
   public void setWaterSupply(boolean b) {
     if (!waterSupply && b) {
       temperature = RUNNING_WATER_TEMPERATURE; //Running water is reintroduced in the system
+      updateState();
       t.restart();
     } else if (waterSupply && !b) {
       setTemperature(-1);
+      context.changeState(NoWater.instance());
       t.stop();
     }
     this.waterSupply = b;
@@ -105,7 +108,7 @@ public class HeatingSystem {
   }
   
   public void drinkOrdered() {
-    temperature = (4*temperature + RUNNING_WATER_TEMPERATURE)/5;
+    setTemperature((4*temperature + RUNNING_WATER_TEMPERATURE)/5);
     updateState();
   }
 }

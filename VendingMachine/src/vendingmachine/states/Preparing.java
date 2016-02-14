@@ -42,11 +42,13 @@ public class Preparing extends State {
       }
     }
     c.getStock().removeDrink(c.getChosenDrink());
-    c.getHeatingSystem().drinkOrdered();
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
     log.info(c.getChosenDrink().getName() + " prepared.");
-    c.changeState(Idle.instance());
+    if (c.getState() != NoWater.instance()) { //Peu propre mais comment faire autrement ?
+      c.getHeatingSystem().drinkOrdered();
+      c.changeState(Idle.instance());
+    }
   }
   
   @Override
