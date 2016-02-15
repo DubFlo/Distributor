@@ -64,7 +64,7 @@ public class HeatingSystem {
       updateState();
       t.restart();
     } else if (waterSupply && !b) {
-      setTemperature(-1);
+      setTemperature(-1); //peu propre
       context.changeState(NoWater.instance());
       t.stop();
     }

@@ -48,7 +48,6 @@ public class Asking extends State {
   public void less(Context c) {
     if (c.getChosenSugar() > 0 && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
       c.decrementChosenSugar();
-      c.setSugarText(getSugarText(c));
     }
   }
 
@@ -56,7 +55,6 @@ public class Asking extends State {
   public void more(Context c) {
     if (c.getChosenSugar() < MAX_SUGAR && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
       c.incrementChosenSugar();
-      c.setSugarText(getSugarText(c)); // Faire plus simple ??
     } else if (c.getChosenSugar() == MAX_SUGAR) {
       c.setTemporaryNorthText("Maximum quantity of sugar : " + MAX_SUGAR);
     } else {

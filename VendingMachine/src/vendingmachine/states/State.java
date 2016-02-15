@@ -15,26 +15,22 @@ public abstract class State {
     if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
       // Cette condition est toujours vraie mais fait les calculs; bof
       c.giveChangeOnCancel();
-      c.getState().entry(c); // ou this.entry(c) non ???
     }
   }
 
   public void coinInserted(Coin coin, Context c) {
     c.setChangeBool(true);
+    c.addChangeOutCoin(coin);
     log.info(coin.VALUE / 100.0 + " € inserted but not allowed.");
-  } // afficher le montant rendu; à faire
-
-  public void confirm(Context c) {
   }
-
+  
   // These buttons do nothing by default
-  public void drinkButton(Drink drink, Context c) {
-  }
+  public void confirm(Context c) {}
+  public void drinkButton(Drink drink, Context c) {}
+  public void less(Context c) {}
+  public void more(Context c) {}
 
   public void entry(Context c) {
-    c.setNorthText(getDefaultText(c));
-    c.setSugarText(getSugarText(c));
-    c.setInfo();
     log.info("State " + this.getClass().getSimpleName() + " entered.");
   }
 
@@ -44,16 +40,9 @@ public abstract class State {
     return "";
   }
 
-  public void less(Context c) {
-  }
-
-  public void more(Context c) {
-  }
-
   @Override
   public String toString() {
-    return this.getClass().getSimpleName(); // instead of getName() to avoid
-    // the package name
+    return this.getClass().getSimpleName(); // instead of getName() to avoid the package name
   }
 
 }

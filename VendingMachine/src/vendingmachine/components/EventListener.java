@@ -18,6 +18,8 @@ public interface EventListener {
 
   void drinkButton(Drink drink);
   
+  String getChangeOutInfo();
+  
   int getNbrDrinks();
 
   List<Drink> getDrinks();
@@ -43,5 +45,7 @@ public interface EventListener {
   void takeChange();
 
   void takeCup();
+
+
 
 }

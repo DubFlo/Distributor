@@ -1,5 +1,6 @@
 package vendingmachine.components;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -19,14 +20,15 @@ public class Context implements EventListener {
   private Stock stock;
   public final int NBR_DRINKS;
   private List<Drink> drinkList; // Plutôt Collection pour pas d'ordre ????
-
   private HeatingSystem heatingSystem;
+  
   private State state;
+
   private int amountInside;
   private boolean cupInside;
   private Drink chosenDrink;
-
   private byte chosenSugar;
+  private Map<Coin, Integer> changeOut;
 
   private ContextListener observer;
 
@@ -34,12 +36,17 @@ public class Context implements EventListener {
     this.NBR_DRINKS = nbrDrinks;
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
+    this.changeMachine.setContext(this);
     this.stock = stock;
+    
     this.heatingSystem = new HeatingSystem(this);
-
     this.amountInside = 0;
     this.chosenSugar = 0;
     this.cupInside = false;
+    this.changeOut = new Hashtable<Coin, Integer>();
+    for (Coin coin: ChangeMachine.COINS) {
+      this.changeOut.put(coin, 0);
+    }
 
     log.info("New Vending Machine Created");
   }
@@ -54,6 +61,9 @@ public class Context implements EventListener {
   public void changeState(State newState) {
     state = newState;
     state.entry(this);
+    observer.updateInfo();
+    observer.setNorthText(state.getDefaultText(this));
+    observer.setSugarText(state.getSugarText(this));
   }
 
   @Override
@@ -69,6 +79,7 @@ public class Context implements EventListener {
 
   public void decrementChosenSugar() {
     chosenSugar -= 1;
+    observer.setSugarText(state.getSugarText(this));
   }
 
   @Override
@@ -133,10 +144,6 @@ public class Context implements EventListener {
     return state.getDefaultText(this);
   }
 
-  public ContextListener getObserver() {
-    return observer;
-  }
-
   @Override
   public State getState() {
     return state;
@@ -157,6 +164,7 @@ public class Context implements EventListener {
       SoundLoader.play(SoundLoader.cling);
     }
     amountInside = 0;
+    observer.updateInfo();
   }
   
   public void giveChangeOnCancel() {
@@ -164,10 +172,12 @@ public class Context implements EventListener {
     setChangeBool(true);
     SoundLoader.play(SoundLoader.cling);
     amountInside = 0;
+    observer.updateInfo();
   }
 
   public void incrementChosenSugar() {
     chosenSugar += 1;
+    observer.setSugarText(state.getSugarText(this));
   }
 
   public void insertCoin(Coin coin) {
@@ -221,8 +231,8 @@ public class Context implements EventListener {
     cupInside = b;
   }
 
-  public void setInfo() {
-    observer.setInfo(getInfo());
+  public void updateInfo() {
+    observer.updateInfo();
   }
 
   public void setNorthText(String msg) {
@@ -246,6 +256,9 @@ public class Context implements EventListener {
   @Override
   public void takeChange() {
     setChangeBool(false);
+    for (Coin coin: ChangeMachine.COINS) {
+      changeOut.put(coin, 0);
+    }
     SoundLoader.cling.stop(); // stop the sound effect is the change is taken.
     log.info("Change taken.");
   }
@@ -265,6 +278,33 @@ public class Context implements EventListener {
   @Override
   public void setWaterSupply(boolean b) {
     heatingSystem.setWaterSupply(b);
+  }
+
+  @Override
+  public String getChangeOutInfo() {
+    StringBuilder sb = new StringBuilder("<html>");
+    int nbrCoins;
+    int total = 0;
+    for (int i = 0; i < ChangeMachine.COINS.length; i++) {//Moyen; hashtable pour les textes aussi ?
+      nbrCoins = changeOut.get(ChangeMachine.COINS[i]);
+      sb.append(ChangeMachine.COINS_TEXT[i]).append(": ");
+      sb.append(nbrCoins).append(" coins.<br>");
+      total += nbrCoins * ChangeMachine.COINS[i].VALUE;
+    }
+    sb.append("Total: ").append(total/100.0).append(" €.</html>");
+    return sb.toString();
+  }
+
+  public void addChangeOutCoin(Coin coin) {
+    changeOut.put(coin, changeOut.get(coin) + 1);
+    observer.updateChangeOutInfo();
+  }
+
+  public void addChangeOut(Map<Coin, Integer> moneyToGive) {
+    for (Coin coin: ChangeMachine.COINS) {
+      changeOut.put(coin, changeOut.get(coin) + moneyToGive.get(coin));
+    }
+    observer.updateChangeOutInfo();
   }
 
 }

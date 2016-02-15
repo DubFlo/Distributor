@@ -36,7 +36,7 @@ public class Idle extends State {
       super.coinInserted(coin, c);
       c.setTemporaryNorthText("Coin not recognized by the machine");
     }
-    c.setInfo(); // Le mettre ici ?????
+    c.updateInfo(); // Le mettre ici ?????
   }
 
   @Override

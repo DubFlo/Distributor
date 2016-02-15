@@ -6,12 +6,14 @@ public interface ContextListener {
 
   void setCupBool(boolean b);
 
-  void setInfo(String msg);
-
   void setNorthText(String msg);
 
   void setSugarText(String msg);
 
   void setTemporaryNorthText(String msg);
+
+  void updateChangeOutInfo();
+
+  void updateInfo();
 
 }

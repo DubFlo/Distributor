@@ -15,17 +15,22 @@ public class Preparing extends State {
     if (instance == null) {
       instance = new Preparing(c);
     }
-    instance.timer.restart();
-    SoundLoader.play(SoundLoader.filling);
     return instance;
   }
-
+  
   // Singleton design pattern
   private Preparing(Context c) {
     int delay = (int) (SoundLoader.filling.getMicrosecondLength()/1000);
     timer = new Timer(delay, e -> preparingOver(c));
     timer.setRepeats(false);
   }
+
+  public void entry(Context c) {
+    super.entry(c);
+    instance.timer.restart();
+    SoundLoader.play(SoundLoader.filling);
+  }
+  
 
   @Override
   public void coinInserted(Coin coin, Context c) {
@@ -45,7 +50,7 @@ public class Preparing extends State {
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
     log.info(c.getChosenDrink().getName() + " prepared.");
-    if (c.getState() != NoWater.instance()) { //Peu propre mais comment faire autrement ?
+    if (c.getHeatingSystem().isWaterSupplyEnabled()) {
       c.getHeatingSystem().drinkOrdered();
       c.changeState(Idle.instance());
     }

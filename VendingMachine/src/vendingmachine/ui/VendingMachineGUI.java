@@ -177,26 +177,21 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     okButton = new JButton("Confirm");
     cancelButton = new JButton("Cancel");
 
-    c.gridx = 0;
-    c.gridy = 0;
-    c.gridwidth = 2;
+    c.gridx = 0;  c.gridy = 0;  c.gridwidth = 2;
     rightPanel.add(sugarLabel, c);
-    c.gridx = 0;
-    c.gridy = 1;
-    c.gridwidth = 1;
+    
+    c.gridx = 0;  c.gridy = 1;  c.gridwidth = 1;
     rightPanel.add(lessSugar, c);
-    c.gridx = 1;
-    c.gridy = 1;
-    c.gridwidth = 1;
+    
+    c.gridx = 1;  c.gridy = 1;  c.gridwidth = 1;
     rightPanel.add(moreSugar, c);
-    c.gridx = 0;
-    c.gridy = 2;
-    c.gridwidth = 2;
+    
+    c.gridx = 0;  c.gridy = 2;  c.gridwidth = 2;
     rightPanel.add(okButton, c);
-    c.gridx = 0;
-    c.gridy = 3;
-    c.gridwidth = 2;
+    
+    c.gridx = 0;  c.gridy = 3;  c.gridwidth = 2;
     rightPanel.add(cancelButton, c);
+    
     rightPanel.setPreferredSize(new Dimension(100, 550));
     myPanel.add(rightPanel, BorderLayout.LINE_END);
 
@@ -206,6 +201,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton = new JButton();
     changeButton.setBorder(BorderFactory.createEmptyBorder());
     changeButton.setContentAreaFilled(false);
+    changeButton.setToolTipText(observer.getChangeOutInfo());
     southPanel.add(changeButton, BorderLayout.LINE_END);
     myPanel.add(southPanel, BorderLayout.PAGE_END);
     southPanel.setPreferredSize(new Dimension(600, 100));
@@ -222,6 +218,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
       coinButtonsList.add(myButton);
       coinsPanel.add(myButton);
     }
+    coinsPanel.setMinimumSize(new Dimension(100, 100));
 
     // JMenuBar
     createMenuBar();
@@ -232,7 +229,6 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     infoArea = new JTextArea();
     infoArea.setEditable(false);
     infoPanel.add(infoArea);
-    
     infoPanel.setBackground(Color.WHITE);
 
     // Ending operations
@@ -275,8 +271,8 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   }
 
   @Override
-  public void setInfo(String msg) {
-    infoArea.setText(msg);
+  public void updateInfo() {
+    infoArea.setText(observer.getInfo());
   }
 
   @Override
@@ -303,6 +299,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   public void setTemporaryNorthText(String msg) {
     northLabel.setText(msg.toUpperCase());
     timer.restart();
+  }
+
+  @Override
+  public void updateChangeOutInfo() {
+    changeButton.setToolTipText(observer.getChangeOutInfo());
   }
 
 }
