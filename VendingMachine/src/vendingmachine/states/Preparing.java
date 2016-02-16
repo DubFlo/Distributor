@@ -50,8 +50,8 @@ public class Preparing extends State {
     c.playAlarmSound();
     c.setTemporaryNorthText("Your drink is ready !");
     log.info(c.getChosenDrink().getName() + " prepared.");
+    c.getHeatingSystem().drinkOrdered();
     if (c.getHeatingSystem().isWaterSupplyEnabled()) {
-      c.getHeatingSystem().drinkOrdered();
       c.changeState(Idle.instance());
     }
   }

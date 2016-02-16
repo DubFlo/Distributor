@@ -108,7 +108,9 @@ public class HeatingSystem {
   }
   
   public void drinkOrdered() {
-    setTemperature((4*temperature + RUNNING_WATER_TEMPERATURE)/5);
-    updateState();
+    if (waterSupply) {
+      setTemperature((4*temperature + RUNNING_WATER_TEMPERATURE)/5);
+      updateState();
+    }
   }
 }

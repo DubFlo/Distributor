@@ -18,10 +18,8 @@ public class PictureLoader {
   public static final BufferedImage changeImage;
   public static final BufferedImage displayPanel;
   public static final BufferedImage coffee;
-  public static final BufferedImage leftPanel;
   public static final BufferedImage slot;
   public static final BufferedImage sugarDisplay;
-  public static final BufferedImage southPanel;
   public static final BufferedImage drinkButton; // bouton plus clair pour mieux lire ???
   public static final BufferedImage euro2, euro1, cent50, cent20, cent10, cent5, cent2, cent1;
   // ImageIcon + blackBackground ?
@@ -59,14 +57,6 @@ public class PictureLoader {
       log.error("coffee.png not properly loaded.");
     }
 
-    BufferedImage left;
-    try {
-      left = ImageIO.read(new File(PATH + "leftPanel.png"));
-    } catch (IOException e) {
-      left = null;
-      log.error("leftPanel.png not properly loaded.");
-    }
-
     BufferedImage sl;
     try {
       sl = ImageIO.read(new File(PATH + "slot.jpg"));
@@ -81,14 +71,6 @@ public class PictureLoader {
     } catch (IOException e) {
       sugar = null;
       log.error("sugarDisplay.jpg not properly loaded.");
-    }
-
-    BufferedImage south;
-    try {
-      south = ImageIO.read(new File(PATH + "southPanel.png"));
-    } catch (IOException e) {
-      south = null;
-      log.error("southPanel.png not properly loaded.");
     }
 
     BufferedImage drink;
@@ -125,10 +107,8 @@ public class PictureLoader {
     changeImage = change;
     displayPanel = display;
     coffee = cof;
-    leftPanel = left;
     slot = sl;
     sugarDisplay = sugar;
-    southPanel = south;
     drinkButton = drink;
     euro2 = eur2;
     euro1 = eur1;

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -67,21 +66,27 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private JMenuItem newVM;
   private JMenuItem quit;
 
-  private Timer timer;
+  private Timer textTimer;
   private Timer doorTimer;
 
   public VendingMachineGUI(EventListener observer) {
     this.observer = observer;
     observer.setObserver(this);
-    timer = new Timer(1500, e -> setNorthText(observer.getNorthText()));
-    timer.setRepeats(false);
+    textTimer = new Timer(2500, e -> setNorthText(observer.getNorthText()));
+    textTimer.setRepeats(false);
     
-    leftPanel = new DoorJPanel();
-    //doorTimer = new Timer(10, e -> doorSlide());
+    leftPanel = new DoorJPanel(); //init tous les panels ???
+    doorTimer = new Timer(8, e -> {
+      leftPanel.setStep(leftPanel.getStep() + 1);
+      leftPanel.repaint();
+      if (leftPanel.getStep() >= leftPanel.imageHeight) {
+        doorTimer.stop();
+      }
+      });
   }
 
   private void addListeners() {
-    cupButton.addActionListener(e -> observer.takeCup());
+    cupButton.addActionListener(e -> { if (!doorTimer.isRunning()) observer.takeCup(); } );
     changeButton.addActionListener(e -> observer.takeChange());
     lessSugar.addActionListener(e -> observer.less());
     moreSugar.addActionListener(e -> observer.more());
@@ -150,11 +155,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     myPanel.add(centerPanel, BorderLayout.CENTER);
 
     // Left Panel
-    leftPanel.setBackground(Color.white);
     leftPanel.setLayout(new BorderLayout());
     cupButton = new JButton();
     cupButton.setBorder(BorderFactory.createEmptyBorder());
     cupButton.setContentAreaFilled(false);
+    cupButton.setBorderPainted(false);
     leftPanel.setPreferredSize(new Dimension(120, 550));
     leftPanel.add(cupButton, BorderLayout.PAGE_END);
     temperatureLabel = new JLabel("90° C");
@@ -203,7 +208,8 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     myPanel.add(rightPanel, BorderLayout.LINE_END);
 
     // South Panel
-    JPanel southPanel = new BackgroundJPanel(PictureLoader.southPanel);
+    JPanel southPanel = new JPanel();
+    southPanel.setBackground(Color.DARK_GRAY);
     southPanel.setLayout(new BorderLayout());
     changeButton = new JButton();
     changeButton.setBorder(BorderFactory.createEmptyBorder());
@@ -271,10 +277,12 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   @Override
   public void setCupBool(boolean b) {
     if (b) {
-      //cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
-      doorSlide();
+      cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
+      doorTimer.restart();
     } else {
       cupButton.setIcon(null); // replace with a black picture ??
+      leftPanel.setStep(0);
+      leftPanel.repaint();
     }
   }
 
@@ -306,7 +314,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   @Override
   public void setTemporaryNorthText(String msg) {
     northLabel.setText(msg.toUpperCase());
-    timer.restart();
+    textTimer.restart();
   }
 
   @Override
@@ -314,11 +322,4 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(observer.getChangeOutInfo());
   }
 
-  private void doorSlide() {
-    for (int i = 10; i >= 0; i--) {
-      leftPanel.setStep(i);
-      leftPanel.repaint();
-    }
-    timer.stop();
-  }
 }
