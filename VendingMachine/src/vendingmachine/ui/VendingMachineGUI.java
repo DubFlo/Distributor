@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -40,6 +41,8 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
   private static final long serialVersionUID = 1L;
 
+  private DoorJPanel leftPanel;
+  
   private EventListener observer;
   private JLabel northLabel;
   private JLabel sugarLabel;
@@ -65,12 +68,16 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private JMenuItem quit;
 
   private Timer timer;
+  private Timer doorTimer;
 
   public VendingMachineGUI(EventListener observer) {
     this.observer = observer;
     observer.setObserver(this);
     timer = new Timer(1500, e -> setNorthText(observer.getNorthText()));
     timer.setRepeats(false);
+    
+    leftPanel = new DoorJPanel();
+    //doorTimer = new Timer(10, e -> doorSlide());
   }
 
   private void addListeners() {
@@ -143,7 +150,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     myPanel.add(centerPanel, BorderLayout.CENTER);
 
     // Left Panel
-    JPanel leftPanel = new BackgroundJPanel(PictureLoader.leftPanel);
+    leftPanel.setBackground(Color.white);
     leftPanel.setLayout(new BorderLayout());
     cupButton = new JButton();
     cupButton.setBorder(BorderFactory.createEmptyBorder());
@@ -264,7 +271,8 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   @Override
   public void setCupBool(boolean b) {
     if (b) {
-      cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
+      //cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
+      doorSlide();
     } else {
       cupButton.setIcon(null); // replace with a black picture ??
     }
@@ -306,4 +314,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(observer.getChangeOutInfo());
   }
 
+  private void doorSlide() {
+    for (int i = 10; i >= 0; i--) {
+      leftPanel.setStep(i);
+      leftPanel.repaint();
+    }
+    timer.stop();
+  }
 }

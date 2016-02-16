@@ -267,7 +267,7 @@ public class Context implements EventListener {
   public void takeCup() {
     setCupBool(false);
     SoundLoader.beep.stop(); // stop the sound effect is the cup is taken.
-    log.info("Cup taken.");
+    log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 
   @Override
