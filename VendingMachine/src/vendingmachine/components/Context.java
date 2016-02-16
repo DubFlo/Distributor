@@ -160,7 +160,7 @@ public class Context implements EventListener {
 
   public void giveChange() {
     changeMachine.giveChange();
-    if (amountInside > chosenDrink.getPrice()) { //erreur car cancel() peut appeler cette méthode sans avoir choisi de boisson...
+    if (amountInside > chosenDrink.getPrice()) {
       setChangeBool(true);
       SoundLoader.play(SoundLoader.cling);
     }
@@ -204,10 +204,6 @@ public class Context implements EventListener {
   public void more() {
     SoundLoader.play(SoundLoader.click);
     state.more(this);
-  }
-
-  public void playAlarmSound() {
-    SoundLoader.play(SoundLoader.beep);
   }
 
   public void resetChosenSugar() {
@@ -282,7 +278,7 @@ public class Context implements EventListener {
     for (int i = 0; i < ChangeMachine.COINS.length; i++) {//Moyen; hashtable pour les textes aussi ?
       nbrCoins = changeOut.get(ChangeMachine.COINS[i]);
       sb.append(ChangeMachine.COINS_TEXT[i]).append(": ");
-      sb.append(nbrCoins).append(" coins.<br>");
+      sb.append(nbrCoins).append(" coin(s).<br>");
       total += nbrCoins * ChangeMachine.COINS[i].VALUE;
     }
     sb.append("Total: ").append(total/100.0).append(" €.</html>");

@@ -12,8 +12,8 @@ public class DoorJPanel extends JPanel {
 
   private static final long serialVersionUID = 1L;
   
-  public final int imageWidth = PictureLoader.cupImage.getWidth();
-  int imageHeight = PictureLoader.cupImage.getHeight();
+  public static final int imageWidth = PictureLoader.cupImage.getWidth();
+  public static final int imageHeight = PictureLoader.cupImage.getHeight();
   
   private int step;
   

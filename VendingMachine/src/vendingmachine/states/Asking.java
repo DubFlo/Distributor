@@ -26,7 +26,7 @@ public class Asking extends State {
     c.getStock().removeSugarCubes(c.getChosenSugar());
     c.giveChange(); // On a vérifié que le change était possible dans Idle()
     c.resetChosenSugar();
-    c.changeState(Preparing.instance(c));
+    c.changeState(Preparing.instance());
   }
 
   @Override
@@ -36,9 +36,7 @@ public class Asking extends State {
 
   @Override
   public String getSugarText(Context c) {
-    return "Sugar: " + c.getChosenSugar() + "/" + MAX_SUGAR; // Affichage
-    // plus joli
-    // ?
+    return "Sugar: " + c.getChosenSugar() + "/" + MAX_SUGAR;
   }
 
   @Override

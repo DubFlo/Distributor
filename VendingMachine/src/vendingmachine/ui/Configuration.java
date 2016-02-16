@@ -143,7 +143,6 @@ public class Configuration extends JFrame {
     c1.insets = new Insets(5, 5, 5, 5);
 
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
-    final int NBR_COINS = ChangeMachine.COINS.length;
 
     c1.gridy = 0;
     myPanel.add(drinkNbrLabel, c1);
@@ -183,7 +182,7 @@ public class Configuration extends JFrame {
       c3.gridx += 1;
     }
 
-    for (int i = 0; i < NBR_COINS; i++) {
+    for (int i = 0; i < ChangeMachine.COINS.length; i++) {
       c3.gridy += 1; c3.gridx = 0;
       coinPanel.add(new JLabel(ChangeMachine.COINS_TEXT[i]), c3);
       c3.gridx = 1;
@@ -198,20 +197,18 @@ public class Configuration extends JFrame {
     stockPanel = new JPanel(new GridBagLayout());
     stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
     GridBagConstraints c4 = new GridBagConstraints();
-    c4.gridy = 0;
-    c4.gridx = 0;
+    
+    c4.gridy = 0; c4.gridx = 0;
     stockPanel.add(sugarCubesNbrLabel, c4);
     c4.gridx = 1;
     stockPanel.add(sugarCubesNbrValue, c4);
 
-    c4.gridy += 1;
-    c4.gridx = 0;
+    c4.gridy += 1;  c4.gridx = 0;
     stockPanel.add(cupsNbrLabel, c4);
     c4.gridx = 1;
     stockPanel.add(cupsNbrValue, c4);
 
-    c4.gridy += 1;
-    c4.gridx = 0;
+    c4.gridy += 1;  c4.gridx = 0;
     stockPanel.add(spoonsNbrLabel, c4);
     c4.gridx = 1;
     stockPanel.add(spoonsNbrValue, c4);
@@ -252,7 +249,7 @@ public class Configuration extends JFrame {
       }
     } catch (IllegalArgumentException e) {
       problemLabel.setText(getProblemText("drink"));
-      pack(); //propre ??
+      pack();
       return;
     }
 

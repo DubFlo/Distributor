@@ -17,7 +17,7 @@ public class Idle extends State {
   @Override
   public void entry(Context c) {
     super.entry(c);
-    if (c.getStock().getCupsNbr() == 0) {
+    if (c.getStock().getCupsNbr() <= 0) {
       c.changeState(NoCup.instance());
     }
   }
@@ -50,7 +50,7 @@ public class Idle extends State {
       } else {
         c.giveChange();
         log.info(d.getName() + " ordered.");
-        c.changeState(Preparing.instance(c));
+        c.changeState(Preparing.instance());
       }
     } else {
       c.setTemporaryNorthText("Unable to give the exact change");

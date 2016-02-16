@@ -16,7 +16,8 @@ public class ChangeMachine {
   private Map<Coin, Integer> coinsStockTemp;
   private Context context;
 
-  public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins, Context context) {
+  public ChangeMachine(Map<Coin, Integer> coinsStock,
+      Map<Coin, Boolean> acceptedCoins, Context context) {
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
     this.context = context;
@@ -48,8 +49,7 @@ public class ChangeMachine {
       while (amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {
         coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) - 1);
         amount -= COINS[i].VALUE;
-      } // possibilité de break plus tôt du for (pas indispensable, à
-      // discuter)
+      }
     }
 
     return (amount == 0) ? true : false;

@@ -54,7 +54,6 @@ public class Stock {
 
   public void removeDrink(Drink d) {
     drinkQty.put(d, drinkQty.get(d) - 1);
-
   }
 
   public void removeSpoon() { // Problem

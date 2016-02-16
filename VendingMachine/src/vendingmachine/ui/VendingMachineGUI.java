@@ -79,14 +79,15 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     doorTimer = new Timer(8, e -> {
       leftPanel.setStep(leftPanel.getStep() + 1);
       leftPanel.repaint();
-      if (leftPanel.getStep() >= leftPanel.imageHeight) {
+      if (leftPanel.getStep() >= DoorJPanel.imageHeight) {
         doorTimer.stop();
       }
-      });
+    });
   }
 
   private void addListeners() {
-    cupButton.addActionListener(e -> { if (!doorTimer.isRunning()) observer.takeCup(); } );
+    cupButton.addActionListener(e -> { if (!doorTimer.isRunning())
+                                         observer.takeCup(); });
     changeButton.addActionListener(e -> observer.takeChange());
     lessSugar.addActionListener(e -> observer.less());
     moreSugar.addActionListener(e -> observer.more());
@@ -104,7 +105,8 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     
     newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
     quit.addActionListener(e -> System.exit(0));
-    waterSupplyCheckBox.addActionListener(e -> observer.setWaterSupply(waterSupplyCheckBox.isSelected()));
+    waterSupplyCheckBox.addActionListener(
+        e -> observer.setWaterSupply(waterSupplyCheckBox.isSelected()));
   }
   
   private void createMenuBar() {
@@ -303,11 +305,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
   @Override
   public void setTemperature(double temperature) {
-    if (temperature == -1) {
+    if (temperature < 0) {
       temperatureLabel.setText("NO WATER");
     } else {
-    DecimalFormat f = new DecimalFormat("#.#");
-    temperatureLabel.setText(f.format(temperature) + " °C");
+      DecimalFormat f = new DecimalFormat("#.#");
+      temperatureLabel.setText(f.format(temperature) + " °C");
     }
   }
 

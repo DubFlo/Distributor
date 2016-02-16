@@ -43,10 +43,6 @@ public class HeatingSystem {
     return this.temperature;
   }
 
-  public boolean isHeating() {
-    return heating;
-  }
-
   public void setObserver(TemperatureListener observer) {
     this.observer = observer;
   }
