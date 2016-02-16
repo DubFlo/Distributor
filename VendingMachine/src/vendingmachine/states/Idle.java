@@ -6,12 +6,9 @@ import vendingmachine.components.Drink;
 
 public class Idle extends State {
 
-  private static Idle instance;
+  private static Idle instance = new Idle();
 
   public static Idle instance() {
-    if (instance == null) {
-      instance = new Idle();
-    }
     return instance;
   }
 
@@ -28,15 +25,11 @@ public class Idle extends State {
   @Override
   public void coinInserted(Coin coin, Context c) {
     if (c.getChangeMachine().isCoinAccepted(coin)) {
-      c.setAmountInside(c.getAmountInside() + coin.VALUE);
       c.insertCoin(coin);
-      c.setTemporaryNorthText(Double.toString(coin.VALUE / 100.0) + " € inserted");
-      log.info(coin.VALUE / 100.0 + " € inserted.");
     } else {
       super.coinInserted(coin, c);
       c.setTemporaryNorthText("Coin not recognized by the machine");
     }
-    c.updateInfo(); // Le mettre ici ?????
   }
 
   @Override

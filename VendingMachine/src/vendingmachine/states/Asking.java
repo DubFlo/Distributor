@@ -4,13 +4,10 @@ import vendingmachine.components.Context;
 
 public class Asking extends State {
 
-  private static Asking instance;
+  private static Asking instance = new Asking();
   private static final byte MAX_SUGAR = 5;
 
   public static Asking instance() {
-    if (instance == null) {
-      instance = new Asking();
-    }
     return instance;
   }
 

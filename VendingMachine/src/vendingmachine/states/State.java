@@ -21,7 +21,6 @@ public abstract class State {
   public void coinInserted(Coin coin, Context c) {
     c.setChangeBool(true);
     c.addChangeOutCoin(coin);
-    log.info(coin.VALUE / 100.0 + " € inserted but not allowed.");
   }
   
   // These buttons do nothing by default
@@ -30,9 +29,7 @@ public abstract class State {
   public void less(Context c) {}
   public void more(Context c) {}
 
-  public void entry(Context c) {
-    log.info("State " + this.getClass().getSimpleName() + " entered.");
-  }
+  public void entry(Context c) {}
 
   public abstract String getDefaultText(Context c);
 

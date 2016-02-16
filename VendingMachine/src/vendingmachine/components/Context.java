@@ -32,11 +32,11 @@ public class Context implements EventListener {
 
   private ContextListener observer;
 
-  public Context(int nbrDrinks, List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
+  public Context(int nbrDrinks, List<Drink> drinkList, Map<Coin, Integer> coinsStock,
+      Map<Coin, Boolean> coinsAccepted, Stock stock) {
     this.NBR_DRINKS = nbrDrinks;
     this.drinkList = drinkList;
-    this.changeMachine = changeMachine;
-    this.changeMachine.setContext(this);
+    this.changeMachine = new ChangeMachine(coinsStock, coinsAccepted, this);
     this.stock = stock;
     
     this.heatingSystem = new HeatingSystem(this);
@@ -64,6 +64,7 @@ public class Context implements EventListener {
     observer.updateInfo();
     observer.setNorthText(state.getDefaultText(this));
     observer.setSugarText(state.getSugarText(this));
+    log.info("State " + state + " entered.");
   }
 
   @Override
@@ -181,8 +182,12 @@ public class Context implements EventListener {
   }
 
   public void insertCoin(Coin coin) {
+    amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
+    observer.setTemporaryNorthText(Double.toString(coin.VALUE / 100.0) + " € inserted");
+    observer.updateInfo();
     SoundLoader.play(SoundLoader.fop);
+    log.info(coin.VALUE / 100.0 + " € inserted.");
   }
 
   public boolean isCupInside() {
@@ -231,22 +236,10 @@ public class Context implements EventListener {
     cupInside = b;
   }
 
-  public void updateInfo() {
-    observer.updateInfo();
-  }
-
-  public void setNorthText(String msg) {
-    observer.setNorthText(msg);
-  }
-
   @Override
   public <T extends ContextListener & TemperatureListener> void setObserver(T o) {
     this.observer = o;
     heatingSystem.setObserver(o);
-  }
-
-  public void setSugarText(String msg) {
-    observer.setSugarText(msg);
   }
 
   public void setTemporaryNorthText(String msg) {
@@ -259,6 +252,7 @@ public class Context implements EventListener {
     for (Coin coin: ChangeMachine.COINS) {
       changeOut.put(coin, 0);
     }
+    observer.updateChangeOutInfo();
     SoundLoader.cling.stop(); // stop the sound effect is the change is taken.
     log.info("Change taken.");
   }
@@ -298,6 +292,7 @@ public class Context implements EventListener {
   public void addChangeOutCoin(Coin coin) {
     changeOut.put(coin, changeOut.get(coin) + 1);
     observer.updateChangeOutInfo();
+    log.info(coin.VALUE / 100.0 + " € inserted but not allowed.");
   }
 
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {

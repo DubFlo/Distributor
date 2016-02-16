@@ -4,12 +4,9 @@ import vendingmachine.components.Context;
 
 public class NoWater extends Problem {
 
-  private static NoWater instance;
+  private static NoWater instance = new NoWater();
 
   public static NoWater instance() {
-    if (instance == null) {
-      instance = new NoWater();
-    }
     return instance;
   }
 

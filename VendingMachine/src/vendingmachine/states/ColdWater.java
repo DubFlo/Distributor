@@ -4,12 +4,9 @@ import vendingmachine.components.Context;
 
 public class ColdWater extends Problem {
 
-  private static ColdWater instance;
+  private static ColdWater instance = new ColdWater();
 
   public static ColdWater instance() {
-    if (instance == null) {
-      instance = new ColdWater();
-    }
     return instance;
   }
 

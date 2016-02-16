@@ -41,6 +41,9 @@ public class Configuration extends JFrame {
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
   private JPanel myPanel;
+  private JPanel drinkPanel;
+  private JPanel coinPanel;
+  private JPanel stockPanel;
   private JScrollPane scrPane;
 
   private MyDocumentFilter myDocumentFilter;
@@ -64,10 +67,6 @@ public class Configuration extends JFrame {
 
   private JButton createButton;
   private JLabel problemLabel;
-
-  private List<Drink> drinkList;
-  private ChangeMachine changeMachine;
-  private Stock stock;
 
   public Configuration() {
     super();
@@ -128,11 +127,13 @@ public class Configuration extends JFrame {
         acceptedCoinsBoxes[i].setSelected(true);
       }
     }
+    
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   private void again() {
     getContentPane().removeAll();
-    init();
+    init(); //mettre à jour uniquement le drinkPanel
   }
 
   public void init() {
@@ -149,7 +150,7 @@ public class Configuration extends JFrame {
     c1.gridy = 1;
     myPanel.add(drinkNbrComboBox, c1);
     
-    JPanel drinkPanel = new JPanel(new GridBagLayout());
+    drinkPanel = new JPanel(new GridBagLayout());
     Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
     drinkPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Drink Information"));
     GridBagConstraints c2 = new GridBagConstraints();
@@ -173,7 +174,7 @@ public class Configuration extends JFrame {
     c1.gridy = 2;
     myPanel.add(drinkPanel, c1);
     
-    JPanel coinPanel = new JPanel(new GridBagLayout());
+    coinPanel = new JPanel(new GridBagLayout());
     coinPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Coin Information"));
     GridBagConstraints c3 = new GridBagConstraints();
     c3.gridy += 1; c3.gridx = 0;
@@ -194,7 +195,7 @@ public class Configuration extends JFrame {
     c1.gridy = 3;
     myPanel.add(coinPanel, c1);
     
-    JPanel stockPanel = new JPanel(new GridBagLayout());
+    stockPanel = new JPanel(new GridBagLayout());
     stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
     GridBagConstraints c4 = new GridBagConstraints();
     c4.gridy = 0;
@@ -229,7 +230,7 @@ public class Configuration extends JFrame {
     add(scrPane);
 
     myPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     pack();
     setLocationRelativeTo(null);
     setVisible(true);
@@ -237,7 +238,7 @@ public class Configuration extends JFrame {
 
   private void check() {
     // Fetches the values for the drinks
-    drinkList = new ArrayList<Drink>();
+    List<Drink> drinkList = new ArrayList<Drink>();
     Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
     try {
       for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
@@ -268,7 +269,6 @@ public class Configuration extends JFrame {
       pack();
       return;
     }
-    changeMachine = new ChangeMachine(coinsStock, coinsAccepted);
 
     // Fetches the values for the stock
     int sugarCubeNbr = 0;
@@ -283,10 +283,10 @@ public class Configuration extends JFrame {
       pack();
       return;
     }
-    stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
+    Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
     Context c = new Context(
-        (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, changeMachine, stock);
+        (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, coinsStock, coinsAccepted, stock);
     VendingMachineGUI gui = new VendingMachineGUI(c);
     dispose();
 

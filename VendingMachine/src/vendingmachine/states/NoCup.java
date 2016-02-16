@@ -4,12 +4,9 @@ import vendingmachine.components.Context;
 
 public class NoCup extends Problem {
 
-  private static NoCup instance;
+  private static NoCup instance = new NoCup();
 
   public static NoCup instance() {
-    if (instance == null) {
-      instance = new NoCup();
-    }
     return instance;
   }
 

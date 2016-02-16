@@ -16,9 +16,12 @@ public class ChangeMachine {
   private Map<Coin, Integer> coinsStockTemp;
   private Context context;
 
-  public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
+  public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins, Context context) {
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
+    this.context = context;
+    
+    this.coinsStockTemp = new Hashtable<Coin, Integer>();
   }
 
   public Map<Coin, Integer> getCoinsStock() {
@@ -62,10 +65,6 @@ public class ChangeMachine {
       res.put(c, t.get(c)); // copy of the Integer
     }
     return res;
-  }
-
-  public void setContext(Context context) {
-    this.context = context;
   }
   
 }

@@ -11,7 +11,7 @@ public class Preparing extends State {
   private static Preparing instance;
   private Timer timer;
 
-  public static Preparing instance(Context c) {
+  public static Preparing instance(Context c) { //On ne devrait pas avoir besoin de c
     if (instance == null) {
       instance = new Preparing(c);
     }
@@ -19,8 +19,8 @@ public class Preparing extends State {
   }
   
   // Singleton design pattern
-  private Preparing(Context c) {
-    int delay = (int) (SoundLoader.filling.getMicrosecondLength()/1000);
+  private Preparing(Context c) { //On ne devrait pas avoir besoin de c
+    final int delay = (int) (SoundLoader.filling.getMicrosecondLength()/1000);
     timer = new Timer(delay, e -> preparingOver(c));
     timer.setRepeats(false);
   }
@@ -38,7 +38,7 @@ public class Preparing extends State {
     c.setTemporaryNorthText("Wait for the end of the preparation...");
   }
 
-  private void preparingOver(Context c) {
+  private void preparingOver(Context c) { //Mettre davantage dans le context ?
     c.setCupBool(true);
     c.getStock().removeCup();
     if (c.getChosenDrink().isSugar()) {
