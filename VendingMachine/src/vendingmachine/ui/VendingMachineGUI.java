@@ -86,7 +86,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     cupButton.setContentAreaFilled(false);
     cupButton.setBorderPainted(false);
     leftPanel.setPreferredSize(new Dimension(120, 550));  
-    temperatureLabel = new JLabel("90° C");
+    temperatureLabel = new JLabel();
     temperatureLabel.setFont(FontLoader.DIGITAL_FONT);
     temperatureLabel.setHorizontalAlignment(SwingConstants.CENTER);
     temperatureLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));

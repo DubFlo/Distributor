@@ -29,6 +29,9 @@ public class ChangeMachine {
     return coinsStock;
   }
 
+  /**
+   * 
+   */
   public void giveChange() { // à n'utiliser que si isPossibleChange(amount) == true
     Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
     for (Coin coin: COINS) {
@@ -42,6 +45,10 @@ public class ChangeMachine {
     coinsStock.put(coin, coinsStock.get(coin) + 1);
   }
 
+  /**
+   * @param amount  
+   * @return
+   */
   public boolean isChangePossible(int amount) {
     coinsStockTemp = copy(coinsStock);
     
