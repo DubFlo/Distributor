@@ -25,6 +25,7 @@ public final class Asking extends State {
   public void confirm(Context c) {
     c.getStock().removeSugarCubes(c.getChosenSugar());
     c.giveChange(); // On a vérifié que le change était possible dans Idle()
+    log.info(c.getChosenSugar() + " sugar cubes ordered (" + c.getStock().getSugarCubesNbr() + " remaining).");
     c.resetChosenSugar();
     c.changeState(Preparing.getInstance());
   }

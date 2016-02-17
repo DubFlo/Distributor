@@ -55,7 +55,7 @@ public class Context implements EventListener {
       this.changeOut.put(coin, 0);
     }
 
-    preparingTimer = new Timer((int) (SoundLoader.filling.getMicrosecondLength() / 1000),
+    preparingTimer = new Timer((int) (SoundLoader.FILLING.getMicrosecondLength() / 1000),
         e -> this.preparingOver());
     preparingTimer.setRepeats(false);
     
@@ -69,9 +69,9 @@ public class Context implements EventListener {
       stock.removeSpoon();
     }
     stock.removeDrink(chosenDrink);
-    SoundLoader.play(SoundLoader.beep);
+    SoundLoader.play(SoundLoader.BEEP);
     observer.setTemporaryNorthText("Your drink is ready !");
-    log.info(chosenDrink.getName() + " prepared.");
+    log.info(chosenDrink.getName() + " prepared (" + stock.getDrinkQty().get(chosenDrink) + " remaining).");
     heatingSystem.drinkOrdered();
     if (heatingSystem.isWaterSupplyEnabled()) {
       changeState(Idle.getInstance());
@@ -80,7 +80,7 @@ public class Context implements EventListener {
 
   @Override
   public void cancel() {
-    SoundLoader.play(SoundLoader.click);
+    SoundLoader.play(SoundLoader.CLICK);
     state.cancel(this);
   }
 
@@ -101,7 +101,7 @@ public class Context implements EventListener {
 
   @Override
   public void confirm() {
-    SoundLoader.play(SoundLoader.click);
+    SoundLoader.play(SoundLoader.CLICK);
     state.confirm(this);
   }
 
@@ -112,7 +112,7 @@ public class Context implements EventListener {
 
   @Override
   public void drinkButton(Drink drink) {
-    SoundLoader.play(SoundLoader.click);
+    SoundLoader.play(SoundLoader.CLICK);
     state.drinkButton(drink, this);
   }
 
@@ -188,7 +188,7 @@ public class Context implements EventListener {
     changeMachine.giveChange();
     if (amountInside > chosenDrink.getPrice()) {
       setChangeBool(true);
-      SoundLoader.play(SoundLoader.cling);
+      SoundLoader.play(SoundLoader.CLING);
     }
     amountInside = 0;
     observer.updateInfo();
@@ -197,7 +197,7 @@ public class Context implements EventListener {
   public void giveChangeOnCancel() {
     changeMachine.giveChange();
     setChangeBool(true);
-    SoundLoader.play(SoundLoader.cling);
+    SoundLoader.play(SoundLoader.CLING);
     amountInside = 0;
     observer.updateInfo();
   }
@@ -212,7 +212,7 @@ public class Context implements EventListener {
     changeMachine.insertCoin(coin);
     observer.setTemporaryNorthText(Double.toString(coin.VALUE / 100.0) + " € inserted");
     observer.updateInfo();
-    SoundLoader.play(SoundLoader.fop);
+    SoundLoader.play(SoundLoader.FOP);
     log.info(coin.VALUE / 100.0 + " € inserted.");
   }
 
@@ -222,13 +222,13 @@ public class Context implements EventListener {
 
   @Override
   public void less() {
-    SoundLoader.play(SoundLoader.click);
+    SoundLoader.play(SoundLoader.CLICK);
     state.less(this);
   }
 
   @Override
   public void more() {
-    SoundLoader.play(SoundLoader.click);
+    SoundLoader.play(SoundLoader.CLICK);
     state.more(this);
   }
 
@@ -244,7 +244,7 @@ public class Context implements EventListener {
   public void setChangeBool(boolean bool) {
     observer.setChangeBool(bool);
     if (bool) {
-      SoundLoader.play(SoundLoader.cling);
+      SoundLoader.play(SoundLoader.CLING);
     }
   }
 
@@ -275,14 +275,14 @@ public class Context implements EventListener {
       changeOut.put(coin, 0);
     }
     observer.updateChangeOutInfo();
-    SoundLoader.cling.stop(); // stop the sound effect is the change is taken.
+    SoundLoader.CLING.stop(); // stop the sound effect is the change is taken.
     log.info("Change taken.");
   }
 
   @Override
   public void takeCup() {
     setCupBool(false);
-    SoundLoader.beep.stop(); // stop the sound effect is the cup is taken.
+    SoundLoader.BEEP.stop(); // stop the sound effect is the cup is taken.
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 

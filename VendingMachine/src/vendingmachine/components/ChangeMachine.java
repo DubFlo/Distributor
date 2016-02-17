@@ -46,7 +46,7 @@ public class ChangeMachine {
   }
 
   /**
-   * @param amount  
+   * @param amount  number of cents
    * @return
    */
   public boolean isChangePossible(int amount) {

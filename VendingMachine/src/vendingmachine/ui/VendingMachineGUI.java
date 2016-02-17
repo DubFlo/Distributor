@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     sugarLabel = new JLabel();
     sugarLabel.setFont(FontLoader.DIGITAL_FONT.deriveFont(16f));
     sugarLabel.setForeground(Color.RED);
-    sugarLabel.setIcon(new ImageIcon(PictureLoader.sugarDisplay));
+    sugarLabel.setIcon(PictureLoader.SUGAR_DISPLAY);
     sugarLabel.setHorizontalTextPosition(SwingConstants.CENTER);
     lessSugar = new JButton("-");
     moreSugar = new JButton("+");
@@ -109,11 +108,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(observer.getChangeOutInfo());
     
     coinButtonsList = new ArrayList<CoinJButton>();
-    BufferedImage[] coinsImages = { PictureLoader.euro2, PictureLoader.euro1, PictureLoader.cent50,
-        PictureLoader.cent20, PictureLoader.cent10, PictureLoader.cent5, PictureLoader.cent2,
-        PictureLoader.cent1 };
+    final ImageIcon[] coinsImages = { PictureLoader.EURO2_ICON, PictureLoader.EURO1_ICON, PictureLoader.CENT50_ICON,
+        PictureLoader.CENT20_ICON, PictureLoader.CENT10_ICON, PictureLoader.CENT5_ICON, PictureLoader.CENT2_ICON,
+        PictureLoader.CENT1_ICON };
     for (int i = 0; i < coinsImages.length; i++) {
-      coinButtonsList.add(new CoinJButton(COINS[i], new ImageIcon(coinsImages[i])));
+      coinButtonsList.add(new CoinJButton(COINS[i], coinsImages[i]));
     }
     
     infoArea = new JTextArea();
@@ -181,13 +180,13 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     final JPanel myPanel = new JPanel(new BorderLayout());
 
     // North Panel
-    final JPanel northPanel = new BackgroundJPanel(PictureLoader.displayPanel);
+    final JPanel northPanel = new BackgroundJPanel(PictureLoader.DISPLAY_PANEL);
     northPanel.add(northLabel);
     northPanel.setPreferredSize(new Dimension(100, 50));
     myPanel.add(northPanel, BorderLayout.PAGE_START);
 
     // Center Panel
-    final JPanel centerPanel = new BackgroundJPanel(PictureLoader.coffee);
+    final JPanel centerPanel = new BackgroundJPanel(PictureLoader.COFFEE_IMAGE);
     centerPanel.setLayout(new GridLayout((observer.getNbrDrinks() + 1) / 2, 2, 30, 0));
     for (DrinkJButton myButton: drinkButtonsList) {
       centerPanel.add(myButton);
@@ -200,7 +199,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     myPanel.add(leftPanel, BorderLayout.LINE_START);
 
     // Right Panel
-    final JPanel rightPanel = new BackgroundJPanel(PictureLoader.slot);
+    final JPanel rightPanel = new BackgroundJPanel(PictureLoader.SLOT_IMAGE);
     rightPanel.setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH; // A expliquer
@@ -290,7 +289,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   @Override
   public void setChangeBool(boolean bool) {
     if (bool) {
-      changeButton.setIcon(new ImageIcon(PictureLoader.changeImage));
+      changeButton.setIcon(PictureLoader.CHANGE_ICON);
     } else {
       changeButton.setIcon(null); // idem ??
     }
@@ -299,7 +298,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   @Override
   public void setCupBool(boolean bool) {
     if (bool) {
-      cupButton.setIcon(new ImageIcon(PictureLoader.cupImage));
+      cupButton.setIcon(PictureLoader.CUP_ICON);
       doorTimer.restart();
     } else {
       cupButton.setIcon(null); // replace with a black picture ??

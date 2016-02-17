@@ -9,19 +9,18 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+/**
+ * Supply Clip sounds useful to a vending machine.
+ */
 public final class SoundLoader {
 
-  private static final Logger log = LogManager.getLogger("SoundLoader");
   private static final String PATH = "src" + File.separator + "resources" + File.separator;
 
-  public static final Clip beep = getSound("beep.wav");
-  public static final Clip cling = getSound("cling.wav");
-  public static final Clip fop = getSound("fop.wav");
-  public static final Clip click = getSound("click.wav");
-  public static final Clip filling = getSound("filling.wav");
+  public static final Clip BEEP = getSound("beep.wav");
+  public static final Clip CLING = getSound("cling.wav");
+  public static final Clip FOP = getSound("fop.wav");
+  public static final Clip CLICK = getSound("click.wav");
+  public static final Clip FILLING = getSound("filling.wav");
 
     // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
 
@@ -54,7 +53,7 @@ public final class SoundLoader {
       clip.open(stream);
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
       clip = null;
-      log.error(file + "not loaded properly.");
+      e.printStackTrace();
     }
     return clip;
   }

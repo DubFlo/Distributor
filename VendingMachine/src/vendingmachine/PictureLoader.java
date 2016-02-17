@@ -5,30 +5,30 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+/**
+ * Supply ImageIcon or BufferedImage images useful to display a vending machine.
+ */
 public final class PictureLoader {
 
   private static final String PATH = "src" + File.separator + "resources" + File.separator;
-  private static final Logger log = LogManager.getLogger("PictureLoader");
 
-  public static final BufferedImage cupImage = getImage("cup.jpg");
-  public static final BufferedImage changeImage = getImage("change.png");
-  public static final BufferedImage displayPanel = getImage("displayPanel.jpg");
-  public static final BufferedImage coffee = getImage("coffee.png");
-  public static final BufferedImage slot = getImage("slot.jpg");
-  public static final BufferedImage sugarDisplay = getImage("sugarDisplay.jpg");
-  public static final BufferedImage drinkButton = getImage("drinkButton.png");
-  public static final BufferedImage euro2 = getImage("2euro.png");
-  public static final BufferedImage euro1 = getImage("1euro.png");
-  public static final BufferedImage cent50 = getImage("50cent.png");
-  public static final BufferedImage cent20 = getImage("20cent.png");
-  public static final BufferedImage cent10 = getImage("10cent.png");
-  public static final BufferedImage cent5 = getImage("5cent.png");
-  public static final BufferedImage cent2 = getImage("2cent.png");
-  public static final BufferedImage cent1 = getImage("1cent.png");
+  public static final ImageIcon CUP_ICON = new ImageIcon(getImage("cup.jpg"));
+  public static final ImageIcon CHANGE_ICON = new ImageIcon(getImage("change.png"));
+  public static final BufferedImage DISPLAY_PANEL = getImage("displayPanel.jpg");
+  public static final BufferedImage COFFEE_IMAGE = getImage("coffee.png");
+  public static final BufferedImage SLOT_IMAGE = getImage("slot.jpg");
+  public static final ImageIcon SUGAR_DISPLAY = new ImageIcon(getImage("sugarDisplay.jpg"));
+  public static final ImageIcon DRINK_BUTTON = new ImageIcon(getImage("drinkButton.png"));
+  public static final ImageIcon EURO2_ICON = new ImageIcon(getImage("2euro.png"));
+  public static final ImageIcon EURO1_ICON = new ImageIcon(getImage("1euro.png"));
+  public static final ImageIcon CENT50_ICON = new ImageIcon(getImage("50cent.png"));
+  public static final ImageIcon CENT20_ICON = new ImageIcon(getImage("20cent.png"));
+  public static final ImageIcon CENT10_ICON = new ImageIcon(getImage("10cent.png"));
+  public static final ImageIcon CENT5_ICON = new ImageIcon(getImage("5cent.png"));
+  public static final ImageIcon CENT2_ICON = new ImageIcon(getImage("2cent.png"));
+  public static final ImageIcon CENT1_ICON = new ImageIcon(getImage("1cent.png"));
   
   private static BufferedImage getImage(String file) {
     BufferedImage image;
@@ -36,7 +36,7 @@ public final class PictureLoader {
       image = ImageIO.read(new File(PATH + file));
     } catch (IOException e) {
       image = null;
-      log.error(file + " not properly loaded.");
+      e.printStackTrace();
     }
     return image;
   }

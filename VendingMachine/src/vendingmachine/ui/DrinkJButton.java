@@ -1,7 +1,6 @@
 package vendingmachine.ui;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
@@ -17,7 +16,7 @@ public class DrinkJButton extends JButton {
     super();
     this.drink = drink;
     setText(drink.getName());
-    setIcon(new ImageIcon(PictureLoader.drinkButton));
+    setIcon(PictureLoader.DRINK_BUTTON);
     setBorder(BorderFactory.createEmptyBorder());
     setContentAreaFilled(false);
     setHorizontalTextPosition(SwingConstants.CENTER);
