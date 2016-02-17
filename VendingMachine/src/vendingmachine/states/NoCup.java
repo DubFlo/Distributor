@@ -2,12 +2,12 @@ package vendingmachine.states;
 
 import vendingmachine.components.Context;
 
-public class NoCup extends Problem {
+public final class NoCup extends Problem {
 
-  private static NoCup instance = new NoCup();
+  private static final NoCup INSTANCE = new NoCup();
 
-  public static NoCup instance() {
-    return instance;
+  public static NoCup getInstance() {
+    return INSTANCE;
   }
 
   private NoCup() {}

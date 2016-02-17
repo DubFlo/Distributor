@@ -13,7 +13,7 @@ public abstract class State {
 
   public void cancel(Context c) {
     if (c.getAmountInside() > 0 && c.getChangeMachine().isChangePossible(c.getAmountInside())) {
-      // Cette condition est toujours vraie mais fait les calculs; bof
+      // Cette condition est toujours vraie mais fait les calculs
       c.giveChangeOnCancel();
     }
   }
@@ -29,7 +29,7 @@ public abstract class State {
   public void less(Context c) {}
   public void more(Context c) {}
 
-  public void entry(Context c) {}
+  public void entry(Context c) {} //quasi pas besoin
 
   public abstract String getDefaultText(Context c);
 

@@ -2,9 +2,9 @@ package vendingmachine.components;
 
 public class Drink {
 
-  private String name;
-  private int price;
-  private boolean sugar;
+  private final String name;
+  private final int price;
+  private final boolean sugar;
 
   public Drink(String name, boolean sugar, int price) {
     this.name = name;

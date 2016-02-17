@@ -7,7 +7,7 @@ public class Stock {
   private int sugarCubesNbr;
   private int cupsNbr;
   private int spoonsNbr;
-  private Map<Drink, Integer> drinkQty;
+  private final Map<Drink, Integer> drinkQty;
 
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
     this.sugarCubesNbr = sugarCubesNbr;
@@ -52,8 +52,8 @@ public class Stock {
     cupsNbr -= 1;
   }
 
-  public void removeDrink(Drink d) {
-    drinkQty.put(d, drinkQty.get(d) - 1);
+  public void removeDrink(Drink drink) {
+    drinkQty.put(drink, drinkQty.get(drink) - 1);
   }
 
   public void removeSpoon() { // Problem

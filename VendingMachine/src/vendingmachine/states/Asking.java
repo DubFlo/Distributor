@@ -2,13 +2,13 @@ package vendingmachine.states;
 
 import vendingmachine.components.Context;
 
-public class Asking extends State {
+public final class Asking extends State {
 
-  private static Asking instance = new Asking();
+  private static final Asking INSTANCE = new Asking();
   private static final byte MAX_SUGAR = 5;
 
-  public static Asking instance() {
-    return instance;
+  public static Asking getInstance() {
+    return INSTANCE;
   }
 
   // Singleton design pattern
@@ -18,7 +18,7 @@ public class Asking extends State {
   public void cancel(Context c) {
     super.cancel(c);
     c.resetChosenSugar();
-    c.changeState(Idle.instance());
+    c.changeState(Idle.getInstance());
   }
 
   @Override
@@ -26,7 +26,7 @@ public class Asking extends State {
     c.getStock().removeSugarCubes(c.getChosenSugar());
     c.giveChange(); // On a vérifié que le change était possible dans Idle()
     c.resetChosenSugar();
-    c.changeState(Preparing.instance());
+    c.changeState(Preparing.getInstance());
   }
 
   @Override
@@ -56,4 +56,5 @@ public class Asking extends State {
       c.setTemporaryNorthText("No more sugar in stock");
     }
   }
+  
 }

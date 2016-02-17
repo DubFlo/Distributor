@@ -12,8 +12,8 @@ public class DoorJPanel extends JPanel {
 
   private static final long serialVersionUID = 1L;
   
-  public static final int imageWidth = PictureLoader.cupImage.getWidth();
-  public static final int imageHeight = PictureLoader.cupImage.getHeight();
+  public static final int WIDTH = PictureLoader.cupImage.getWidth();
+  public static final int HEIGHT = PictureLoader.cupImage.getHeight();
   
   private int step;
   
@@ -28,8 +28,8 @@ public class DoorJPanel extends JPanel {
     super.paint(g);
     Toolkit.getDefaultToolkit().sync();
     g.setColor(Color.black);
-    g.fillRect((getWidth() - imageWidth)/2, getHeight() - imageHeight,
-        imageWidth, imageHeight - step);
+    g.fillRect((getWidth() - WIDTH) / 2, getHeight() - HEIGHT,
+        WIDTH, HEIGHT - step);
   }
 
   public int getStep() {

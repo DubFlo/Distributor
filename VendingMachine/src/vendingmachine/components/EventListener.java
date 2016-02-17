@@ -2,15 +2,12 @@ package vendingmachine.components;
 
 import java.util.List;
 
-import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
 
 public interface EventListener {
 
   void cancel();
-
-  void changeState(State state);
 
   void coinInserted(Coin coin);
 
@@ -28,24 +25,22 @@ public interface EventListener {
 
   String getNorthText();
 
-  State getState();
-
   void less();
 
   void more();
 
-  void setChangeBool(boolean b);
+  void setChangeBool(boolean bool);
 
-  void setCupBool(boolean b);
+  void setCupBool(boolean bool);
 
-  <T extends ContextListener & TemperatureListener> void setObserver(T o);
+  <T extends ContextListener & TemperatureListener> void setObserver(T observer);
   
-  void setWaterSupply(boolean b);
+  void setWaterSupply(boolean bool);
 
   void takeChange();
 
   void takeCup();
 
-
+  String getSugarText();
 
 }

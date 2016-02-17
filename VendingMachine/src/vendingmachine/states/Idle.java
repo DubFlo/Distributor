@@ -4,12 +4,12 @@ import vendingmachine.components.Coin;
 import vendingmachine.components.Context;
 import vendingmachine.components.Drink;
 
-public class Idle extends State {
+public final class Idle extends State {
 
-  private static Idle instance = new Idle();
+  private static final Idle INSTANCE = new Idle();
 
-  public static Idle instance() {
-    return instance;
+  public static Idle getInstance() {
+    return INSTANCE;
   }
 
   private Idle() {}
@@ -18,7 +18,7 @@ public class Idle extends State {
   public void entry(Context c) {
     super.entry(c);
     if (c.getStock().getCupsNbr() <= 0) {
-      c.changeState(NoCup.instance());
+      c.changeState(NoCup.getInstance());
     }
   }
   
@@ -35,7 +35,7 @@ public class Idle extends State {
   @Override
   public void drinkButton(Drink d, Context c) {
     if (!c.getStock().isCupInStock()) {
-      c.changeState(NoCup.instance());
+      c.changeState(NoCup.getInstance());
     } else if (!c.getStock().isDrinkInStock(d)) {
       c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " €)");
       log.warn("Attempt to order " + d.getName() + " but no left in stock.");
@@ -46,11 +46,11 @@ public class Idle extends State {
     } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
-        c.changeState(Asking.instance());
+        c.changeState(Asking.getInstance());
       } else {
         c.giveChange();
         log.info(d.getName() + " ordered.");
-        c.changeState(Preparing.instance());
+        c.changeState(Preparing.getInstance());
       }
     } else {
       c.setTemporaryNorthText("Unable to give the exact change");

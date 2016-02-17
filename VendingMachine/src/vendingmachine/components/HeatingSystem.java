@@ -17,14 +17,14 @@ public class HeatingSystem {
   private boolean waterSupply;
 
   private double temperature;
-  private int timeCooling;
-  private int timeWarming;
+  private int timeCooling; //à retirer
+  private int timeWarming; // à retirer
 
   private boolean heating;
   private TemperatureListener observer;
-  private Context context;
+  private final Context context;
   
-  private Timer t;
+  private final Timer timer;
 
   public HeatingSystem(Context context) {
     this.waterSupply = true;
@@ -35,8 +35,8 @@ public class HeatingSystem {
     this.timeCooling = 0;
     this.timeWarming = 0;
     int delay = 1000; // milliseconds
-    t = new Timer(delay, e -> this.updateTemperature());
-    t.start();
+    timer = new Timer(delay, e -> this.updateTemperature());
+    timer.start();
   }
 
   public double getTemperature() {
@@ -54,17 +54,17 @@ public class HeatingSystem {
     }
   }
 
-  public void setWaterSupply(boolean b) {
-    if (!waterSupply && b) {
+  public void setWaterSupply(boolean bool) {
+    if (!waterSupply && bool) {
       temperature = RUNNING_WATER_TEMPERATURE; //Running water is reintroduced in the system
       updateState();
-      t.restart();
-    } else if (waterSupply && !b) {
+      timer.restart();
+    } else if (waterSupply && !bool) {
       setTemperature(-1); //peu propre
-      context.changeState(NoWater.instance());
-      t.stop();
+      context.changeState(NoWater.getInstance());
+      timer.stop();
     }
-    this.waterSupply = b;
+    this.waterSupply = bool;
   }
 
   private void updateState() {
@@ -76,14 +76,14 @@ public class HeatingSystem {
       timeCooling = 0;
     }
     
-    if (context.getState() == ColdWater.instance() && temperature >= COLD_LIMIT) {
-      context.changeState(Idle.instance());
-    } else if (context.getState() != ColdWater.instance() && temperature < COLD_LIMIT) {
-      context.changeState(ColdWater.instance());
+    if (context.getState() == ColdWater.getInstance() && temperature >= COLD_LIMIT) {
+      context.changeState(Idle.getInstance());
+    } else if (context.getState() != ColdWater.getInstance() && temperature < COLD_LIMIT) {
+      context.changeState(ColdWater.getInstance());
     }
   }
 
-  public void updateTemperature() { //formules incorrectes !!!!
+  private void updateTemperature() { //formules incorrectes !!!!
     if (waterSupply) {
       if (heating) {
         timeWarming += 1;

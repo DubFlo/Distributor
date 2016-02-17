@@ -40,33 +40,27 @@ public class Configuration extends JFrame {
     "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup", "Hot Water", "Oolong Tea" };
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-  private JPanel myPanel;
   private JPanel drinkPanel;
   private JPanel coinPanel;
   private JPanel stockPanel;
-  private JScrollPane scrPane;
 
-  private MyDocumentFilter myDocumentFilter;
+  private final MyDocumentFilter myDocumentFilter;
 
-  private JLabel drinkNbrLabel; //Pas d'instance ?
-  private JComboBox<Integer> drinkNbrComboBox;
+  private final JComboBox<Integer> drinkNbrComboBox;
 
-  private JTextField[] drinksNames;
-  private JCheckBox[] drinksSugar;
-  private JTextField[] drinksPrices;
-  private JTextField[] drinksStocks;
-  private JTextField[] coinsStockValues;
-  private JCheckBox[] acceptedCoinsBoxes;
+  private final JTextField[] drinksNames;
+  private final JCheckBox[] drinksSugar;
+  private final JTextField[] drinksPrices;
+  private final JTextField[] drinksStocks;
+  private final JTextField[] coinsStockValues;
+  private final JCheckBox[] acceptedCoinsBoxes;
 
-  private JLabel sugarCubesNbrLabel; //Pas d'instance ?
-  private JLabel cupsNbrLabel;
-  private JLabel spoonsNbrLabel;
-  private JTextField sugarCubesNbrValue;
-  private JTextField cupsNbrValue;
-  private JTextField spoonsNbrValue;
+  private final JTextField sugarCubesNbrValue;
+  private final JTextField cupsNbrValue;
+  private final JTextField spoonsNbrValue;
 
-  private JButton createButton;
-  private JLabel problemLabel;
+  private final JButton createButton;
+  private final JLabel problemLabel;
 
   public Configuration() {
     super();
@@ -77,11 +71,6 @@ public class Configuration extends JFrame {
     drinkNbrComboBox.addActionListener(e -> again());
 
     myDocumentFilter = new MyDocumentFilter();
-
-    drinkNbrLabel = new JLabel("Number of drinks (between 1 and 10): ");
-    sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
-    cupsNbrLabel = new JLabel("Number of cups available: ");
-    spoonsNbrLabel = new JLabel("Number of spoons availables: ");
     
     sugarCubesNbrValue = new JTextField("20", 4);
     ((AbstractDocument)sugarCubesNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
@@ -99,7 +88,7 @@ public class Configuration extends JFrame {
     coinsStockValues = new JTextField[ChangeMachine.COINS.length];
     acceptedCoinsBoxes = new JCheckBox[ChangeMachine.COINS.length];
     
-    drinksNames = new JTextField[10]; //A factoriser pour pas le refaire à chaque fois ???
+    drinksNames = new JTextField[10];
     drinksSugar = new JCheckBox[10];
     drinksPrices = new JTextField[10];
     drinksStocks = new JTextField[10];
@@ -137,13 +126,14 @@ public class Configuration extends JFrame {
   }
 
   public void init() {
-    myPanel = new JPanel();
+    JPanel myPanel = new JPanel();
     myPanel.setLayout(new GridBagLayout());
     GridBagConstraints c1 = new GridBagConstraints();
     c1.insets = new Insets(5, 5, 5, 5);
 
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
-
+    final JLabel drinkNbrLabel = new JLabel("Number of drinks (between 1 and 10): ");
+    
     c1.gridy = 0;
     myPanel.add(drinkNbrLabel, c1);
     c1.gridy = 1;
@@ -197,6 +187,9 @@ public class Configuration extends JFrame {
     stockPanel = new JPanel(new GridBagLayout());
     stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
     GridBagConstraints c4 = new GridBagConstraints();
+    final JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
+    final JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
+    final JLabel spoonsNbrLabel = new JLabel("Number of spoons availables: ");
     
     c4.gridy = 0; c4.gridx = 0;
     stockPanel.add(sugarCubesNbrLabel, c4);
@@ -223,7 +216,7 @@ public class Configuration extends JFrame {
     myPanel.add(problemLabel, c1);
 
     add(myPanel);
-    scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
+    JScrollPane scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
     add(scrPane);
 
     myPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
@@ -282,9 +275,9 @@ public class Configuration extends JFrame {
     }
     Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    Context c = new Context(
+    Context context = new Context(
         (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, coinsStock, coinsAccepted, stock);
-    VendingMachineGUI gui = new VendingMachineGUI(c);
+    VendingMachineGUI gui = new VendingMachineGUI(context);
     dispose();
 
     gui.init();

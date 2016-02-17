@@ -11,10 +11,10 @@ public class ChangeMachine {
   public static final String[] COINS_TEXT = { "2 €", "1 €", "0,5 €", "0,2 €", "0,1 €", "0,05 €",
     "0,02 €", "0,01 €" }; //unmodifiableList ?????
 
-  private Map<Coin, Integer> coinsStock;
-  private Map<Coin, Boolean> acceptedCoins;
+  private Map<Coin, Integer> coinsStock; //Les rendre final ?
   private Map<Coin, Integer> coinsStockTemp;
-  private Context context;
+  private final Map<Coin, Boolean> acceptedCoins;
+  private final Context context;
 
   public ChangeMachine(Map<Coin, Integer> coinsStock,
       Map<Coin, Boolean> acceptedCoins, Context context) {
@@ -59,10 +59,10 @@ public class ChangeMachine {
     return acceptedCoins.get(coin);
   }
 
-  private static Map<Coin, Integer> copy(Map<Coin, Integer> t) { // Pas très propre ????
+  private static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
     Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
     for (Coin c : COINS) {
-      res.put(c, t.get(c)); // copy of the Integer
+      res.put(c, map.get(c)); // copy of the Integer
     }
     return res;
   }

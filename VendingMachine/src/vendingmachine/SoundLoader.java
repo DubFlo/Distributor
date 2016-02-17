@@ -12,7 +12,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SoundLoader {
+public final class SoundLoader {
 
   private static final Logger log = LogManager.getLogger("SoundLoader");
   private static final String PATH = "src" + File.separator + "resources" + File.separator;
@@ -103,5 +103,7 @@ public class SoundLoader {
       clip.start();
     }
   }
+  
+  private SoundLoader() {}
 
 }

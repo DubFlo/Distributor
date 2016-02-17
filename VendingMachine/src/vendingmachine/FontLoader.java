@@ -8,10 +8,11 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FontLoader {
+public final class FontLoader {
 
   private static final Logger log = LogManager.getLogger("FontLoader");
   private static final String PATH = "assets" + File.separator + "fonts" + File.separator;
+  
   public static final Font DIGITAL_FONT;
 
   static {
@@ -26,4 +27,6 @@ public class FontLoader {
     DIGITAL_FONT = font;
   }
 
+  private FontLoader() {}
+  
 }

@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class PictureLoader {
+public final class PictureLoader {
 
   private static final String PATH = "src" + File.separator + "resources" + File.separator;
   private static final Logger log = LogManager.getLogger("PictureLoader");
@@ -20,9 +20,8 @@ public class PictureLoader {
   public static final BufferedImage coffee;
   public static final BufferedImage slot;
   public static final BufferedImage sugarDisplay;
-  public static final BufferedImage drinkButton; // bouton plus clair pour mieux lire ???
+  public static final BufferedImage drinkButton;
   public static final BufferedImage euro2, euro1, cent50, cent20, cent10, cent5, cent2, cent1;
-  // ImageIcon + blackBackground ?
 
   static {
     BufferedImage cup;
@@ -120,4 +119,6 @@ public class PictureLoader {
     cent1 = cen1;
   }
 
+  private PictureLoader() {}
+  
 }

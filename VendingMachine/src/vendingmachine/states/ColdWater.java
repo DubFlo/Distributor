@@ -2,12 +2,12 @@ package vendingmachine.states;
 
 import vendingmachine.components.Context;
 
-public class ColdWater extends Problem {
+public final class ColdWater extends Problem {
 
-  private static ColdWater instance = new ColdWater();
+  private static ColdWater INSTANCE = new ColdWater();
 
-  public static ColdWater instance() {
-    return instance;
+  public static ColdWater getInstance() {
+    return INSTANCE;
   }
 
   // Singleton design pattern
