@@ -43,17 +43,19 @@ public final class Idle extends State {
       c.setTemporaryNorthText("Please remove the drink before ordering");
     } else if (d.getPrice() > c.getAmountInside()) {
       c.setTemporaryNorthText("Price: " + d.getPrice() / 100.0 + " €");
-    } else if (c.getStock().getSpoonsNbr()<= 0){
-      c.changeState(NoSpoon.getInstance());
     } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
-        c.changeState(Asking.getInstance());
-      } else {
+        if (c.getStock().getSpoonsNbr()<= 0){
+          c.changeState(NoSpoon.getInstance());
+        } else 
+          c.changeState(Asking.getInstance());
+        
+        } else {
         c.giveChange();
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
-      }
+      }    
     } else {
       c.setTemporaryNorthText("Unable to give the exact change");
       log.warn(d.getName() + " ordered but machine unable to give the exact change.");
