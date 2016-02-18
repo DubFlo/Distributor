@@ -16,7 +16,7 @@ public final class NoSpoon extends Problem{
   
   @Override
   public String getDefaultText (Context c){
-    return "No spoon.Confirm to continue or Cancel ";
+    return "No spoon. Confirm to continue or Cancel ";
   }
   @Override
   public void cancel (Context c) {
