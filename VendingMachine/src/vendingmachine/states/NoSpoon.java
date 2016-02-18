@@ -24,7 +24,6 @@ public final class NoSpoon extends Problem{
     c.changeState(Idle.getInstance());
   }
   public void confirm (Context c){
-    c.setBooSpoon (false);
     c.changeState(Asking.getInstance());
   }
 }
