@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- * Supply ImageIcon or BufferedImage images useful to display a vending machine.
+ * Supply ImageIcon or BufferedImage images that are useful to display a vending machine.
  */
 public final class PictureLoader {
 

@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
@@ -174,7 +175,7 @@ public class Configuration extends JFrame {
 
     for (int i = 0; i < ChangeMachine.COINS.length; i++) {
       c3.gridy += 1; c3.gridx = 0;
-      coinPanel.add(new JLabel(ChangeMachine.COINS_TEXT[i]), c3);
+      coinPanel.add(new JLabel(ChangeMachine.COINS[i].TEXT), c3);
       c3.gridx = 1;
       coinPanel.add(coinsStockValues[i], c3);
       c3.gridx = 2;
@@ -273,14 +274,19 @@ public class Configuration extends JFrame {
       pack();
       return;
     }
-    Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
+    final Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    Context context = new Context(
+    final Context context = new Context(
         (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, coinsStock, coinsAccepted, stock);
-    VendingMachineGUI gui = new VendingMachineGUI(context);
+    final VendingMachineGUI gui = new VendingMachineGUI(context);
     dispose();
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        gui.init();
+      }
+    });
 
-    gui.init();
   }
 
   private String getProblemText(String part) {

@@ -40,7 +40,7 @@ public final class Idle extends State {
       c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " €)");
       log.warn("Attempt to order " + d.getName() + " but no left in stock.");
     } else if (c.isCupInside()) {
-      c.setTemporaryNorthText("Please remove the drink before ordering");
+      c.setTemporaryNorthText("Please remove the cup before ordering");
     } else if (d.getPrice() > c.getAmountInside()) {
       c.setTemporaryNorthText("Price: " + d.getPrice() / 100.0 + " €");
     } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {

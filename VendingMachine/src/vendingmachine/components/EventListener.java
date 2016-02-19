@@ -43,4 +43,8 @@ public interface EventListener {
 
   String getSugarText();
 
+  void setCoinStock(Coin coin, int value);
+
+  void setDrinkStock(Drink drink, int value);
+
 }

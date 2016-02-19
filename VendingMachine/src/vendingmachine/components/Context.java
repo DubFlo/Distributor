@@ -154,9 +154,9 @@ public class Context implements EventListener {
     }
 
     sb.append("\nCoins:\n");
-    for (int i = 0; i < ChangeMachine.COINS.length; i++) {
-      sb.append(ChangeMachine.COINS_TEXT[i]).append(": ")
-      .append(changeMachine.getCoinsStock().get(ChangeMachine.COINS[i]))
+    for (Coin coin: ChangeMachine.COINS) {
+      sb.append(coin.TEXT).append(": ")
+      .append(changeMachine.getCoinsStock().get(coin))
       .append(" available.\n");
     }
 
@@ -210,10 +210,10 @@ public class Context implements EventListener {
   public void insertCoin(Coin coin) {
     amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
-    observer.setTemporaryNorthText(Double.toString(coin.VALUE / 100.0) + " € inserted");
+    observer.setTemporaryNorthText(coin.TEXT + " inserted");
     observer.updateInfo();
     SoundLoader.play(SoundLoader.FOP);
-    log.info(coin.VALUE / 100.0 + " € inserted.");
+    log.info(coin.TEXT + " inserted.");
   }
 
   public boolean isCupInside() {
@@ -301,11 +301,11 @@ public class Context implements EventListener {
     final StringBuilder sb = new StringBuilder("<html>");
     int nbrCoins;
     int total = 0;
-    for (int i = 0; i < ChangeMachine.COINS.length; i++) {//Moyen; hashtable pour les textes aussi ?
-      nbrCoins = changeOut.get(ChangeMachine.COINS[i]);
-      sb.append(ChangeMachine.COINS_TEXT[i]).append(": ");
+    for (Coin coin: ChangeMachine.COINS) {
+      nbrCoins = changeOut.get(coin);
+      sb.append(coin.TEXT).append(": ");
       sb.append(nbrCoins).append(" coin(s).<br>");
-      total += nbrCoins * ChangeMachine.COINS[i].VALUE;
+      total += nbrCoins * coin.VALUE;
     }
     sb.append("Total: ").append(total/100.0).append(" €.</html>");
     return sb.toString();
@@ -327,6 +327,18 @@ public class Context implements EventListener {
   @Override
   public String getSugarText() {
     return state.getSugarText(this);
+  }
+
+  @Override
+  public void setCoinStock(Coin coin, int value) {
+    changeMachine.getCoinsStock().put(coin, value);
+    observer.updateInfo();
+  }
+
+  @Override
+  public void setDrinkStock(Drink drink, int value) {
+    stock.getDrinkQty().put(drink, value);
+    observer.updateInfo();
   }
 
 }

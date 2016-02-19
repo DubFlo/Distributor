@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -31,8 +32,9 @@ import javax.swing.border.EtchedBorder;
 
 import vendingmachine.FontLoader;
 import vendingmachine.PictureLoader;
+import vendingmachine.components.Drink;
 import vendingmachine.components.EventListener;
-
+import vendingmachine.components.Coin;
 import static vendingmachine.components.ChangeMachine.COINS;
 
 public class VendingMachineGUI extends JFrame implements ContextListener, TemperatureListener {
@@ -170,6 +172,41 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     menuBar.add(settings);
     settings.add(newVM);
     settings.add(quit);
+    for (Coin coin: COINS) {
+      JMenuItem item = new JMenuItem(coin.TEXT);
+      item.addActionListener(e -> { 
+        String inputValue = JOptionPane.showInputDialog(this, "Enter the new value for the " + coin.TEXT + " coin.");
+        int value;
+        try {
+          value = Integer.parseInt(inputValue);
+          if (value < 0) {
+            throw new NumberFormatException();
+          }
+          observer.setCoinStock(coin, value);
+        } catch (NumberFormatException exc) {
+          JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
+        }
+        });
+      coinsMenu.add(item);
+    }
+    
+    for (Drink drink: observer.getDrinks()) {
+      JMenuItem item = new JMenuItem(drink.getName());
+      item.addActionListener(e -> { 
+        String inputValue = JOptionPane.showInputDialog(this, "Enter the new value for the " + drink.getName() + " stock.");
+        int value;
+        try {
+          value = Integer.parseInt(inputValue);
+          if (value < 0) {
+            throw new NumberFormatException();
+          }
+          observer.setDrinkStock(drink, value);
+        } catch (NumberFormatException exc) {
+          JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
+        }
+        });
+      drinksMenu.add(item);
+    }
   }
 
   public void init() {
