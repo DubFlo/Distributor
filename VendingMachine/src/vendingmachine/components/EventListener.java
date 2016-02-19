@@ -5,6 +5,10 @@ import java.util.List;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
 
+/**
+ * Defines an interface that a vending machine selling hot drinks
+ * should implement. 
+ */
 public interface EventListener {
 
   void cancel();
@@ -46,5 +50,9 @@ public interface EventListener {
   void setCoinStock(Coin coin, int value);
 
   void setDrinkStock(Drink drink, int value);
+
+  boolean isAvailableForMaintenance();
+
+  void setTemperature(int i);
 
 }

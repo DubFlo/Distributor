@@ -42,8 +42,6 @@ public class Configuration extends JFrame {
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
   private JPanel drinkPanel;
-  private JPanel coinPanel;
-  private JPanel stockPanel;
 
   private final MyDocumentFilter myDocumentFilter;
 
@@ -69,7 +67,7 @@ public class Configuration extends JFrame {
 
     drinkNbrComboBox = new JComboBox<Integer>(NBR_DRINKS_LIST);
     drinkNbrComboBox.setSelectedIndex(7); //to have 8 drinks as a default value
-    drinkNbrComboBox.addActionListener(e -> again());
+    drinkNbrComboBox.addActionListener(e -> updateDrinkPanel());
 
     myDocumentFilter = new MyDocumentFilter();
     
@@ -121,18 +119,13 @@ public class Configuration extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  private void again() {
-    getContentPane().removeAll();
-    init(); //mettre à jour uniquement le drinkPanel
-  }
-
   public void init() {
-    JPanel myPanel = new JPanel();
+    final JPanel myPanel = new JPanel();
     myPanel.setLayout(new GridBagLayout());
     GridBagConstraints c1 = new GridBagConstraints();
+    Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
     c1.insets = new Insets(5, 5, 5, 5);
 
-    final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
     final JLabel drinkNbrLabel = new JLabel("Number of drinks (between 1 and 10): ");
     
     c1.gridy = 0;
@@ -141,30 +134,12 @@ public class Configuration extends JFrame {
     myPanel.add(drinkNbrComboBox, c1);
     
     drinkPanel = new JPanel(new GridBagLayout());
-    Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
     drinkPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Drink Information"));
-    GridBagConstraints c2 = new GridBagConstraints();
-    c2.gridy = 0; c2.gridx = 0;
-    for (int i = 0; i < COLUMNS_TITLES.length; i++) {
-      drinkPanel.add(new JLabel(COLUMNS_TITLES[i]), c2);
-      c2.gridx += 1;
-    }
-
-    for (int i = 0; i < NBR_DRINKS; i++) {
-      c2.gridy += 1; c2.gridx = 0;
-      drinkPanel.add(drinksNames[i], c2);
-      c2.gridx = 1;
-      drinkPanel.add(drinksSugar[i], c2);
-      c2.gridx = 2;
-      drinkPanel.add(drinksPrices[i], c2);
-      c2.gridx = 3;
-      drinkPanel.add(drinksStocks[i], c2);
-    }
-    
+    updateDrinkPanel();
     c1.gridy = 2;
     myPanel.add(drinkPanel, c1);
     
-    coinPanel = new JPanel(new GridBagLayout());
+    final JPanel coinPanel = new JPanel(new GridBagLayout());
     coinPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Coin Information"));
     GridBagConstraints c3 = new GridBagConstraints();
     c3.gridy += 1; c3.gridx = 0;
@@ -185,7 +160,7 @@ public class Configuration extends JFrame {
     c1.gridy = 3;
     myPanel.add(coinPanel, c1);
     
-    stockPanel = new JPanel(new GridBagLayout());
+    final JPanel stockPanel = new JPanel(new GridBagLayout());
     stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
     GridBagConstraints c4 = new GridBagConstraints();
     final JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
@@ -229,15 +204,15 @@ public class Configuration extends JFrame {
 
   private void check() {
     // Fetches the values for the drinks
-    List<Drink> drinkList = new ArrayList<Drink>();
-    Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
+    final List<Drink> drinkList = new ArrayList<Drink>();
+    final Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
     try {
       for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
         if (drinksNames[i].getText().equals("") || drinksNames[i].getText().length() > 18) {
-          throw new IllegalArgumentException(); //Pas propre, pas la bonne exception ???
+          throw new IllegalArgumentException();
         }
         final Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
-            Integer.parseInt(drinksPrices[i].getText())); // final ici est suffisant ?
+            Integer.parseInt(drinksPrices[i].getText()));
         drinkList.add(d);
         drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
       }
@@ -248,8 +223,8 @@ public class Configuration extends JFrame {
     }
 
     // Fetches the values for the change machine
-    Map<Coin, Integer> coinsStock = new Hashtable<Coin, Integer>();
-    Map<Coin, Boolean> coinsAccepted = new Hashtable<Coin, Boolean>();
+    final Map<Coin, Integer> coinsStock = new Hashtable<Coin, Integer>();
+    final Map<Coin, Boolean> coinsAccepted = new Hashtable<Coin, Boolean>();
     try {
       for (int i = 0; i < ChangeMachine.COINS.length; i++) {
         coinsStock.put(ChangeMachine.COINS[i], Integer.parseInt(coinsStockValues[i].getText()));
@@ -262,9 +237,9 @@ public class Configuration extends JFrame {
     }
 
     // Fetches the values for the stock
-    int sugarCubeNbr = 0;
-    int cupsNbr = 0;
-    int spoonsNbr = 0;
+    final int sugarCubeNbr;
+    final int cupsNbr;
+    final int spoonsNbr;
     try {
       sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
       cupsNbr = Integer.parseInt(cupsNbrValue.getText());
@@ -286,7 +261,33 @@ public class Configuration extends JFrame {
         gui.init();
       }
     });
+  }
+  
+  private void updateDrinkPanel() {
+    final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
+    drinkPanel.removeAll();
+    
+    GridBagConstraints c2 = new GridBagConstraints();
+    c2.gridy = 0; c2.gridx = 0;
+    for (int i = 0; i < COLUMNS_TITLES.length; i++) {
+      drinkPanel.add(new JLabel(COLUMNS_TITLES[i]), c2);
+      c2.gridx += 1;
+    }
 
+    for (int i = 0; i < NBR_DRINKS; i++) {
+      c2.gridy += 1; c2.gridx = 0;
+      drinkPanel.add(drinksNames[i], c2);
+      c2.gridx = 1;
+      drinkPanel.add(drinksSugar[i], c2);
+      c2.gridx = 2;
+      drinkPanel.add(drinksPrices[i], c2);
+      c2.gridx = 3;
+      drinkPanel.add(drinksStocks[i], c2);
+    }
+    
+    drinkPanel.revalidate();
+    repaint();
+    pack();
   }
 
   private String getProblemText(String part) {

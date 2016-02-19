@@ -57,5 +57,10 @@ public final class Asking extends State {
       c.setTemporaryNorthText("No more sugar in stock");
     }
   }
+
+  @Override
+  public boolean isAvailableForMaintenance() {
+    return false;
+  }
   
 }

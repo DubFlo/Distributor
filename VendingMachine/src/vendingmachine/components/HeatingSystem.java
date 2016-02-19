@@ -34,8 +34,7 @@ public class HeatingSystem {
 
     this.timeCooling = 0;
     this.timeWarming = 0;
-    int delay = 1000; // milliseconds
-    timer = new Timer(delay, e -> this.updateTemperature());
+    timer = new Timer(1000, e -> this.updateTemperature());
     timer.start();
   }
 
@@ -52,6 +51,7 @@ public class HeatingSystem {
     if (observer != null) {
       observer.setTemperature(this.temperature);
     }
+    updateState();
   }
 
   public void setWaterSupply(boolean bool) {

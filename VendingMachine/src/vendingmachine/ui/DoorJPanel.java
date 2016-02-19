@@ -38,6 +38,7 @@ public class DoorJPanel extends JPanel {
 
   public void setStep(int step) {
     this.step = step;
+    repaint();
   }
 
 }

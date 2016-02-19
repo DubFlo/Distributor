@@ -59,9 +59,6 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private final JButton cancelButton;
   
   private final JMenuBar menuBar;
-  private final JCheckBoxMenuItem waterSupplyBox;
-  private final JMenuItem newVM;
-  private final JMenuItem quit;
 
   private final Timer textTimer;
   private Timer doorTimer; //final ??
@@ -121,16 +118,12 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     infoArea.setEditable(false);
     
     menuBar = new JMenuBar();
-    waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
-    newVM = new JMenuItem("New Vending Machine");
-    quit = new JMenuItem("Quit");
     
     textTimer = new Timer(2500, e -> updateNorthText());
     textTimer.setRepeats(false);
 
     doorTimer = new Timer(8, e -> {
       leftPanel.setStep(leftPanel.getStep() + 1);
-      leftPanel.repaint();
       if (leftPanel.getStep() >= DoorJPanel.HEIGHT) {
         doorTimer.stop();
       }
@@ -138,7 +131,11 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   }
 
   private void addListeners() {
-    cupButton.addActionListener(e -> { if (!doorTimer.isRunning()) observer.takeCup(); });
+    cupButton.addActionListener(e -> {
+      if (!doorTimer.isRunning()) {
+        observer.takeCup();
+        }
+      });
     changeButton.addActionListener(e -> observer.takeChange());
     lessSugar.addActionListener(e -> observer.less());
     moreSugar.addActionListener(e -> observer.more());
@@ -153,11 +150,6 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
       final CoinJButton b = coinButtonsList.get(i);
       b.addActionListener(e -> observer.coinInserted(b.getCoin()));
     }
-    
-    newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
-    quit.addActionListener(e -> System.exit(0));
-    waterSupplyBox.addActionListener(
-        e -> observer.setWaterSupply(waterSupplyBox.isSelected()));
   }
   
   private void createMenuBar() {
@@ -165,44 +157,43 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     final JMenu coinsMenu = new JMenu("Coin Stock");
     final JMenu drinksMenu = new JMenu("Drink Stock");
     final JMenu settings = new JMenu("Settings");
+    final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
+    final JMenuItem instantWarming = new JMenuItem("Instant Warming");
+    final JMenuItem newVM = new JMenuItem("New Vending Machine");
+    final JMenuItem quit = new JMenuItem("Quit");
+
     menuBar.add(waterSupplyMenu);
     waterSupplyMenu.add(waterSupplyBox);
+    waterSupplyMenu.add(instantWarming);
     menuBar.add(coinsMenu);
     menuBar.add(drinksMenu);
     menuBar.add(settings);
     settings.add(newVM);
     settings.add(quit);
+    
+    newVM.addActionListener(e -> { dispose(); VendingMachineMain.run(); } );
+    quit.addActionListener(e -> System.exit(0));
+    waterSupplyBox.addActionListener(
+        e -> observer.setWaterSupply(waterSupplyBox.isSelected()));
+    instantWarming.addActionListener(e -> observer.setTemperature(93));
+    
     for (Coin coin: COINS) {
-      JMenuItem item = new JMenuItem(coin.TEXT);
+      final JMenuItem item = new JMenuItem(coin.TEXT);
       item.addActionListener(e -> { 
-        String inputValue = JOptionPane.showInputDialog(this, "Enter the new value for the " + coin.TEXT + " coin.");
-        int value;
-        try {
-          value = Integer.parseInt(inputValue);
-          if (value < 0) {
-            throw new NumberFormatException();
-          }
+        int value = stockDialog(coin.TEXT + " coin");
+        if (value >= 0) {
           observer.setCoinStock(coin, value);
-        } catch (NumberFormatException exc) {
-          JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
         }
         });
       coinsMenu.add(item);
     }
     
     for (Drink drink: observer.getDrinks()) {
-      JMenuItem item = new JMenuItem(drink.getName());
+      final JMenuItem item = new JMenuItem(drink.getName());
       item.addActionListener(e -> { 
-        String inputValue = JOptionPane.showInputDialog(this, "Enter the new value for the " + drink.getName() + " stock.");
-        int value;
-        try {
-          value = Integer.parseInt(inputValue);
-          if (value < 0) {
-            throw new NumberFormatException();
-          }
+        int value = stockDialog(drink.getName());
+        if (value >= 0) {
           observer.setDrinkStock(drink, value);
-        } catch (NumberFormatException exc) {
-          JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
         }
         });
       drinksMenu.add(item);
@@ -328,7 +319,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     if (bool) {
       changeButton.setIcon(PictureLoader.CHANGE_ICON);
     } else {
-      changeButton.setIcon(null); // idem ??
+      changeButton.setIcon(null);
     }
   }
 
@@ -340,7 +331,6 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     } else {
       cupButton.setIcon(null); // replace with a black picture ??
       leftPanel.setStep(0);
-      leftPanel.repaint();
     }
   }
 
@@ -370,4 +360,23 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(observer.getChangeOutInfo());
   }
 
+  private int stockDialog(String element) {
+    int value = -1;
+    if (observer.isAvailableForMaintenance()) {
+      String inputValue = JOptionPane.showInputDialog(
+          this, "Enter the new stock value for the " + element + ": ");
+      try {
+        value = Integer.parseInt(inputValue);
+        if (value < 0) {
+          throw new NumberFormatException();
+        }
+      } catch (NumberFormatException exc) {
+        JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
+      }
+    } else {
+      JOptionPane.showMessageDialog(
+          this, "Now is not the time to use that !\nPlease end the current operation.");
+    }
+    return value;
+  }
 }

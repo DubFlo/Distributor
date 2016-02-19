@@ -107,7 +107,7 @@ public class Context implements EventListener {
 
   public void decrementChosenSugar() {
     chosenSugar -= 1;
-    observer.updateSugarText(); //Ou juste updateUI ????
+    observer.updateSugarText();
   }
 
   @Override
@@ -124,10 +124,6 @@ public class Context implements EventListener {
     return changeMachine;
   }
 
-  public Drink getChosenDrink() {
-    return chosenDrink;
-  }
-
   public byte getChosenSugar() {
     return chosenSugar;
   }
@@ -137,14 +133,10 @@ public class Context implements EventListener {
     return drinkList;
   }
 
-  public HeatingSystem getHeatingSystem() {
-    return heatingSystem;
-  }
-
   @Override
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("State: ").append(getState()).append("\n")
+    sb.append("State: ").append(state).append("\n")
     .append("\n").append(amountInside / 100.0).append(" € inserted.\n")
     .append("\nDrink(s): \n");
     for (int i = 0; i < NBR_DRINKS; i++) {
@@ -178,10 +170,6 @@ public class Context implements EventListener {
 
   public Stock getStock() {
     return stock;
-  }
-
-  public double getTemperature() {
-    return heatingSystem.getTemperature();
   }
 
   public void giveChange() {
@@ -234,10 +222,6 @@ public class Context implements EventListener {
 
   public void resetChosenSugar() {
     chosenSugar = 0;
-  }
-
-  public void setAmountInside(int amountInside) {
-    this.amountInside = amountInside;
   }
 
   @Override
@@ -339,6 +323,16 @@ public class Context implements EventListener {
   public void setDrinkStock(Drink drink, int value) {
     stock.getDrinkQty().put(drink, value);
     observer.updateInfo();
+  }
+
+  @Override
+  public boolean isAvailableForMaintenance() {
+    return state.isAvailableForMaintenance();
+  }
+
+  @Override
+  public void setTemperature(int i) {
+    heatingSystem.setTemperature(i);
   }
 
 }

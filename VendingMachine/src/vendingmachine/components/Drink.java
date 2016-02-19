@@ -1,5 +1,9 @@
 package vendingmachine.components;
 
+/**
+ * Defines drinks objects consisting of a name, a price and a 
+ * boolean "sugar" to tell if the drink is likely or not to contain sugar.
+ */
 public class Drink {
 
   private final String name;

@@ -70,4 +70,9 @@ public final class Idle extends State {
     }
     return msg;
   }
+
+  @Override
+  public boolean isAvailableForMaintenance() {
+    return true;
+  }
 }

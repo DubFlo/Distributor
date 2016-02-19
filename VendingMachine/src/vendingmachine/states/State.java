@@ -42,4 +42,6 @@ public abstract class State {
     return this.getClass().getSimpleName(); // instead of getName() to avoid the package name
   }
 
+  public abstract boolean isAvailableForMaintenance();
+
 }
