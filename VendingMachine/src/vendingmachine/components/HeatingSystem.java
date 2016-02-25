@@ -14,11 +14,11 @@ public class HeatingSystem {
   private static final double COLD_LIMIT = 80.0;
   private static final double RUNNING_WATER_TEMPERATURE = 60.0;
   
+  private static final double diffTemperature = 2000/(4.18 * 2500); // Q/(C*m)
+  
   private boolean waterSupply;
 
   private double temperature;
-  private int timeCooling; //à retirer
-  private int timeWarming; // à retirer
 
   private boolean heating;
   private TemperatureListener observer;
@@ -32,8 +32,6 @@ public class HeatingSystem {
     this.heating = false;
     this.context = context;
 
-    this.timeCooling = 0;
-    this.timeWarming = 0;
     timer = new Timer(1000, e -> this.updateTemperature());
     timer.start();
   }
@@ -70,10 +68,8 @@ public class HeatingSystem {
   private void updateState() {
     if (heating && temperature > MAX_TEMPERATURE) {
       heating = false;
-      timeWarming = 0;
     } else if (!heating && temperature < MIN_TEMPERATURE) {
       heating = true;
-      timeCooling = 0;
     }
     
     if (context.getState() == ColdWater.getInstance() && temperature >= COLD_LIMIT) {
@@ -83,19 +79,15 @@ public class HeatingSystem {
     }
   }
 
-  private void updateTemperature() { //formules incorrectes !!!!
+  private void updateTemperature() {
     if (waterSupply) {
       if (heating) {
-        timeWarming += 1;
-        setTemperature(temperature + (-10)
-            * (Math.exp(-0.0405 * (timeWarming + 1)) - Math.exp(-0.0405 * timeWarming)));
-        // http://luciole.ca/gilles/mat265/chap3/var-temp.html
+        //setTemperature(temperature + diffTemperature);
+        setTemperature(temperature - 100*0.6*(temperature - 150)/(4.18*2500));
+        //http://www.engineeringtoolbox.com/convective-heat-transfer-d_430.html
       } else {
-        timeCooling += 1;
-        setTemperature(temperature - 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
-            * (1 - Math.pow(61 / 75.0, 1 / 400.0)));
+        setTemperature(temperature - 100*0.6*(temperature - 20)/(4.18*2500));
       }
-      updateState();
     }
   }
 
@@ -109,4 +101,19 @@ public class HeatingSystem {
       updateState();
     }
   }
+  
 }
+  
+  /*
+   * if (heating) {
+        timeWarming += 1;
+        setTemperature(temperature + (-10)
+            * (Math.exp(-0.0405 * (timeWarming + 1)) - Math.exp(-0.0405 * timeWarming)));
+        // http://luciole.ca/gilles/mat265/chap3/var-temp.html
+      } else {
+        timeCooling += 1;
+        setTemperature(temperature - 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
+            * (1 - Math.pow(61 / 75.0, 1 / 400.0)));
+      }
+      */
+   

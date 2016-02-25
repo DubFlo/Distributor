@@ -61,7 +61,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private final JMenuBar menuBar;
 
   private final Timer textTimer;
-  private Timer doorTimer; //final ??
+  private final Timer doorTimer;
 
   public VendingMachineGUI(EventListener observer) {
     super();
@@ -125,7 +125,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     doorTimer = new Timer(8, e -> {
       leftPanel.setStep(leftPanel.getStep() + 1);
       if (leftPanel.getStep() >= DoorJPanel.HEIGHT) {
-        doorTimer.stop();
+        ((Timer)e.getSource()).stop();
       }
     });
   }
@@ -179,23 +179,13 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     
     for (Coin coin: COINS) {
       final JMenuItem item = new JMenuItem(coin.TEXT);
-      item.addActionListener(e -> { 
-        int value = stockDialog(coin.TEXT + " coin");
-        if (value >= 0) {
-          observer.setCoinStock(coin, value);
-        }
-        });
+      item.addActionListener(e -> coinStockDialog(coin));
       coinsMenu.add(item);
     }
     
     for (Drink drink: observer.getDrinks()) {
       final JMenuItem item = new JMenuItem(drink.getName());
-      item.addActionListener(e -> { 
-        int value = stockDialog(drink.getName());
-        if (value >= 0) {
-          observer.setDrinkStock(drink, value);
-        }
-        });
+      item.addActionListener(e -> drinkStockDialog(drink));
       drinksMenu.add(item);
     }
   }
@@ -375,8 +365,22 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
       }
     } else {
       JOptionPane.showMessageDialog(
-          this, "Now is not the time to use that !\nPlease end the current operation.");
+          this, "Now is not the time to use that !\nPlease end or wait for the end of the current operation.");
     }
     return value;
+  }
+  
+  private void coinStockDialog(Coin coin) {
+    int value = stockDialog(coin.TEXT + " coin");
+    if (value >= 0) {
+      observer.setCoinStock(coin, value);
+    }
+  }
+  
+  private void drinkStockDialog(Drink drink) {
+    int value = stockDialog(drink.getName());
+    if (value >= 0) {
+      observer.setDrinkStock(drink, value);
+    }
   }
 }

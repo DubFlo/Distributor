@@ -122,9 +122,9 @@ public class Configuration extends JFrame {
   public void init() {
     final JPanel myPanel = new JPanel();
     myPanel.setLayout(new GridBagLayout());
-    GridBagConstraints c1 = new GridBagConstraints();
-    Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
-    c1.insets = new Insets(5, 5, 5, 5);
+    final GridBagConstraints c1 = new GridBagConstraints();
+    final Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
+    c1.insets = new Insets(5, 5, 5, 5); //
 
     final JLabel drinkNbrLabel = new JLabel("Number of drinks (between 1 and 10): ");
     
@@ -141,20 +141,20 @@ public class Configuration extends JFrame {
     
     final JPanel coinPanel = new JPanel(new GridBagLayout());
     coinPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Coin Information"));
-    GridBagConstraints c3 = new GridBagConstraints();
-    c3.gridy += 1; c3.gridx = 0;
+    final GridBagConstraints c2 = new GridBagConstraints();
+    c2.gridy += 1; c2.gridx = 0;
     for (String s: COINS_TITLES) {
-      coinPanel.add(new JLabel(s), c3);
-      c3.gridx += 1;
+      coinPanel.add(new JLabel(s), c2);
+      c2.gridx += 1;
     }
 
     for (int i = 0; i < ChangeMachine.COINS.length; i++) {
-      c3.gridy += 1; c3.gridx = 0;
-      coinPanel.add(new JLabel(ChangeMachine.COINS[i].TEXT), c3);
-      c3.gridx = 1;
-      coinPanel.add(coinsStockValues[i], c3);
-      c3.gridx = 2;
-      coinPanel.add(acceptedCoinsBoxes[i], c3);
+      c2.gridy += 1; c2.gridx = 0;
+      coinPanel.add(new JLabel(ChangeMachine.COINS[i].TEXT), c2);
+      c2.gridx = 1;
+      coinPanel.add(coinsStockValues[i], c2);
+      c2.gridx = 2;
+      coinPanel.add(acceptedCoinsBoxes[i], c2);
     }
 
     c1.gridy = 3;
@@ -162,25 +162,25 @@ public class Configuration extends JFrame {
     
     final JPanel stockPanel = new JPanel(new GridBagLayout());
     stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
-    GridBagConstraints c4 = new GridBagConstraints();
+    final GridBagConstraints c3 = new GridBagConstraints();
     final JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
     final JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
     final JLabel spoonsNbrLabel = new JLabel("Number of spoons availables: ");
     
-    c4.gridy = 0; c4.gridx = 0;
-    stockPanel.add(sugarCubesNbrLabel, c4);
-    c4.gridx = 1;
-    stockPanel.add(sugarCubesNbrValue, c4);
+    c3.gridy = 0; c3.gridx = 0;
+    stockPanel.add(sugarCubesNbrLabel, c3);
+    c3.gridx = 1;
+    stockPanel.add(sugarCubesNbrValue, c3);
 
-    c4.gridy += 1;  c4.gridx = 0;
-    stockPanel.add(cupsNbrLabel, c4);
-    c4.gridx = 1;
-    stockPanel.add(cupsNbrValue, c4);
+    c3.gridy += 1;  c3.gridx = 0;
+    stockPanel.add(cupsNbrLabel, c3);
+    c3.gridx = 1;
+    stockPanel.add(cupsNbrValue, c3);
 
-    c4.gridy += 1;  c4.gridx = 0;
-    stockPanel.add(spoonsNbrLabel, c4);
-    c4.gridx = 1;
-    stockPanel.add(spoonsNbrValue, c4);
+    c3.gridy += 1;  c3.gridx = 0;
+    stockPanel.add(spoonsNbrLabel, c3);
+    c3.gridx = 1;
+    stockPanel.add(spoonsNbrValue, c3);
 
     c1.gridy = 4;
     myPanel.add(stockPanel, c1);
@@ -192,7 +192,7 @@ public class Configuration extends JFrame {
     myPanel.add(problemLabel, c1);
 
     add(myPanel);
-    JScrollPane scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
+    final JScrollPane scrPane = new JScrollPane(myPanel); // makes the frame scrollable in case it is shrunk
     add(scrPane);
 
     myPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
@@ -237,9 +237,9 @@ public class Configuration extends JFrame {
     }
 
     // Fetches the values for the stock
-    final int sugarCubeNbr;
-    final int cupsNbr;
-    final int spoonsNbr;
+    int sugarCubeNbr;
+    int cupsNbr;
+    int spoonsNbr;
     try {
       sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
       cupsNbr = Integer.parseInt(cupsNbrValue.getText());
@@ -267,22 +267,22 @@ public class Configuration extends JFrame {
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
     drinkPanel.removeAll();
     
-    GridBagConstraints c2 = new GridBagConstraints();
-    c2.gridy = 0; c2.gridx = 0;
+    final GridBagConstraints c = new GridBagConstraints();
+    c.gridy = 0; c.gridx = 0;
     for (int i = 0; i < COLUMNS_TITLES.length; i++) {
-      drinkPanel.add(new JLabel(COLUMNS_TITLES[i]), c2);
-      c2.gridx += 1;
+      drinkPanel.add(new JLabel(COLUMNS_TITLES[i]), c);
+      c.gridx += 1;
     }
 
     for (int i = 0; i < NBR_DRINKS; i++) {
-      c2.gridy += 1; c2.gridx = 0;
-      drinkPanel.add(drinksNames[i], c2);
-      c2.gridx = 1;
-      drinkPanel.add(drinksSugar[i], c2);
-      c2.gridx = 2;
-      drinkPanel.add(drinksPrices[i], c2);
-      c2.gridx = 3;
-      drinkPanel.add(drinksStocks[i], c2);
+      c.gridy += 1; c.gridx = 0;
+      drinkPanel.add(drinksNames[i], c);
+      c.gridx = 1;
+      drinkPanel.add(drinksSugar[i], c);
+      c.gridx = 2;
+      drinkPanel.add(drinksPrices[i], c);
+      c.gridx = 3;
+      drinkPanel.add(drinksStocks[i], c);
     }
     
     drinkPanel.revalidate();
