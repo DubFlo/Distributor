@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * Runs the configuration menu that is the starting point
- * of the vending machine program.
+ * of the vending machine application.
  */
 public final class VendingMachineMain {
 

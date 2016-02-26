@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -107,11 +106,10 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(observer.getChangeOutInfo());
     
     coinButtonsList = new ArrayList<CoinJButton>();
-    final ImageIcon[] coinsImages = { PictureLoader.EURO2_ICON, PictureLoader.EURO1_ICON, PictureLoader.CENT50_ICON,
-        PictureLoader.CENT20_ICON, PictureLoader.CENT10_ICON, PictureLoader.CENT5_ICON, PictureLoader.CENT2_ICON,
-        PictureLoader.CENT1_ICON };
-    for (int i = 0; i < coinsImages.length; i++) {
-      coinButtonsList.add(new CoinJButton(COINS[i], coinsImages[i]));
+    //Mettre les images en attribut des pièces ???
+
+    for (Coin coin: COINS) {
+      coinButtonsList.add(new CoinJButton(coin));
     }
     
     infoArea = new JTextArea();

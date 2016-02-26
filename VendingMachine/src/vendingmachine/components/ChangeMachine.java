@@ -5,8 +5,7 @@ import java.util.Map;
 
 public class ChangeMachine {
 
-  public static final Coin[] COINS = { Coin.COIN200, Coin.COIN100, Coin.COIN50, Coin.COIN20,
-    Coin.COIN10, Coin.COIN5, Coin.COIN2, Coin.COIN1 }; //unmodifiableList ?????
+  public static final Coin[] COINS = Coin.values();
   
   private Map<Coin, Integer> coinsStock; //Les rendre final ?
   private Map<Coin, Integer> coinsStockTemp;
@@ -55,10 +54,10 @@ public class ChangeMachine {
   public boolean isChangePossible(int amount) {
     coinsStockTemp = copy(coinsStock);
     
-    for (int i = 0; i < COINS.length; i++) {
-      while (amount >= COINS[i].VALUE && coinsStockTemp.get(COINS[i]) > 0) {
-        coinsStockTemp.put(COINS[i], coinsStockTemp.get(COINS[i]) - 1);
-        amount -= COINS[i].VALUE;
+    for (Coin coin: COINS) {
+      while (amount >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
+        coinsStockTemp.put(coin, coinsStockTemp.get(coin) - 1);
+        amount -= coin.VALUE;
       }
     }
 
@@ -70,9 +69,9 @@ public class ChangeMachine {
   }
 
   private static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
-    Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
-    for (Coin c : COINS) {
-      res.put(c, map.get(c)); // copy of the Integer
+    final Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
+    for (Coin coin : COINS) {
+      res.put(coin, map.get(coin)); // copy of the Integer
     }
     return res;
   }
