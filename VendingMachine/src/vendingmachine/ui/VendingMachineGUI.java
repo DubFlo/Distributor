@@ -141,12 +141,12 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     cancelButton.addActionListener(e -> observer.cancel());
 
     for (int i = 0; i < drinkButtonsList.size(); i++) {
-      final DrinkJButton d = drinkButtonsList.get(i);
-      d.addActionListener(e -> observer.drinkButton(d.getDrink()));
+      final DrinkJButton drinkButton = drinkButtonsList.get(i);
+      drinkButton.addActionListener(e -> observer.drinkButton(drinkButton.getDrink()));
     }
     for (int i = 0; i < coinButtonsList.size(); i++) {
-      final CoinJButton b = coinButtonsList.get(i);
-      b.addActionListener(e -> observer.coinInserted(b.getCoin()));
+      final CoinJButton coinButton = coinButtonsList.get(i);
+      coinButton.addActionListener(e -> observer.coinInserted(coinButton.getCoin()));
     }
   }
   
@@ -217,7 +217,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     // Right Panel
     final JPanel rightPanel = new BackgroundJPanel(PictureLoader.SLOT_IMAGE);
     rightPanel.setLayout(new GridBagLayout());
-    GridBagConstraints c = new GridBagConstraints();
+    final GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH; // A expliquer
     c.weightx = 1;
 
@@ -351,7 +351,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
   private int stockDialog(String element) {
     int value = -1;
     if (observer.isAvailableForMaintenance()) {
-      String inputValue = JOptionPane.showInputDialog(
+      final String inputValue = JOptionPane.showInputDialog(
           this, "Enter the new stock value for the " + element + ": ");
       try {
         value = Integer.parseInt(inputValue);

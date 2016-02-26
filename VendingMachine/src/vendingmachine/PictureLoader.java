@@ -33,7 +33,8 @@ public final class PictureLoader {
   private static BufferedImage getImage(String file) {
     BufferedImage image;
     try {
-      image = ImageIO.read(new File(PATH + file));
+      image = ImageIO.read(PictureLoader.class.getResource("resources/" + file));
+      System.out.println("loaded file");
     } catch (IOException e) {
       image = null;
       e.printStackTrace();

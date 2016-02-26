@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="VendingMachine" default="all">
+  <!-- Description du projet.
+
+       Vous devez changer cette description avec
+       le nom des membres de votre groupe. -->
+  <description>
+    Projet de modélisation et d'implémentation (S-MATH-789)
+    Simulateur d'un distributeur de boissons
+
+    Florent Dubus et Pierre Vandenhove
+  </description>
+
+  <!-- Chemin vers la classe contenant la méthode main.
+       Le package est fourni à titre indicatif.
+
+       Il faut modifier ce chemin par celui utilisé
+       dans votre application. -->
+  <property name="main.class" value="vendingmachine.ui.VendingMachineMain"/>
+
+  <!-- Chemins vers les différents répertoires utilisés
+       dans l'application. Ces chemins sont relatifs à la racine
+       de l'application. -->
+  <property name="src.dir" location="src"/>
+  <property name="resources.dir" location="src/resources"/>
+  <property name="build.dir" location="build"/>
+  <property name="jar.dir" location="jar"/>
+  <property name="doc.dir" location="doc"/>
+
+  <!-- Le répertoire jar contient des librairies tierces
+       à utiliser pour compiler l'application.
+
+       Ce répertoire doit en particulier contenir le jar
+       pour JUnit4. Il est possible d'utiliser un lien
+       symbolique. -->
+  <path id="classpath">
+    <fileset dir="${jar.dir}" includes="**/*.jar"/>
+  </path>
+
+  <!-- Règle par défaut. Compile le jar. -->
+  <target name="all" depends="clean, dist" description="nettoyage, création des répertoires et compilation"/>
+
+  <!-- Création de certains répertoires s'il ne sont pas créés initialement. -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build.dir}"/>
+  </target>
+
+  <!-- Compile le code (génère les fichiers class). -->
+  <target name="build" depends="init" description="compilation des sources">
+    <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    <copy todir="${build.dir}/resources">
+      <fileset dir="${resources.dir}"/>
+    </copy>
+  </target>
+  
+  <!-- Création d'une archive jar depuis les fichiers compilés. -->
+  <target name="dist" depends="build" description="création du jar">
+    <mkdir dir="${jar.dir}"/>
+    <jar jarfile="${jar.dir}/${ant.project.name}.jar" basedir="${build.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>  
+  </target>
+
+  <!-- Nettoye le répertoire du code. C'est à dire:
+       - la documentation
+       - les fichiers class
+       - l'archive jar -->
+  <target name="clean" description="nettoyage">
+    <delete dir="${doc.dir}"/>
+    <delete dir="${build.dir}"/>
+    <delete file="${jar.dir}/${ant.project.name}.jar"/>
+  </target>
+
+  <!-- Génère une archive tarball du projet. L'archive est compressée avec bzip2.
+       Le code est nettoyé avant de générer l'archive afin de ne pas inclure
+       la documentation et les fichiers compilés. -->
+  <target name="tar" depends="clean" description="création d'un tarball du projet">
+    <tar destfile="${ant.project.name}.tar.bz2" compression="bzip2">
+      <tarfileset dir="." prefix="${ant.project.name}"/>
+    </tar>
+  </target>
+
+  <!-- Lance les classes de tests avec JUnit. Ce sont toutes les classes dans
+       le dossier src dont le nom commence par Test.
+
+       L'exécution des tests s'arrête dès la première erreur. -->
+  <target name="test" depends="build" description="lance les tests">
+    <junit haltonfailure="yes">
+      <formatter type="plain" usefile="false"/>
+
+      <classpath>
+        <path refid="classpath"/>
+        <pathelement location="${build.dir}"/>
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${src.dir}">
+          <include name="**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- Lance l'application depuis le fichier jar. -->
+  <target name="run" depends="dist" description="lance l'application">
+    <java fork="true" classname="${main.class}">
+      <classpath>
+        <path refid="classpath"/>
+        <path location="${jar.dir}/${ant.project.name}.jar"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- Génère la documentation javadoc dans le dossier doc. -->
+  <target name="doc" depends="clean" description="génère la documentation">
+    <mkdir dir="${doc.dir}"/>
+    <javadoc destdir="${doc.dir}" additionalparam="-encoding utf8 -docencoding utf8 -charset utf8">
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </javadoc>
+  </target>
+</project>
