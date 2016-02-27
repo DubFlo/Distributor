@@ -4,22 +4,25 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Supply a digital font which looks like a vending machine display.
  */
 public final class FontLoader {
 
-  private static final String PATH = "assets" + File.separator + "fonts" + File.separator;
+  private static final String PATH = File.separator + "resources" + File.separator;
   
   public static final Font DIGITAL_FONT;
 
   static {
     Font font;
+    File file;
     try {
-      font = Font.createFont(Font.TRUETYPE_FONT, new File(PATH + "digitalFont.ttf"));
+      file = new File(FontLoader.class.getClassLoader().getResource(PATH + "digitalFont.ttf").toURI());
+      font = Font.createFont(Font.TRUETYPE_FONT, file);
       font = font.deriveFont(24f);
-    } catch (IOException | FontFormatException e) {
+    } catch (IOException | FontFormatException | URISyntaxException e) {
       font = null;
       e.printStackTrace();
     }

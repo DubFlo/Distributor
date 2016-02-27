@@ -14,7 +14,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public final class SoundLoader {
 
-  private static final String PATH = "src" + File.separator + "resources" + File.separator;
+  private static final String PATH = File.separator + "resources" + File.separator;
 
   public static final Clip BEEP = getSound("beep.wav");
   public static final Clip CLING = getSound("cling.wav");
@@ -48,7 +48,7 @@ public final class SoundLoader {
     Clip clip;
     AudioInputStream stream;
     try {
-      stream = AudioSystem.getAudioInputStream(new File(PATH + file));
+      stream = AudioSystem.getAudioInputStream(SoundLoader.class.getClassLoader().getResource(PATH + file));
       clip = AudioSystem.getClip();
       clip.open(stream);
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

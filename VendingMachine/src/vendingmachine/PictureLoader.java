@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  */
 public final class PictureLoader {
 
-  private static final String PATH = "src" + File.separator + "resources" + File.separator;
+  private static final String PATH = File.separator + "resources" + File.separator;
 
   public static final ImageIcon CUP_ICON = new ImageIcon(getImage("cup.jpg"));
   public static final ImageIcon CHANGE_ICON = new ImageIcon(getImage("change.png"));
@@ -33,8 +33,8 @@ public final class PictureLoader {
   private static BufferedImage getImage(String file) {
     BufferedImage image;
     try {
-      image = ImageIO.read(PictureLoader.class.getResource("resources/" + file));
-      System.out.println("loaded file");
+      //doesn't work with .JAR !!!!!
+      image = ImageIO.read(PictureLoader.class.getClassLoader().getResourceAsStream(PATH + file));
     } catch (IOException e) {
       image = null;
       e.printStackTrace();
