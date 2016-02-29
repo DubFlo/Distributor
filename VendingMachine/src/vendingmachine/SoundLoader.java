@@ -1,6 +1,5 @@
 package vendingmachine;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
@@ -13,9 +12,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * Supply Clip sounds useful to a vending machine.
  */
 public final class SoundLoader {
-
-  private static final String PATH = File.separator + "resources" + File.separator;
-
   public static final Clip BEEP = getSound("beep.wav");
   public static final Clip CLING = getSound("cling.wav");
   public static final Clip FOP = getSound("fop.wav");
@@ -48,7 +44,7 @@ public final class SoundLoader {
     Clip clip;
     AudioInputStream stream;
     try {
-      stream = AudioSystem.getAudioInputStream(SoundLoader.class.getClassLoader().getResource(PATH + file));
+      stream = AudioSystem.getAudioInputStream(SoundLoader.class.getResource("/resources/" + file));
       clip = AudioSystem.getClip();
       clip.open(stream);
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

@@ -25,17 +25,17 @@
   <property name="src.dir" location="src"/>
   <property name="resources.dir" location="src/resources"/>
   <property name="build.dir" location="build"/>
-  <property name="jar.dir" location="jar"/>
+  <property name="lib.dir" location="lib"/>
   <property name="doc.dir" location="doc"/>
 
-  <!-- Le répertoire jar contient des librairies tierces
+  <!-- Le répertoire lib contient des librairies tierces
        à utiliser pour compiler l'application.
 
        Ce répertoire doit en particulier contenir le jar
        pour JUnit4. Il est possible d'utiliser un lien
        symbolique. -->
   <path id="classpath">
-    <fileset dir="${jar.dir}" includes="**/*.jar"/>
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
   </path>
 
   <!-- Règle par défaut. Compile le jar. -->
@@ -47,21 +47,24 @@
     <mkdir dir="${build.dir}"/>
   </target>
 
-  <!-- Compile le code (génère les fichiers class). -->
+  <!-- Compile le code (génère les fichiers class)
+       et ajoute les ressources nécessaires au dossier build. -->
   <target name="build" depends="init" description="compilation des sources">
-    <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
     <copy todir="${build.dir}/resources">
       <fileset dir="${resources.dir}"/>
     </copy>
+    <copy file="${src.dir}/log4j2.xml" todir="${build.dir}"/>
   </target>
   
   <!-- Création d'une archive jar depuis les fichiers compilés. -->
   <target name="dist" depends="build" description="création du jar">
-    <mkdir dir="${jar.dir}"/>
-    <jar jarfile="${jar.dir}/${ant.project.name}.jar" basedir="${build.dir}">
+    <mkdir dir="${build.dir}/jar"/>
+    <jar jarfile="${build.dir}/jar/${ant.project.name}.jar" basedir="${build.dir}">
       <manifest>
         <attribute name="Main-Class" value="${main.class}"/>
       </manifest>
+      <zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
     </jar>  
   </target>
 
@@ -72,7 +75,6 @@
   <target name="clean" description="nettoyage">
     <delete dir="${doc.dir}"/>
     <delete dir="${build.dir}"/>
-    <delete file="${jar.dir}/${ant.project.name}.jar"/>
   </target>
 
   <!-- Génère une archive tarball du projet. L'archive est compressée avec bzip2.
@@ -110,7 +112,7 @@
     <java fork="true" classname="${main.class}">
       <classpath>
         <path refid="classpath"/>
-        <path location="${jar.dir}/${ant.project.name}.jar"/>
+        <path location="${build.dir}/jar/${ant.project.name}.jar"/>
       </classpath>
     </java>
   </target>

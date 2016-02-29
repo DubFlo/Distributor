@@ -1,7 +1,6 @@
 package vendingmachine;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -11,8 +10,6 @@ import javax.swing.ImageIcon;
  * Supply ImageIcon or BufferedImage images that are useful to display a vending machine.
  */
 public final class PictureLoader {
-
-  private static final String PATH = File.separator + "resources" + File.separator;
 
   public static final ImageIcon CUP_ICON = new ImageIcon(getImage("cup.jpg"));
   public static final ImageIcon CHANGE_ICON = new ImageIcon(getImage("change.png"));
@@ -33,8 +30,7 @@ public final class PictureLoader {
   private static BufferedImage getImage(String file) {
     BufferedImage image;
     try {
-      //doesn't work with .JAR !!!!!
-      image = ImageIO.read(PictureLoader.class.getClassLoader().getResourceAsStream(PATH + file));
+      image = ImageIO.read(PictureLoader.class.getResource("/resources/" + file));
     } catch (IOException e) {
       image = null;
       e.printStackTrace();
