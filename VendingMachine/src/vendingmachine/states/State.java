@@ -23,7 +23,6 @@ public abstract class State {
     c.addChangeOutCoin(coin);
   }
   
-  
   /**
    * Called when the button "OK" is pressed. Does nothing by default.
    */
@@ -54,7 +53,7 @@ public abstract class State {
   }
 
   @Override
-  public String toString() {
+  public final String toString() {
     return this.getClass().getSimpleName(); // instead of getName() to avoid the package name
   }
 

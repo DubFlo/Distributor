@@ -17,7 +17,7 @@ public final class Idle extends State {
   @Override
   public void entry(Context c) {
     super.entry(c);
-    if (c.getStock().getCupsNbr() <= 0) {
+    if (!c.getStock().isCupInStock()) {
       c.changeState(NoCup.getInstance());
     }
   }
@@ -46,12 +46,12 @@ public final class Idle extends State {
     } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
-        if (c.getStock().getSpoonsNbr()<= 0){
+        if (!c.getStock().isSpoonInStock()) {
           c.changeState(NoSpoon.getInstance());
-        } else 
-          c.changeState(Asking.getInstance());
-        
         } else {
+          c.changeState(Asking.getInstance());
+        }
+      } else {
         c.giveChange();
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());

@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.SoundLoader;
 import vendingmachine.states.Idle;
-import vendingmachine.states.Preparing;
 import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
@@ -70,13 +69,12 @@ public class Context implements EventListener {
   private void preparingOver() {
     setCupBool(true);
     stock.removeCup();
-    if (chosenDrink.isSugar() && stock.getSpoonsNbr() > 0) {
+    if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
     }
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.BEEP);
-    observer.setTemporaryNorthText("Your drink is ready !");
-    log.info(chosenDrink.getName() + " prepared (" + stock.getDrinkQty().get(chosenDrink) + " remaining).");
+    observer.setTemporaryNorthText("Your " + chosenDrink + " is ready !");
     heatingSystem.drinkOrdered();
     if (heatingSystem.isWaterSupplyEnabled()) {
       changeState(Idle.getInstance());
@@ -92,11 +90,7 @@ public class Context implements EventListener {
   public void changeState(State newState) {
     state = newState;
     state.entry(this);
-    if (state == Preparing.getInstance()) {
-      preparingTimer.restart();
-    }
     observer.updateUI();
-    log.info("State " + state + " entered.");
   }
 
   @Override
@@ -142,24 +136,11 @@ public class Context implements EventListener {
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
     sb.append("State: ").append(state).append("\n")
-    .append("\n").append(amountInside / 100.0).append(" € inserted.\n")
-    .append("\nDrink(s): \n");
-    for (int i = 0; i < NBR_DRINKS; i++) {
-      sb.append(drinkList.get(i).getName()).append(": ")
-      .append(stock.getDrinkQty().get(drinkList.get(i)))
-      .append(" available.\n");
-    }
+    .append("\n").append(amountInside / 100.0).append(" € inserted.\n");
 
-    sb.append("\nCoins:\n");
-    for (Coin coin: ChangeMachine.COINS) {
-      sb.append(coin.TEXT).append(": ")
-      .append(changeMachine.getCoinsStock().get(coin))
-      .append(" available.\n");
-    }
+    sb.append("\n").append(changeMachine.getInfo());
 
-    sb.append("\n" + stock.getCupsNbr()).append(" cup(s) available.\n")
-    .append(stock.getSugarCubesNbr()).append(" sugar cube(s) available.\n")
-    .append(stock.getSpoonsNbr()).append(" spoon(s) available.\n");
+    sb.append("\n").append(stock.getInfo());
 
     return sb.toString();
   }
@@ -307,7 +288,7 @@ public class Context implements EventListener {
   public void addChangeOutCoin(Coin coin) {
     changeOut.put(coin, changeOut.get(coin) + 1);
     observer.updateChangeOutInfo();
-    log.info(coin.VALUE / 100.0 + " € inserted but not allowed.");
+    log.info(coin.TEXT + " inserted but not allowed.");
   }
 
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
@@ -324,13 +305,13 @@ public class Context implements EventListener {
 
   @Override
   public void setCoinStock(Coin coin, int value) {
-    changeMachine.getCoinsStock().put(coin, value);
+    changeMachine.setCoinStock(coin, value);
     observer.updateInfo();
   }
 
   @Override
   public void setDrinkStock(Drink drink, int value) {
-    stock.getDrinkQty().put(drink, value);
+    stock.setDrinkQty(drink, value);
     observer.updateInfo();
   }
 
@@ -342,6 +323,10 @@ public class Context implements EventListener {
   @Override
   public void setTemperature(int i) {
     heatingSystem.setTemperature(i);
+  }
+
+  public void restartPreparingTimer() {
+    preparingTimer.restart();
   }
 
 }

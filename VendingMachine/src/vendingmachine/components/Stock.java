@@ -2,16 +2,21 @@ package vendingmachine.components;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The Stock class lists all the stock values needed for a drinks vending machine 
  * (sugar cubes, cups, spoons and drinks).
  */
 public class Stock {
 
+  private static final Logger log = LogManager.getLogger("Stock");
+  
   private int sugarCubesNbr;
   private int cupsNbr;
   private int spoonsNbr;
-  
+
   /**
    * A Map that maps to each Drink its stock as an Integer.
    */
@@ -22,34 +27,6 @@ public class Stock {
     this.cupsNbr = cupsNbr;
     this.spoonsNbr = spoonsNbr;
     this.drinkQty = drinkQty;
-  }
-
-  /**
-   * @return the number of cups left in the machine.
-   */
-  public int getCupsNbr() {
-    return cupsNbr;
-  }
-
-  /**
-   * @return a Map of all the drinks and their stock values
-   */
-  public Map<Drink, Integer> getDrinkQty() {
-    return drinkQty;
-  }
-
-  /**
-   * @return the number of spoons left in the machine
-   */
-  public int getSpoonsNbr() {
-    return spoonsNbr;
-  }
-
-  /**
-   * @return the number of sugar cubes left in the machine
-   */
-  public int getSugarCubesNbr() {
-    return sugarCubesNbr;
   }
 
   /**
@@ -87,6 +64,11 @@ public class Stock {
    */
   public void removeCup() {
     cupsNbr -= 1;
+    if (isCupInStock()) {
+      log.info(cupsNbr + " cups remaining.");
+    } else {
+      log.warn("No more cups!");
+    }
   }
 
   /**
@@ -95,6 +77,11 @@ public class Stock {
    */
   public void removeDrink(Drink drink) {
     drinkQty.put(drink, drinkQty.get(drink) - 1);
+    if (isDrinkInStock(drink)) {
+      log.info(drink.getName() + " prepared (" + drinkQty.get(drink) + " remaining).");
+    } else {
+      log.warn(drink.getName() + " prepared, no more in stock!");
+    }
   }
 
   /**
@@ -102,6 +89,11 @@ public class Stock {
    */
   public void removeSpoon() {
     spoonsNbr -= 1;
+    if (isSpoonInStock()) {
+      log.info(spoonsNbr + " spoons remaining.");
+    } else {
+      log.warn("No more spoon in stock!");
+    }
   }
 
   /**
@@ -109,6 +101,47 @@ public class Stock {
    */
   public void removeSugarCubes(int i) {
     sugarCubesNbr -= i;
+    if (sugarCubesNbr > 0) {
+      log.info(i + " sugar cubes ordered (" + sugarCubesNbr + " remaining).");
+    } else {
+      log.warn("No more sugar in stock!");
+    }
+  }
+
+  /**
+   * @return a String containing all the information about the current stock.
+   */
+  public String getInfo() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Drink(s): \n");
+    for (Drink drink: drinkQty.keySet()) {
+      sb.append(drink.getName()).append(": ")
+      .append(drinkQty.get(drink)).append(" available.\n");
+    }
+    
+    sb.append("\n")
+    .append(cupsNbr).append(" cup(s) available.\n")
+    .append(sugarCubesNbr).append(" sugar cube(s) available.\n")
+    .append(spoonsNbr).append(" spoon(s) available.\n");
+    return sb.toString();
+  }
+
+  /**
+   * Updates the stock of {@code drink} to the {@code value} specified.
+   * Logs the operation done.
+   * 
+   * @param drink the Drink whose stock must be changed
+   * @param value the new value for the {@code drink} (must be positive)
+   */
+  public void setDrinkQty(Drink drink, int value) {
+    final int difference = value - drinkQty.get(drink);
+    if (difference > 0) {
+      log.info(difference + " " + drink.getName() + " resupplied.");
+    } else if (difference < 0) {
+      log.info(-difference + " " + drink.getName() + " removed from the stock.");
+    }
+    
+    drinkQty.put(drink, value);
   }
   
 }

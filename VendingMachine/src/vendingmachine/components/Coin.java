@@ -8,7 +8,7 @@ import vendingmachine.PictureLoader;
  * The enumeration Coin gives all the coins that could be accepted by a vending machine.
  * This gives all the Euro coins, but it can be easily changed.
  */
-public enum Coin {
+public enum Coin { // Coins should be listed in descending order of their values
   COIN200 (200, "2 €", PictureLoader.EURO2_ICON),
   COIN100 (100, "1 €", PictureLoader.EURO1_ICON),
   COIN50  (50, "0.50 €", PictureLoader.CENT50_ICON),
