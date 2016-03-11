@@ -36,8 +36,6 @@ public class CoinJButton extends JButton {
   }
 
   /**
-   * Gets the Coin associated with the CoinJButton.
-   * 
    * @return the Coin associated with the CoinJButton.
    */
   public Coin getCoin() {

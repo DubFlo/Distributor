@@ -31,7 +31,7 @@ public class Context implements EventListener {
   private int amountInside;
   private boolean cupInside;
   private Drink chosenDrink;
-  private byte chosenSugar;
+  private int chosenSugar;
   private Map<Coin, Integer> changeOut;
 
   private ContextListener observer;
@@ -129,7 +129,7 @@ public class Context implements EventListener {
     return changeMachine;
   }
 
-  public byte getChosenSugar() {
+  public int getChosenSugar() {
     return chosenSugar;
   }
 

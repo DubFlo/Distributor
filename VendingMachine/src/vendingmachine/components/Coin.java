@@ -4,6 +4,10 @@ import javax.swing.ImageIcon;
 
 import vendingmachine.PictureLoader;
 
+/**
+ * The enumeration Coin gives all the coins that could be accepted by a vending machine.
+ * This gives all the Euro coins, but it can be easily changed.
+ */
 public enum Coin {
   COIN200 (200, "2 €", PictureLoader.EURO2_ICON),
   COIN100 (100, "1 €", PictureLoader.EURO1_ICON),
@@ -14,8 +18,20 @@ public enum Coin {
   COIN2   (2, "0.02 €", PictureLoader.CENT2_ICON),
   COIN1   (1, "0.01 €", PictureLoader.CENT1_ICON);
 
+  /**
+   * The value of the coin, expressed in cents.
+   */
   public final int VALUE;
+  
+  /**
+   * The String representation of the coin ("0.50 €" for instance).
+   */
   public final String TEXT;
+  
+  /**
+   * An icon that looks like the coin. It can be null, but the
+   * vending machine will be uglier.
+   */
   public final ImageIcon ICON;
 
   private Coin(int value, String text, ImageIcon icon) {

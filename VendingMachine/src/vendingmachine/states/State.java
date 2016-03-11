@@ -23,13 +23,29 @@ public abstract class State {
     c.addChangeOutCoin(coin);
   }
   
-  // These buttons do nothing by default
+  
+  /**
+   * Called when the button "OK" is pressed. Does nothing by default.
+   */
   public void confirm(Context c) {}
+  
+  /**
+   * Called when a drink button is pressed. Does nothing by default.
+   * @param drink the Drink associated with the button
+   */
   public void drinkButton(Drink drink, Context c) {}
+  
+  /**
+   * Called when the button "-" is pressed. Does nothing by default.
+   */
   public void less(Context c) {}
+  
+  /**
+   * Called when the button "+" is pressed. Does nothing by default.
+   */
   public void more(Context c) {}
 
-  public void entry(Context c) {} //quasi pas besoin
+  public void entry(Context c) {}
 
   public abstract String getDefaultText(Context c);
 
