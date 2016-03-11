@@ -41,7 +41,7 @@ public class Configuration extends JFrame {
     "Hot Milk", "Green Tea", "Earl Grey", "Tomato Soup", "Mushroom Soup", "Hot Water", "Oolong Tea" };
   private static final Integer[] NBR_DRINKS_LIST = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-  private JPanel drinkPanel;
+  private final JPanel drinkPanel;
 
   private final MyDocumentFilter myDocumentFilter;
 
@@ -65,6 +65,7 @@ public class Configuration extends JFrame {
     super();
     setTitle("Vending Machine Initialization");
 
+    drinkPanel = new JPanel(new GridBagLayout());
     drinkNbrComboBox = new JComboBox<Integer>(NBR_DRINKS_LIST);
     drinkNbrComboBox.setSelectedIndex(7); //to have 8 drinks as a default value
     drinkNbrComboBox.addActionListener(e -> updateDrinkPanel());
@@ -133,7 +134,6 @@ public class Configuration extends JFrame {
     c1.gridy = 1;
     myPanel.add(drinkNbrComboBox, c1);
     
-    drinkPanel = new JPanel(new GridBagLayout());
     drinkPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Drink Information"));
     updateDrinkPanel();
     c1.gridy = 2;

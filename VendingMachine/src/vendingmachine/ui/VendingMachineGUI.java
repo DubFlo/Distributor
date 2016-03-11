@@ -91,7 +91,9 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     temperatureLabel.setOpaque(true);
     
     sugarLabel = new JLabel();
-    sugarLabel.setFont(FontLoader.DIGITAL_FONT.deriveFont(16f));
+    if (FontLoader.DIGITAL_FONT != null) {
+      sugarLabel.setFont(FontLoader.DIGITAL_FONT.deriveFont(16f));
+    }
     sugarLabel.setForeground(Color.RED);
     sugarLabel.setIcon(PictureLoader.SUGAR_DISPLAY);
     sugarLabel.setHorizontalTextPosition(SwingConstants.CENTER);

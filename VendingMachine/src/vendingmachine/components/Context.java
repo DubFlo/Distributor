@@ -55,8 +55,13 @@ public class Context implements EventListener {
       this.changeOut.put(coin, 0);
     }
 
-    preparingTimer = new Timer((int) (SoundLoader.FILLING.getMicrosecondLength() / 1000),
-        e -> this.preparingOver());
+    int delay;
+    if (SoundLoader.FILLING != null) {
+      delay = (int) SoundLoader.FILLING.getMicrosecondLength() / 1000;
+    } else {
+      delay = 3000; // milliseconds
+    }
+    preparingTimer = new Timer(delay, e -> this.preparingOver());
     preparingTimer.setRepeats(false);
     
     log.info("New Vending Machine Created");
@@ -259,14 +264,18 @@ public class Context implements EventListener {
       changeOut.put(coin, 0);
     }
     observer.updateChangeOutInfo();
-    SoundLoader.CLING.stop(); // stop the sound effect is the change is taken.
+    if (SoundLoader.CLING != null) {
+      SoundLoader.CLING.stop(); // stops the sound effect is the change is taken.
+    }
     log.info("Change taken.");
   }
 
   @Override
   public void takeCup() {
     setCupBool(false);
-    SoundLoader.BEEP.stop(); // stop the sound effect is the cup is taken.
+    if (SoundLoader.BEEP != null) {
+      SoundLoader.BEEP.stop(); // stops the sound effect is the cup is taken.
+    }
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 
