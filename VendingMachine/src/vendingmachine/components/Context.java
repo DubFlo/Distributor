@@ -21,21 +21,34 @@ public class Context implements IMachine {
 
   private static final Logger log = LogManager.getLogger("Context");
   
+  /**
+   * The number of drinks the machine must deal with.
+   */
+  private final int NBR_DRINKS;
+  private final List<Drink> drinkList;
+  
+  /*
+   * The different parts of the machine.
+   */
   private final ChangeMachine changeMachine;
   private final Stock stock;
-  private final List<Drink> drinkList; // Plutôt Collection pour pas d'ordre ????
   private final HeatingSystem heatingSystem;
-  private final int NBR_DRINKS;
-  
+
+  /**
+   * The state the machine is currently in (State design pattern).
+   */
   private State state;
 
+  /**
+   * The amount of money inside of the machine (in cents).
+   */
   private int amountInside;
   private boolean cupInside;
   private Drink chosenDrink;
   private int chosenSugar;
   private Map<Coin, Integer> changeOut;
 
-  private IMachineGUI observer;
+  private IMachineGUI machineGUI;
   
   private final Timer preparingTimer;
 
@@ -76,7 +89,7 @@ public class Context implements IMachine {
     }
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.BEEP);
-    observer.setTemporaryNorthText("Your " + chosenDrink + " is ready !");
+    machineGUI.setTemporaryNorthText("Your " + chosenDrink + " is ready !");
     heatingSystem.drinkOrdered();
     if (heatingSystem.isWaterSupplyEnabled()) {
       changeState(Idle.getInstance());
@@ -92,7 +105,7 @@ public class Context implements IMachine {
   public void changeState(State newState) {
     state = newState;
     state.entry(this);
-    observer.updateUI();
+    machineGUI.updateUI();
   }
 
   @Override
@@ -108,7 +121,7 @@ public class Context implements IMachine {
 
   public void decrementChosenSugar() {
     chosenSugar -= 1;
-    observer.updateSugarText();
+    machineGUI.updateSugarText();
   }
 
   @Override
@@ -167,7 +180,7 @@ public class Context implements IMachine {
       SoundLoader.play(SoundLoader.CLING);
     }
     amountInside = 0;
-    observer.updateInfo();
+    machineGUI.updateInfo();
   }
   
   public void giveChangeOnCancel() {
@@ -175,19 +188,19 @@ public class Context implements IMachine {
     setChangeBool(true);
     SoundLoader.play(SoundLoader.CLING);
     amountInside = 0;
-    observer.updateInfo();
+    machineGUI.updateInfo();
   }
 
   public void incrementChosenSugar() {
     chosenSugar += 1;
-    observer.updateSugarText();
+    machineGUI.updateSugarText();
   }
 
   public void insertCoin(Coin coin) {
     amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
-    observer.setTemporaryNorthText(coin.TEXT + " inserted");
-    observer.updateInfo();
+    machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
+    machineGUI.updateInfo();
     SoundLoader.play(SoundLoader.FOP);
     log.info(coin.TEXT + " inserted.");
   }
@@ -214,7 +227,7 @@ public class Context implements IMachine {
 
   @Override
   public void setChangeBool(boolean bool) {
-    observer.setChangeBool(bool);
+    machineGUI.setChangeBool(bool);
     if (bool) {
       SoundLoader.play(SoundLoader.CLING);
     }
@@ -226,18 +239,18 @@ public class Context implements IMachine {
 
   @Override
   public void setCupBool(boolean bool) {
-    observer.setCupBool(bool);
+    machineGUI.setCupBool(bool);
     cupInside = bool;
   }
 
   @Override
   public <T extends IMachineGUI & TemperatureListener> void setObserver(T observer) {
-    this.observer = observer;
+    this.machineGUI = observer;
     heatingSystem.setObserver(observer);
   }
 
   public void setTemporaryNorthText(String msg) {
-    observer.setTemporaryNorthText(msg);
+    machineGUI.setTemporaryNorthText(msg);
   }
 
   @Override
@@ -246,7 +259,7 @@ public class Context implements IMachine {
     for (Coin coin: Coin.COINS) {
       changeOut.put(coin, 0);
     }
-    observer.updateChangeOutInfo();
+    machineGUI.updateChangeOutInfo();
     if (SoundLoader.CLING != null) {
       SoundLoader.CLING.stop(); // stops the sound effect is the change is taken.
     }
@@ -289,7 +302,7 @@ public class Context implements IMachine {
 
   public void addChangeOutCoin(Coin coin) {
     changeOut.put(coin, changeOut.get(coin) + 1);
-    observer.updateChangeOutInfo();
+    machineGUI.updateChangeOutInfo();
     log.info(coin.TEXT + " inserted but not allowed.");
   }
 
@@ -297,7 +310,7 @@ public class Context implements IMachine {
     for (Coin coin: Coin.COINS) {
       changeOut.put(coin, changeOut.get(coin) + moneyToGive.get(coin));
     }
-    observer.updateChangeOutInfo();
+    machineGUI.updateChangeOutInfo();
   }
 
   @Override
@@ -308,13 +321,13 @@ public class Context implements IMachine {
   @Override
   public void setCoinStock(Coin coin, int value) {
     changeMachine.setCoinStock(coin, value);
-    observer.updateInfo();
+    machineGUI.updateInfo();
   }
 
   @Override
   public void setDrinkStock(Drink drink, int value) {
     stock.setDrinkQty(drink, value);
-    observer.updateInfo();
+    machineGUI.updateInfo();
   }
 
   @Override

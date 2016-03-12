@@ -75,11 +75,6 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   private final Timer textTimer;
   
   /**
-   * Timer that makes the door animation possible.
-   */
-  private final Timer doorTimer;
-
-  /**
    * Initializes the fields according to the Machine specified.
    * Associates the Machine specified and the VendingMachineGUI itself together.
    * The method {@code init()} must be called to display the frame.
@@ -151,13 +146,6 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     
     textTimer = new Timer(2500, e -> updateNorthText());
     textTimer.setRepeats(false);
-
-    doorTimer = new Timer(5, e -> {
-      leftPanel.setStep(leftPanel.getStep() + 1);
-      if (leftPanel.getStep() >= DoorJPanel.HEIGHT) {
-        ((Timer)e.getSource()).stop(); // stops the doorTimer
-      }
-    });
   }
 
   /**
@@ -266,7 +254,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
    */
   private void addListeners() {
     cupButton.addActionListener(e -> {
-      if (!doorTimer.isRunning()) {
+      if (!leftPanel.animationIsRunning()) {
         machine.takeCup();
         }
       });
@@ -328,24 +316,6 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   }
 
   @Override
-  public void updateUI() {
-    updateInfo();
-    updateNorthText();
-    updateSugarText();
-    updateChangeOutInfo();
-  }
-  
-  @Override
-  public void updateSugarText() {
-    sugarLabel.setText(machine.getSugarText().toUpperCase());
-  }
-
-  @Override
-  public void updateNorthText() {
-    northLabel.setText(machine.getNorthText().toUpperCase());
-  }
-
-  @Override
   public void setChangeBool(boolean bool) {
     if (bool) {
       changeButton.setIcon(PictureLoader.CHANGE_ICON);
@@ -358,16 +328,45 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   public void setCupBool(boolean bool) {
     if (bool) {
       cupButton.setIcon(PictureLoader.CUP_ICON);
-      doorTimer.restart();
+      leftPanel.doorAnimation();
     } else {
-      cupButton.setIcon(null); // replace with a black picture ??
-      leftPanel.setStep(0);
+      cupButton.setIcon(null);
+      leftPanel.closeDoor();
     }
+  }
+  
+  @Override
+  public void updateSugarText() {
+    sugarLabel.setText(machine.getSugarText().toUpperCase());
   }
 
   @Override
+  public void updateNorthText() {
+    northLabel.setText(machine.getNorthText().toUpperCase());
+  }
+  
+  @Override
+  public void setTemporaryNorthText(String msg) {
+    northLabel.setText(msg.toUpperCase(Locale.ENGLISH));
+    textTimer.restart();
+  }
+  
+  @Override
+  public void updateChangeOutInfo() {
+    changeButton.setToolTipText(machine.getChangeOutInfo());
+  }
+  
+  @Override
   public void updateInfo() {
     infoArea.setText(machine.getInfo());
+  }
+
+  @Override
+  public void updateUI() {
+    updateInfo();
+    updateNorthText();
+    updateSugarText();
+    updateChangeOutInfo();
   }
 
   @Override
@@ -378,17 +377,6 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       final DecimalFormat f = new DecimalFormat("#.#");
       temperatureLabel.setText(f.format(temperature) + " °C");
     }
-  }
-
-  @Override
-  public void setTemporaryNorthText(String msg) {
-    northLabel.setText(msg.toUpperCase(Locale.ENGLISH));
-    textTimer.restart();
-  }
-
-  @Override
-  public void updateChangeOutInfo() {
-    changeButton.setToolTipText(machine.getChangeOutInfo());
   }
 
   /**
@@ -420,6 +408,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     return value;
   }
   
+  /**
+   * Creates a JOptionPane to change the stock of the Coin specified.
+   * 
+   * @param coin the Coin whose stock value must be changed
+   */
   private void coinStockDialog(Coin coin) {
     int value = stockDialog(coin.TEXT + " coin");
     if (value >= 0) {
@@ -427,6 +420,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     }
   }
   
+  /**
+   * Creates a JOptionPane to change the stock of the Drink specified.
+   * 
+   * @param drink the Drink whose stock value must be changed
+   */
   private void drinkStockDialog(Drink drink) {
     int value = stockDialog(drink.getName());
     if (value >= 0) {

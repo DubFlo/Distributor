@@ -5,13 +5,14 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import vendingmachine.PictureLoader;
 
 /**
  * This class defines a JPanel that paints a black rectangle (the door).
  * The size of the rectangle is based on the CUP_ICON of PictureLoader.
- * The {@code step} can be changed to change the size of the rectangle.
+ * It supplies an animation of the opening of the door.
  */
 public class DoorJPanel extends JPanel {
 
@@ -33,10 +34,22 @@ public class DoorJPanel extends JPanel {
    */
   private int step;
 
+  /**
+   * Timer that creates the animation of the door.
+   */
+  private final Timer doorTimer;
+
   public DoorJPanel() {
     super();
     this.step = 0;
     this.setDoubleBuffered(true);
+    doorTimer = new Timer(5, e -> {
+      step += 1;
+      repaint();
+      if (step >= DoorJPanel.HEIGHT) {
+        ((Timer)e.getSource()).stop(); // stops the doorTimer
+      }
+    });
   }
 
   @Override
@@ -47,21 +60,26 @@ public class DoorJPanel extends JPanel {
     g.fillRect((getWidth() - WIDTH) / 2, getHeight() - HEIGHT,
         WIDTH, HEIGHT - step);
   }
-
+  
   /**
-   * @return the current step
+   * Starts the timer triggering the animation of the door.
    */
-  public int getStep() {
-    return step;
+  public void doorAnimation() {
+    doorTimer.restart();
+  }
+  
+  /**
+   * @return true if the door is currently opening, false otherwise
+   */
+  public boolean animationIsRunning() {
+    return doorTimer.isRunning();
   }
 
   /**
-   * Changes the step with the new value specified and repaints the frame.
-   * 
-   * @param step the value of the new step
+   * Closes the door (ie sets the step to 0 and repaints the panel).
    */
-  public void setStep(int step) {
-    this.step = step;
+  public void closeDoor() {
+    step = 0;
     repaint();
   }
 
