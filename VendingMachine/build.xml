@@ -17,7 +17,7 @@
 
        Il faut modifier ce chemin par celui utilisé
        dans votre application. -->
-  <property name="main.class" value="vendingmachine.ui.VendingMachineMain"/>
+  <property name="main.class" value="vendingmachine.ui.Main"/>
 
   <!-- Chemins vers les différents répertoires utilisés
        dans l'application. Ces chemins sont relatifs à la racine

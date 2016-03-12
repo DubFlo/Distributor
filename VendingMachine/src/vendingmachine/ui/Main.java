@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
  * Runs the configuration menu that is the starting point
  * of the vending machine application.
  */
-public final class VendingMachineMain {
+public final class Main {
 
   public static void main(String[] args) {
     run();
@@ -26,6 +26,6 @@ public final class VendingMachineMain {
     });
   }
   
-  private VendingMachineMain() {}
+  private Main() {}
   
 }

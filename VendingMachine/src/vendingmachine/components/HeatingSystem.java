@@ -14,7 +14,7 @@ public class HeatingSystem {
   private static final double COLD_LIMIT = 80.0;
   private static final double RUNNING_WATER_TEMPERATURE = 60.0;
   
-  private static final double diffTemperature = 2000/(4.18 * 2500); // Q/(C*m)
+  //private static final double diffTemperature = 2000/(4.18 * 2500); // Q/(C*m)
   
   private boolean waterSupply;
 

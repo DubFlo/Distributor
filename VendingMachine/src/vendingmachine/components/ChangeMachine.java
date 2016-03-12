@@ -10,8 +10,6 @@ public class ChangeMachine {
 
   private static final Logger log = LogManager.getLogger("ChangeMachine");
   
-  public static final Coin[] COINS = Coin.values();
-  
   private Map<Coin, Integer> coinsStock; //Les rendre final ?
   private Map<Coin, Integer> coinsStockTemp;
   private final Map<Coin, Boolean> acceptedCoins;
@@ -32,7 +30,7 @@ public class ChangeMachine {
    */
   public void giveChange() { // à n'utiliser que si isPossibleChange(amount) == true
     Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
-    for (Coin coin: COINS) {
+    for (Coin coin: Coin.COINS) {
       moneyToGive.put(coin, coinsStock.get(coin) - coinsStockTemp.get(coin));
     }
     coinsStock = copy(coinsStockTemp);
@@ -57,7 +55,7 @@ public class ChangeMachine {
    */
   public boolean isChangePossible(int amount) {
     coinsStockTemp = copy(coinsStock);
-    for (Coin coin: COINS) {
+    for (Coin coin: Coin.COINS) {
       while (amount >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
         coinsStockTemp.put(coin, coinsStockTemp.get(coin) - 1);
         amount -= coin.VALUE;
@@ -81,7 +79,7 @@ public class ChangeMachine {
   public Object getInfo() {
     final StringBuilder sb = new StringBuilder();
     sb.append("Coins:\n");
-    for (Coin coin: COINS) {
+    for (Coin coin: Coin.COINS) {
       sb.append(coin.TEXT).append(": ")
       .append(coinsStock.get(coin))
       .append(" available.\n");
@@ -109,7 +107,7 @@ public class ChangeMachine {
   
   private static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
     final Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
-    for (Coin coin : COINS) {
+    for (Coin coin : Coin.COINS) {
       res.put(coin, map.get(coin)); // copy of the Integer
     }
     return res;

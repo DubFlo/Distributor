@@ -2,6 +2,10 @@ package vendingmachine.components;
 
 import javax.swing.ImageIcon;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import vendingmachine.PictureLoader;
 
 /**
@@ -18,6 +22,11 @@ public enum Coin { // Coins should be listed in descending order of their values
   COIN2   (2, "0.02 €", PictureLoader.CENT2_ICON),
   COIN1   (1, "0.01 €", PictureLoader.CENT1_ICON);
 
+  /**
+   * Provides an unmodifiable List of all the coins, in descending order of their values.
+   */
+  public static final List<Coin> COINS = Collections.unmodifiableList(Arrays.asList(Coin.values()));
+  
   /**
    * The value of the coin, expressed in cents.
    */

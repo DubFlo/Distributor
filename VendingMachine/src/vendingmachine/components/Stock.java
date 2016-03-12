@@ -114,9 +114,9 @@ public class Stock {
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
     sb.append("Drink(s): \n");
-    for (Drink drink: drinkQty.keySet()) {
-      sb.append(drink.getName()).append(": ")
-      .append(drinkQty.get(drink)).append(" available.\n");
+    for (Map.Entry<Drink, Integer> entry : drinkQty.entrySet()) {
+      sb.append(entry.getKey().getName()).append(": ")
+      .append(entry.getValue()).append(" available.\n");
     }
     
     sb.append("\n")

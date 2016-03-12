@@ -9,7 +9,7 @@ import vendingmachine.ui.TemperatureListener;
  * Defines an interface that a vending machine selling hot drinks
  * should implement. 
  */
-public interface EventListener {
+public interface Machine {
 
   void cancel();
 

@@ -15,7 +15,7 @@ import vendingmachine.states.State;
 import vendingmachine.ui.ContextListener;
 import vendingmachine.ui.TemperatureListener;
 
-public class Context implements EventListener {
+public class Context implements Machine {
 
   private static final Logger log = LogManager.getLogger("Context");
   
@@ -50,7 +50,7 @@ public class Context implements EventListener {
     this.chosenSugar = 0;
     this.cupInside = false;
     this.changeOut = new Hashtable<Coin, Integer>();
-    for (Coin coin: ChangeMachine.COINS) {
+    for (Coin coin: Coin.COINS) {
       this.changeOut.put(coin, 0);
     }
 
@@ -241,7 +241,7 @@ public class Context implements EventListener {
   @Override
   public void takeChange() {
     setChangeBool(false);
-    for (Coin coin: ChangeMachine.COINS) {
+    for (Coin coin: Coin.COINS) {
       changeOut.put(coin, 0);
     }
     observer.updateChangeOutInfo();
@@ -275,7 +275,7 @@ public class Context implements EventListener {
     final StringBuilder sb = new StringBuilder("<html>");
     int nbrCoins;
     int total = 0;
-    for (Coin coin: ChangeMachine.COINS) {
+    for (Coin coin: Coin.COINS) {
       nbrCoins = changeOut.get(coin);
       sb.append(coin.TEXT).append(": ");
       sb.append(nbrCoins).append(" coin(s).<br>");
@@ -292,7 +292,7 @@ public class Context implements EventListener {
   }
 
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
-    for (Coin coin: ChangeMachine.COINS) {
+    for (Coin coin: Coin.COINS) {
       changeOut.put(coin, changeOut.get(coin) + moneyToGive.get(coin));
     }
     observer.updateChangeOutInfo();
