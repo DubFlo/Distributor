@@ -285,8 +285,7 @@ public class Configuration extends JFrame {
     }
     final Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    final Context context = new Context(
-        (Integer)drinkNbrComboBox.getSelectedItem(), drinkList, coinsStock, coinsAccepted, stock);
+    final Context context = new Context(drinkList, coinsStock, coinsAccepted, stock);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
     

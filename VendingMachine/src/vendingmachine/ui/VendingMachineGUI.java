@@ -116,8 +116,8 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     infoArea.setEditable(false);
     
     drinkButtonsList = new ArrayList<DrinkJButton>();
-    for (int i = 0; i < machine.getNbrDrinks(); i++) {
-      drinkButtonsList.add(new DrinkJButton(machine.getDrinks().get(i)));
+    for (Drink drink: machine.getDrinks()) {
+      drinkButtonsList.add(new DrinkJButton(drink));
     }
     
     coinButtonsList = new ArrayList<CoinJButton>();
@@ -165,7 +165,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
     // Center Panel
     final JPanel centerPanel = new BackgroundJPanel(PictureLoader.COFFEE_IMAGE);
-    centerPanel.setLayout(new GridLayout((machine.getNbrDrinks() + 1) / 2, 2, 30, 0));
+    centerPanel.setLayout(new GridLayout((machine.getDrinks().size() + 1) / 2, 2, 30, 0));
     for (DrinkJButton myButton: drinkButtonsList) {
       centerPanel.add(myButton);
     }

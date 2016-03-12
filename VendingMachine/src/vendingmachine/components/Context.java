@@ -21,10 +21,6 @@ public class Context implements IMachine {
 
   private static final Logger log = LogManager.getLogger("Context");
   
-  /**
-   * The number of drinks the machine must deal with.
-   */
-  private final int NBR_DRINKS;
   private final List<Drink> drinkList;
   
   /*
@@ -52,9 +48,8 @@ public class Context implements IMachine {
   
   private final Timer preparingTimer;
 
-  public Context(int nbrDrinks, List<Drink> drinkList, Map<Coin, Integer> coinsStock,
+  public Context(List<Drink> drinkList, Map<Coin, Integer> coinsStock,
       Map<Coin, Boolean> coinsAccepted, Stock stock) {
-    this.NBR_DRINKS = nbrDrinks;
     this.drinkList = drinkList;
     this.changeMachine = new ChangeMachine(coinsStock, coinsAccepted, this);
     this.stock = stock;
@@ -273,11 +268,6 @@ public class Context implements IMachine {
       SoundLoader.BEEP.stop(); // stops the sound effect is the cup is taken.
     }
     log.info("Cup of " + chosenDrink.getName() + " taken.");
-  }
-
-  @Override
-  public int getNbrDrinks() {
-    return NBR_DRINKS;
   }
 
   @Override

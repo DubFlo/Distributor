@@ -45,11 +45,13 @@ public class HeatingSystem {
   }
 
   public void setTemperature(double temperature) {
-    this.temperature = temperature;
-    if (observer != null) {
-      observer.setTemperature(this.temperature);
+    if (waterSupply) {
+      this.temperature = temperature;
+      if (observer != null) {
+        observer.setTemperature(this.temperature);
+      }
+      updateState();
     }
-    updateState();
   }
 
   public void setWaterSupply(boolean bool) {
