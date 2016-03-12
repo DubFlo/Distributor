@@ -5,6 +5,8 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import vendingmachine.Drink;
+
 /**
  * The Stock class lists all the stock values needed for a drinks vending machine 
  * (sugar cubes, cups, spoons and drinks).

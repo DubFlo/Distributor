@@ -1,6 +1,8 @@
-package vendingmachine.ui;
+package vendingmachine;
 
 import javax.swing.SwingUtilities;
+
+import vendingmachine.ui.Configuration;
 
 /**
  * Runs the configuration menu that is the starting point

@@ -29,22 +29,23 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 
+import vendingmachine.Coin;
+import vendingmachine.Drink;
 import vendingmachine.FontLoader;
+import vendingmachine.Main;
 import vendingmachine.PictureLoader;
-import vendingmachine.components.Drink;
-import vendingmachine.components.Machine;
-import vendingmachine.components.Coin;
+import vendingmachine.components.IMachine;
 
 /**
- * This class creates a graphical interface of a vending machine using a Machine object.
+ * This class creates a GUI of a vending machine using a Machine object.
  */
-public class VendingMachineGUI extends JFrame implements ContextListener, TemperatureListener {
+public class VendingMachineGUI extends JFrame implements IMachineGUI, TemperatureListener {
 
   private static final long serialVersionUID = 1L;
 
   private final DoorJPanel leftPanel;
   
-  private final Machine machine;
+  private final IMachine machine;
   
   /*
    * The labels and text areas of the GUI.
@@ -80,38 +81,26 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
 
   /**
    * Initializes the fields according to the Machine specified.
-   * Associates the Machine and the VendingMachineGUI together.
+   * Associates the Machine specified and the VendingMachineGUI itself together.
+   * The method {@code init()} must be called to display the frame.
    * 
    * @param machine the Machine to link with the GUI
    */
-  public VendingMachineGUI(Machine machine) {
+  public VendingMachineGUI(IMachine machine) {
     super();
-    this.machine = machine;
-    this.machine.setObserver(this);
     this.setTitle("Vending Machine");
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    
+    this.machine = machine;
+    this.machine.setObserver(this);
+
+    leftPanel = new DoorJPanel(); // Makes possible the animation of the door
+    leftPanel.setLayout(new BorderLayout());
+    leftPanel.setPreferredSize(new Dimension(120, 550));
     
     northLabel = new JLabel();
     northLabel.setForeground(Color.RED);
     northLabel.setFont(FontLoader.DIGITAL_FONT);
-    drinkButtonsList = new ArrayList<DrinkJButton>();
-    for (int i = 0; i < machine.getNbrDrinks(); i++) {
-      drinkButtonsList.add(new DrinkJButton(machine.getDrinks().get(i)));
-    }
-    
-    leftPanel = new DoorJPanel();
-    leftPanel.setLayout(new BorderLayout());
-    cupButton = new JButton();
-    cupButton.setBorder(BorderFactory.createEmptyBorder());
-    cupButton.setContentAreaFilled(false);
-    cupButton.setBorderPainted(false);
-    leftPanel.setPreferredSize(new Dimension(120, 550));  
-    temperatureLabel = new JLabel();
-    temperatureLabel.setFont(FontLoader.DIGITAL_FONT);
-    temperatureLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    temperatureLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-    temperatureLabel.setBackground(Color.WHITE);
-    temperatureLabel.setOpaque(true);
     
     sugarLabel = new JLabel();
     if (FontLoader.DIGITAL_FONT != null) {
@@ -119,101 +108,62 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     }
     sugarLabel.setForeground(Color.RED);
     sugarLabel.setIcon(PictureLoader.SUGAR_DISPLAY);
-    sugarLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-    lessSugar = new JButton("-");
-    moreSugar = new JButton("+");
-    okButton = new JButton("Confirm");
-    cancelButton = new JButton("Cancel");   
-
-    changeButton = new JButton();
-    changeButton.setBorder(BorderFactory.createEmptyBorder());
-    changeButton.setContentAreaFilled(false);
-    changeButton.setToolTipText(machine.getChangeOutInfo());
+    sugarLabel.setHorizontalTextPosition(SwingConstants.CENTER);   
+    
+    temperatureLabel = new JLabel();
+    temperatureLabel.setFont(FontLoader.DIGITAL_FONT);
+    temperatureLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    temperatureLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+    temperatureLabel.setBackground(Color.WHITE);
+    temperatureLabel.setOpaque(true);  
+    
+    infoArea = new JTextArea();
+    infoArea.setEditable(false);
+    
+    drinkButtonsList = new ArrayList<DrinkJButton>();
+    for (int i = 0; i < machine.getNbrDrinks(); i++) {
+      drinkButtonsList.add(new DrinkJButton(machine.getDrinks().get(i)));
+    }
     
     coinButtonsList = new ArrayList<CoinJButton>();
-
     for (Coin coin: Coin.COINS) {
       coinButtonsList.add(new CoinJButton(coin));
     }
     
-    infoArea = new JTextArea();
-    infoArea.setEditable(false);
+    cupButton = new JButton();
+    cupButton.setBorder(BorderFactory.createEmptyBorder());
+    cupButton.setContentAreaFilled(false);
+    cupButton.setBorderPainted(false);
+    
+    changeButton = new JButton();
+    changeButton.setBorder(BorderFactory.createEmptyBorder());
+    changeButton.setContentAreaFilled(false);
+    changeButton.setOpaque(true);
+    changeButton.setBackground(Color.BLACK);
+    changeButton.setPreferredSize(new Dimension(PictureLoader.CHANGE_ICON.getIconWidth(), 100));
+    
+    lessSugar = new JButton("-");
+    moreSugar = new JButton("+");
+    okButton = new JButton("Confirm");
+    cancelButton = new JButton("Cancel");   
     
     menuBar = new JMenuBar();
     
     textTimer = new Timer(2500, e -> updateNorthText());
     textTimer.setRepeats(false);
 
-    doorTimer = new Timer(8, e -> {
+    doorTimer = new Timer(5, e -> {
       leftPanel.setStep(leftPanel.getStep() + 1);
       if (leftPanel.getStep() >= DoorJPanel.HEIGHT) {
-        ((Timer)e.getSource()).stop();
+        ((Timer)e.getSource()).stop(); // stops the doorTimer
       }
     });
   }
 
-  private void addListeners() {
-    cupButton.addActionListener(e -> {
-      if (!doorTimer.isRunning()) {
-        machine.takeCup();
-        }
-      });
-    changeButton.addActionListener(e -> machine.takeChange());
-    lessSugar.addActionListener(e -> machine.less());
-    moreSugar.addActionListener(e -> machine.more());
-    okButton.addActionListener(e -> machine.confirm());
-    cancelButton.addActionListener(e -> machine.cancel());
-
-    for (int i = 0; i < drinkButtonsList.size(); i++) {
-      final DrinkJButton drinkButton = drinkButtonsList.get(i);
-      drinkButton.addActionListener(e -> machine.drinkButton(drinkButton.getDrink()));
-    }
-    for (int i = 0; i < coinButtonsList.size(); i++) {
-      final CoinJButton coinButton = coinButtonsList.get(i);
-      coinButton.addActionListener(e -> machine.coinInserted(coinButton.getCoin()));
-    }
-  }
-  
-  private void createMenuBar() {
-    final JMenu waterSupplyMenu = new JMenu("Water Supply");
-    final JMenu coinsMenu = new JMenu("Coin Stock");
-    final JMenu drinksMenu = new JMenu("Drink Stock");
-    final JMenu settings = new JMenu("Settings");
-    final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
-    final JMenuItem instantWarming = new JMenuItem("Instant Warming");
-    final JMenuItem newVM = new JMenuItem("New Vending Machine");
-    final JMenuItem quit = new JMenuItem("Quit");
-
-    menuBar.add(waterSupplyMenu);
-    waterSupplyMenu.add(waterSupplyBox);
-    waterSupplyMenu.add(instantWarming);
-    menuBar.add(coinsMenu);
-    menuBar.add(drinksMenu);
-    menuBar.add(settings);
-    settings.add(newVM);
-    settings.add(quit);
-    
-    newVM.addActionListener(e -> { dispose(); Main.run(); } );
-    quit.addActionListener(e -> System.exit(0));
-    waterSupplyBox.addActionListener(
-        e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
-    instantWarming.addActionListener(e -> machine.setTemperature(93));
-    
-    for (Coin coin: Coin.COINS) {
-      final JMenuItem item = new JMenuItem(coin.TEXT);
-      item.addActionListener(e -> coinStockDialog(coin));
-      coinsMenu.add(item);
-    }
-    
-    for (Drink drink: machine.getDrinks()) {
-      final JMenuItem item = new JMenuItem(drink.getName());
-      item.addActionListener(e -> drinkStockDialog(drink));
-      drinksMenu.add(item);
-    }
-  }
-
+  /**
+   * Places all the components on the frame and makes it visible.
+   */
   public void init() {
-    // Initializes Frame
     final Container myContainer = getContentPane();
 
     // Main Panel
@@ -222,7 +172,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     // North Panel
     final JPanel northPanel = new BackgroundJPanel(PictureLoader.DISPLAY_PANEL);
     northPanel.add(northLabel);
-    northPanel.setPreferredSize(new Dimension(100, 50));
+    northPanel.setPreferredSize(new Dimension(100, 45));
     myPanel.add(northPanel, BorderLayout.PAGE_START);
 
     // Center Panel
@@ -242,7 +192,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     final JPanel rightPanel = new BackgroundJPanel(PictureLoader.SLOT_IMAGE);
     rightPanel.setLayout(new GridBagLayout());
     final GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH; // A expliquer
+    c.fill = GridBagConstraints.BOTH;
     c.weightx = 1;
 
     c.gridx = 0;  c.gridy = 0;  c.gridwidth = 2;
@@ -271,7 +221,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     myPanel.add(southPanel, BorderLayout.PAGE_END);
     southPanel.setPreferredSize(new Dimension(600, 100));
 
-    // coins buttons
+    // Coins buttons panel
     final JPanel coinsPanel = new JPanel(new GridLayout((Coin.COINS.size() + 1) / 2, 2, 5, 5));
     coinsPanel.setBackground(Color.WHITE);
 
@@ -289,7 +239,7 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     infoPanel.add(infoArea);
     infoPanel.setBackground(Color.WHITE);
 
-    // Ending operations
+    // Puts the three main panel side by side
     final JSplitPane leftPane = new JSplitPane();
     leftPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
     leftPane.setLeftComponent(myPanel);
@@ -298,8 +248,9 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     rightPane.setLeftComponent(leftPane);
     rightPane.setRightComponent(scrInfoPanel);
     myContainer.add(rightPane);
+    
+    // Ending operations
     this.setJMenuBar(menuBar);
-
     this.addListeners();
     this.updateUI();
 
@@ -308,20 +259,89 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     this.setLocationRelativeTo(null);
     this.setVisible(true);
   }
+  
+  /**
+   * Add the action listeners to all the buttons of the GUI
+   * (the cup, the change, +, -, Confirm, Cancel, coins and drinks buttons).
+   */
+  private void addListeners() {
+    cupButton.addActionListener(e -> {
+      if (!doorTimer.isRunning()) {
+        machine.takeCup();
+        }
+      });
+    changeButton.addActionListener(e -> machine.takeChange());
+    lessSugar.addActionListener(e -> machine.less());
+    moreSugar.addActionListener(e -> machine.more());
+    okButton.addActionListener(e -> machine.confirm());
+    cancelButton.addActionListener(e -> machine.cancel());
+
+    for (DrinkJButton drinkButton: drinkButtonsList) {
+      drinkButton.addActionListener(e -> machine.drinkButton(drinkButton.getDrink()));
+    }
+    for (CoinJButton coinButton: coinButtonsList) {
+      coinButton.addActionListener(e -> machine.coinInserted(coinButton.getCoin()));
+    }
+  }
+  
+  /**
+   * Creates the items of frame the menu bar and sets their action listeners.
+   */
+  private void createMenuBar() {
+    final JMenu waterSupplyMenu = new JMenu("Water Supply");
+    final JMenu coinsMenu = new JMenu("Coin Stock");
+    final JMenu drinksMenu = new JMenu("Drink Stock");
+    final JMenu settings = new JMenu("Settings");
+    menuBar.add(waterSupplyMenu);
+    menuBar.add(coinsMenu);
+    menuBar.add(drinksMenu);
+    menuBar.add(settings);
+    
+    final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
+    final JMenuItem instantWarming = new JMenuItem("Instant Warming");
+    final JMenuItem newVM = new JMenuItem("New Vending Machine");
+    final JMenuItem quit = new JMenuItem("Quit");
+    waterSupplyMenu.add(waterSupplyBox);
+    waterSupplyMenu.add(instantWarming);
+    settings.add(newVM);
+    settings.add(quit);
+    
+    newVM.addActionListener(e -> {
+      dispose();
+      Main.run();
+    });
+    quit.addActionListener(e -> System.exit(0));
+    waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
+    instantWarming.addActionListener(e -> machine.setTemperature(93));
+    
+    for (Coin coin: Coin.COINS) {
+      final JMenuItem item = new JMenuItem(coin.TEXT);
+      item.addActionListener(e -> coinStockDialog(coin));
+      coinsMenu.add(item);
+    }
+    
+    for (Drink drink: machine.getDrinks()) {
+      final JMenuItem item = new JMenuItem(drink.getName());
+      item.addActionListener(e -> drinkStockDialog(drink));
+      drinksMenu.add(item);
+    }
+  }
 
   @Override
   public void updateUI() {
     updateInfo();
     updateNorthText();
     updateSugarText();
+    updateChangeOutInfo();
   }
   
   @Override
   public void updateSugarText() {
-    sugarLabel.setText(machine.getSugarText());
+    sugarLabel.setText(machine.getSugarText().toUpperCase());
   }
 
-  private void updateNorthText() {
+  @Override
+  public void updateNorthText() {
     northLabel.setText(machine.getNorthText().toUpperCase());
   }
 
@@ -371,6 +391,13 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
     changeButton.setToolTipText(machine.getChangeOutInfo());
   }
 
+  /**
+   * Displays a JOptionPane letting the user enter a new value for the stock of an item.
+   * The value entered must be a positive integer, otherwise -1 is returned.
+   * 
+   * @param element the String of the name of the element to change
+   * @return the new int value of the element
+   */
   private int stockDialog(String element) {
     int value = -1;
     if (machine.isAvailableForMaintenance()) {
@@ -382,11 +409,13 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
           throw new NumberFormatException();
         }
       } catch (NumberFormatException exc) {
-        JOptionPane.showMessageDialog(this, "The value is not valid. Nothing has been changed.");
+        JOptionPane.showMessageDialog(
+            this, "The value is not valid. Nothing has been changed.");
       }
     } else {
       JOptionPane.showMessageDialog(
-          this, "Now is not the time to use that !\nPlease end or wait for the end of the current operation.");
+          this, "Now is not the time to use that !"
+              + "\nPlease end or wait for the end of the current operation.");
     }
     return value;
   }
@@ -404,4 +433,5 @@ public class VendingMachineGUI extends JFrame implements ContextListener, Temper
       machine.setDrinkStock(drink, value);
     }
   }
+  
 }

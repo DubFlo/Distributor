@@ -3,7 +3,7 @@ package vendingmachine.ui;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
-import vendingmachine.components.Coin;
+import vendingmachine.Coin;
 
 /**
  * The CoinJButton class extends JButton and only adds a Coin attribute.

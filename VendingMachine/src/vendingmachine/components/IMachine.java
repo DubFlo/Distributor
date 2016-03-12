@@ -2,14 +2,16 @@ package vendingmachine.components;
 
 import java.util.List;
 
-import vendingmachine.ui.ContextListener;
+import vendingmachine.Coin;
+import vendingmachine.Drink;
+import vendingmachine.ui.IMachineGUI;
 import vendingmachine.ui.TemperatureListener;
 
 /**
  * Defines an interface that a vending machine selling hot drinks
  * should implement. 
  */
-public interface Machine {
+public interface IMachine {
 
   void cancel();
 
@@ -37,7 +39,7 @@ public interface Machine {
 
   void setCupBool(boolean bool);
 
-  <T extends ContextListener & TemperatureListener> void setObserver(T observer);
+  <T extends IMachineGUI & TemperatureListener> void setObserver(T observer);
   
   void setWaterSupply(boolean bool);
 

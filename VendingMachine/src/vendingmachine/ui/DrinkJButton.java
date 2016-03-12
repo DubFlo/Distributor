@@ -4,8 +4,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+import vendingmachine.Drink;
 import vendingmachine.PictureLoader;
-import vendingmachine.components.Drink;
 
 /**
  * The DrinkJButton class extends JButton and only adds a Drink attribute.

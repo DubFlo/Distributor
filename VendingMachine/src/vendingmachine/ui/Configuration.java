@@ -23,9 +23,9 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
 
-import vendingmachine.components.Coin;
+import vendingmachine.Coin;
+import vendingmachine.Drink;
 import vendingmachine.components.Context;
-import vendingmachine.components.Drink;
 import vendingmachine.components.Stock;
 
 /**

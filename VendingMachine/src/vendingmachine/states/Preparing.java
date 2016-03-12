@@ -1,7 +1,7 @@
 package vendingmachine.states;
 
+import vendingmachine.Coin;
 import vendingmachine.SoundLoader;
-import vendingmachine.components.Coin;
 import vendingmachine.components.Context;
 
 public final class Preparing extends State {

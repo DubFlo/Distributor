@@ -1,4 +1,4 @@
-package vendingmachine.components;
+package vendingmachine;
 
 /**
  * Defines drinks objects consisting of a name, a price (in cents) and a 

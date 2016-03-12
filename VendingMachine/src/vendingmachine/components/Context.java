@@ -9,13 +9,15 @@ import javax.swing.Timer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import vendingmachine.Coin;
+import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
 import vendingmachine.states.Idle;
 import vendingmachine.states.State;
-import vendingmachine.ui.ContextListener;
+import vendingmachine.ui.IMachineGUI;
 import vendingmachine.ui.TemperatureListener;
 
-public class Context implements Machine {
+public class Context implements IMachine {
 
   private static final Logger log = LogManager.getLogger("Context");
   
@@ -33,7 +35,7 @@ public class Context implements Machine {
   private int chosenSugar;
   private Map<Coin, Integer> changeOut;
 
-  private ContextListener observer;
+  private IMachineGUI observer;
   
   private final Timer preparingTimer;
 
@@ -229,7 +231,7 @@ public class Context implements Machine {
   }
 
   @Override
-  public <T extends ContextListener & TemperatureListener> void setObserver(T observer) {
+  public <T extends IMachineGUI & TemperatureListener> void setObserver(T observer) {
     this.observer = observer;
     heatingSystem.setObserver(observer);
   }

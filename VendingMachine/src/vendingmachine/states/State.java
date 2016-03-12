@@ -3,9 +3,9 @@ package vendingmachine.states;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import vendingmachine.components.Coin;
+import vendingmachine.Coin;
+import vendingmachine.Drink;
 import vendingmachine.components.Context;
-import vendingmachine.components.Drink;
 
 public abstract class State {
 

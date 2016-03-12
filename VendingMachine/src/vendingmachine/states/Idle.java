@@ -1,8 +1,8 @@
 package vendingmachine.states;
 
-import vendingmachine.components.Coin;
+import vendingmachine.Coin;
+import vendingmachine.Drink;
 import vendingmachine.components.Context;
-import vendingmachine.components.Drink;
 
 public final class Idle extends State {
 
