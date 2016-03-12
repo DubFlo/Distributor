@@ -25,6 +25,7 @@ import javax.swing.text.AbstractDocument;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.Stock;
 
@@ -269,6 +270,7 @@ public class Configuration extends JFrame {
       this.pack();
       return;
     }
+    final ChangeMachine changeMachine = new ChangeMachine(coinsStock, coinsAccepted);
 
     // Fetches the values for the stock
     int sugarCubeNbr;
@@ -285,7 +287,7 @@ public class Configuration extends JFrame {
     }
     final Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
 
-    final Context context = new Context(drinkList, coinsStock, coinsAccepted, stock);
+    final Context context = new Context(drinkList, changeMachine, stock);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
     

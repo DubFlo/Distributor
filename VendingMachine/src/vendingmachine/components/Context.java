@@ -48,10 +48,9 @@ public class Context implements IMachine {
   
   private final Timer preparingTimer;
 
-  public Context(List<Drink> drinkList, Map<Coin, Integer> coinsStock,
-      Map<Coin, Boolean> coinsAccepted, Stock stock) {
+  public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
     this.drinkList = drinkList;
-    this.changeMachine = new ChangeMachine(coinsStock, coinsAccepted, this);
+    this.changeMachine = changeMachine;
     this.stock = stock;
     
     this.state = Idle.getInstance();
@@ -145,8 +144,8 @@ public class Context implements IMachine {
   @Override
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("State: ").append(state).append("\n")
-    .append("\n").append(amountInside / 100.0).append(" € inserted.\n");
+    sb.append("State: ").append(state).append("\n\n")
+    .append(amountInside / 100.0).append(" € inserted.\n");
 
     sb.append("\n").append(changeMachine.getInfo());
 
@@ -169,7 +168,7 @@ public class Context implements IMachine {
   }
 
   public void giveChange() {
-    changeMachine.giveChange();
+    addChangeOut(changeMachine.giveChange());
     if (amountInside > chosenDrink.getPrice()) {
       setChangeBool(true);
       SoundLoader.play(SoundLoader.CLING);
@@ -179,7 +178,7 @@ public class Context implements IMachine {
   }
   
   public void giveChangeOnCancel() {
-    changeMachine.giveChange();
+    addChangeOut(changeMachine.giveChange());
     setChangeBool(true);
     SoundLoader.play(SoundLoader.CLING);
     amountInside = 0;
@@ -255,7 +254,7 @@ public class Context implements IMachine {
       changeOut.put(coin, 0);
     }
     machineGUI.updateChangeOutInfo();
-    if (SoundLoader.CLING != null) {
+    if (SoundLoader.CLING != null) { // Plutôt le mettre dans SoundLoader ?
       SoundLoader.CLING.stop(); // stops the sound effect is the change is taken.
     }
     log.info("Change taken.");

@@ -12,31 +12,28 @@ public class ChangeMachine {
 
   private static final Logger log = LogManager.getLogger("ChangeMachine");
   
-  private Map<Coin, Integer> coinsStock; //Les rendre final ?
+  private final Map<Coin, Integer> coinsStock;
   private Map<Coin, Integer> coinsStockTemp;
   private final Map<Coin, Boolean> acceptedCoins;
-  private final Context context;
 
-  public ChangeMachine(Map<Coin, Integer> coinsStock,
-      Map<Coin, Boolean> acceptedCoins, Context context) {
+  public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
-    this.context = context;
     
     this.coinsStockTemp = new Hashtable<Coin, Integer>();
   }
 
   /**
    * Updates the coinsStock with the value computed in isChangePossible(int) and stored
-   * in coinsStockTemp. Adds the coins given to the "changeOut" Hashtable of the Context.
+   * in coinsStockTemp. Returns a Map<Coin, Integer> of the money that is given back.
    */
-  public void giveChange() { // à n'utiliser que si isPossibleChange(amount) == true
+  public Map<Coin, Integer> giveChange() { // à n'utiliser que si isPossibleChange(amount) == true
     Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
     for (Coin coin: Coin.COINS) {
       moneyToGive.put(coin, coinsStock.get(coin) - coinsStockTemp.get(coin));
+      coinsStock.put(coin, coinsStockTemp.get(coin));
     }
-    coinsStock = copy(coinsStockTemp);
-    context.addChangeOut(moneyToGive);
+    return moneyToGive;
   }
 
   /**
