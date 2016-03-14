@@ -18,10 +18,29 @@ public final class SoundLoader {
   
   private static final Logger log = LogManager.getLogger("PictureLoader");
   
+  /**
+   * Sound that indicates that something is ready (five beeps).
+   */
   public static final Clip BEEP = getSound("beep.wav");
+  
+  /**
+   * Sound of coins falling on the ground.
+   */
   public static final Clip CLING = getSound("cling.wav");
+  
+  /**
+   * Sound of a coin falling inside a machine.
+   */
   public static final Clip FOP = getSound("fop.wav");
+  
+  /**
+   * Sound of a small button being pressed.
+   */
   public static final Clip CLICK = getSound("click.wav");
+  
+  /**
+   * Sound of a cup that is filling with water.
+   */
   public static final Clip FILLING = getSound("filling.wav");
 
     // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/

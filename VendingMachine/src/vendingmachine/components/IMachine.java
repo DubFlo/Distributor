@@ -24,7 +24,8 @@ public interface IMachine {
   void confirm();
   
   /**
-   * Decrement a value (usually the sugar level).
+   * Called when "-" button is pressed.
+   * Calls the {@code less()} method of the current State.
    */
   void less();
   
@@ -41,7 +42,7 @@ public interface IMachine {
   void drinkButton(Drink drink);
   
   /**
-   * Removes all the coins that are waiting outside of the machine.
+   * Simulates what happens when the client takes his change.
    */
   void takeChange();
 
@@ -58,7 +59,7 @@ public interface IMachine {
   void coinInserted(Coin coin);
   
   /**
-   * @return the List of all the Drinks the machine deals with
+   * @return the List of all the Drink's the machine can dispense
    */
   List<Drink> getDrinks();
   
@@ -94,6 +95,9 @@ public interface IMachine {
 
   void setDrinkStock(Drink drink, int value);
 
+  /**
+   * @return true if the stocks of the machine can be currently changed, false otherwise
+   */
   boolean isAvailableForMaintenance();
 
   void setTemperature(int i);

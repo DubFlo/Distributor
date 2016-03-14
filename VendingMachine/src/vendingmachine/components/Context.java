@@ -170,17 +170,11 @@ public class Context implements IMachine {
     return changeMachine;
   }
 
-  /**
-   * @return a List<Drink> that the machine can dispense
-   */
   @Override
   public List<Drink> getDrinks() {
     return drinkList;
   }
 
-  /**
-   * @return a String containing all the info about the stock, the machine and the coins
-   */
   @Override
   public String getInfo() {
     final StringBuilder sb = new StringBuilder(30);
@@ -263,10 +257,6 @@ public class Context implements IMachine {
     return cupInside;
   }
 
-  /**
-   * Called when "-" button is pressed.
-   * Calls the {@code less()} method of the current State.
-   */
   @Override
   public void less() {
     SoundLoader.play(SoundLoader.CLICK);
@@ -323,9 +313,6 @@ public class Context implements IMachine {
     machineGUI.setTemporaryNorthText(msg);
   }
 
-  /**
-   * Simulates what happens when the client takes his change.
-   */
   @Override
   public void takeChange() {
     setChangeBool(false);
@@ -352,9 +339,6 @@ public class Context implements IMachine {
     heatingSystem.setWaterSupply(bool);
   }
 
-  /**
-   * @return a String about the coins currently waiting to be taken
-   */
   @Override
   public String getChangeOutInfo() {
     final StringBuilder sb = new StringBuilder(40);
@@ -394,9 +378,6 @@ public class Context implements IMachine {
     machineGUI.updateChangeOutInfo();
   }
 
-  /**
-   * @return a String with the current information about sugar
-   */
   @Override
   public String getSugarText() {
     return state.getSugarText(this);
@@ -414,9 +395,6 @@ public class Context implements IMachine {
     machineGUI.updateInfo();
   }
 
-  /**
-   * @return true if the stocks of the machine can be currently changed, false otherwise
-   */
   @Override
   public boolean isAvailableForMaintenance() {
     return state.isAvailableForMaintenance();

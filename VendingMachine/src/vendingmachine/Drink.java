@@ -10,6 +10,13 @@ public class Drink {
   private final int price;
   private final boolean sugar;
 
+  /**
+   * Creates a Drink instance with the specified attributes.
+   * 
+   * @param name the String that is the name of the Drink
+   * @param sugar a boolean: true if the Drink can contain sugar, false otherwise
+   * @param price the price of the Drink (in cents)
+   */
   public Drink(String name, boolean sugar, int price) {
     this.name = name;
     this.sugar = sugar;
@@ -17,21 +24,21 @@ public class Drink {
   }
 
   /**
-   * @return the name of the Drink.
+   * @return the name of the Drink
    */
   public String getName() {
     return this.name;
   }
 
   /**
-   * @return the price of the Drink, in cents.
+   * @return the price of the Drink, in cents
    */
   public int getPrice() {
     return this.price;
   }
 
   /**
-   * @return true if the Drink can contain sugar, false otherwise.
+   * @return true if the Drink can contain sugar, false otherwise
    */
   public boolean isSugar() {
     return this.sugar;

@@ -7,6 +7,10 @@ import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.components.Context;
 
+/**
+ * This abstract class defines default methods for the state of a Context object.
+ * All the substates should implement the singleton design pattern.
+ */
 public abstract class State {
 
   protected static final Logger log = LogManager.getLogger("State");

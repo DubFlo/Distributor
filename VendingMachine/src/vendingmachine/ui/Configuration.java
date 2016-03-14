@@ -233,9 +233,9 @@ public class Configuration extends JFrame {
   }
 
   /**
-   * Called when {@code createButton} is pressed. Checks the information the user entered.
-   * If everything is OK, creates the vending machine. Otherwise, displays an error message
-   * that allows the user to change what was wrong.
+   * Checks the information the user entered in the config frame.
+   * If everything is OK, creates the vending machine. Otherwise, displays
+   * an error message that allows the user to change what was wrong.
    */
   private void check() {
     // Fetches the values for the drinks
@@ -270,7 +270,7 @@ public class Configuration extends JFrame {
         coinsAccepted.put(coin, acceptedCoinsBoxes.get(coin).isSelected());
       }
     } catch (NumberFormatException e) {
-      problemLabel.setText(getProblemText("change machine"));
+      problemLabel.setText(getProblemText("coin"));
       this.pack();
       return;
     }
@@ -299,16 +299,19 @@ public class Configuration extends JFrame {
     this.dispose(); // closes the configuration frame
     
     SwingUtilities.invokeLater(new Runnable() {
+      /**
+       * If everything went well, creates the GUI on the EDT.
+       */
       @Override
       public void run() {
-        gui.init(); // if everything went well, creates the GUI on the EDT
+        gui.init();
       }
     });
   }
   
   /**
-   * Called when the number of drinks is changed to repaint {@code drinkPanel} accordingly.
-   * It removes all the components and then places them again with the new number of drinks.
+   * Repaints {@code drinkPanel} accordingly if the number of drinks is changed.
+   * Removes all the components and places them again with the new number of drinks.
    */
   private void updateDrinkPanel() {
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
@@ -338,7 +341,8 @@ public class Configuration extends JFrame {
 
   private static String getProblemText(String part) {
     return "<html>Error while parsing " + part + " info. Fields can't be empty.<br>"
-        + "Names can't be longer than 18 characters. Integers can't be larger than 2^31.</html>";
+        + "Names can't be longer than 18 characters.<br>"
+        + "Integers can't be negative or larger than 2^31.</html>";
   }
   
   private static void checkInt(int i) {

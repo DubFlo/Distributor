@@ -85,12 +85,12 @@ public class Stock {
    * Removes one cup from the stock.
    */
   public void removeCup() {
-    if (cupsNbr > 0) {
+    if (isCupInStock()) {
       cupsNbr -= 1;
     } else {
       //throw new ;
     }
-    if (cupsNbr > 0) {
+    if (isCupInStock()) {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
@@ -176,7 +176,7 @@ public class Stock {
    */
   public void setDrinkQty(Drink drink, int value) {
     if (value < 0) {
-      throw new IllegalArgumentException("the value can not be negative");
+      throw new IllegalArgumentException("The value can not be negative");
     }
     final int difference = value - drinkQty.get(drink);
     if (difference > 0) {
@@ -188,13 +188,21 @@ public class Stock {
     drinkQty.put(drink, value);
   }
 
+  /**
+   * Sets a Context as an attribute of the stock. Can be accessed only once.
+   * Should be accessed only from the class Context.
+   * Throws an IllegalArgumentException if the drinks in the Stock
+   * and the Context are not the same.
+   * 
+   * @param context the Context to associate with the Stock
+   */
   public void setContext(Context context) {
-    if (context != null) {
+    if (context != null) { // Can only be set once (makes context almost final)
       //throw new ;
     }
     if (!context.getDrinks().containsAll(drinkQty.keySet()) ||
         !drinkQty.keySet().containsAll(context.getDrinks())) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("The stock and machine Drink's are different");
     }
     this.context = context;
     if (cupsNbr == 0) {
