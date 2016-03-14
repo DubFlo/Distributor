@@ -52,6 +52,12 @@ public final class SoundLoader {
     }
   }
   
+  public static void stop(Clip clip) {
+    if (clip != null) {
+      clip.stop();
+    }
+  }
+  
   /**
    * Returns a Clip loaded from the file name specified.
    * If the file does not exists or is not a valid sound file, returns null.

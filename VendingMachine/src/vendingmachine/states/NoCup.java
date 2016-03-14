@@ -14,7 +14,7 @@ public final class NoCup extends Problem {
 
   @Override
   public String getDefaultText(Context c) {
-    return "No cup available. No drink can be ordered"; // Too large
+    return "No cup available. No drink can be ordered";
   }
 
 }

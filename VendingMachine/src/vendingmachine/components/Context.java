@@ -56,9 +56,9 @@ public class Context implements IMachine {
   private int chosenSugar; //le mettre dans Asking ?
   
   /**
-   * The Coin's and their number that are currently in the container to be given back.
+   * The Coin's currently in the container to be given back.
    */
-  private Map<Coin, Integer> changeOut;
+  private final Map<Coin, Integer> changeOut;
 
   private IMachineGUI machineGUI;
   
@@ -112,6 +112,12 @@ public class Context implements IMachine {
     state.cancel(this);
   }
 
+  /**
+   * Changes the state of the machine with the specified State.
+   * Performs the {@code entry()} method of the {@code newState}.
+   * 
+   * @param newState the State the machine should be in
+   */
   public void changeState(State newState) {
     state = newState;
     state.entry(this);
@@ -134,12 +140,19 @@ public class Context implements IMachine {
     machineGUI.updateSugarText();
   }
 
+  public int getChosenSugar() {
+    return chosenSugar;
+  }
+
   @Override
   public void drinkButton(Drink drink) {
     SoundLoader.play(SoundLoader.CLICK);
     state.drinkButton(drink, this);
   }
 
+  /**
+   * @return the amount entered by the client (in cents)
+   */
   public int getAmountInside() {
     return amountInside;
   }
@@ -148,18 +161,20 @@ public class Context implements IMachine {
     return changeMachine;
   }
 
-  public int getChosenSugar() {
-    return chosenSugar;
-  }
-
+  /**
+   * @return a List<Drink> that the machine can dispense
+   */
   @Override
   public List<Drink> getDrinks() {
     return drinkList;
   }
 
+  /**
+   * @return a String containing all the info about the stock, the machine and the coins
+   */
   @Override
   public String getInfo() {
-    final StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder(30);
     sb.append("State: ").append(state).append("\n\n")
     .append(amountInside / 100.0).append(" € inserted.\n");
 
@@ -175,6 +190,9 @@ public class Context implements IMachine {
     return state.getDefaultText(this);
   }
 
+  /**
+   * @return the State the Context is currently in
+   */
   public State getState() {
     return state;
   }
@@ -183,6 +201,10 @@ public class Context implements IMachine {
     return stock;
   }
 
+  /**
+   * Simulates the giving of the change, based on the {@code chosenDrink}.
+   * Change to give is {@code chosenDrink.getPrice() - amountInside}.
+   */
   public void giveChangeOnDrink() {
     int amountToGive = amountInside - chosenDrink.getPrice();
     addChangeOut(changeMachine.giveChange(amountToGive));
@@ -194,12 +216,17 @@ public class Context implements IMachine {
     machineGUI.updateInfo();
   }
   
+  /**
+   * Simulates the giving of the change on the amount entered by the client.
+   */
   public void giveChangeOnCancel() {
-    addChangeOut(changeMachine.giveChange(amountInside));
-    setChangeBool(true);
-    SoundLoader.play(SoundLoader.CLING);
-    amountInside = 0;
-    machineGUI.updateInfo();
+    if (amountInside > 0) {
+      addChangeOut(changeMachine.giveChange(amountInside));
+      setChangeBool(true);
+      SoundLoader.play(SoundLoader.CLING);
+      amountInside = 0;
+      machineGUI.updateInfo();
+    }
   }
 
   public void incrementChosenSugar() {
@@ -207,6 +234,11 @@ public class Context implements IMachine {
     machineGUI.updateSugarText();
   }
 
+  /**
+   * Simulates the insertion of the specified Coin.
+   * 
+   * @param coin the Coin to insert
+   */
   public void insertCoin(Coin coin) {
     amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
@@ -215,16 +247,27 @@ public class Context implements IMachine {
     SoundLoader.play(SoundLoader.FOP);
   }
 
+  /**
+   * @return true if a cup is waiting to be taken, false otherwise
+   */
   public boolean isCupInside() {
     return cupInside;
   }
 
+  /**
+   * Called when "-" button is pressed.
+   * Calls the {@code less()} method of the current State.
+   */
   @Override
   public void less() {
     SoundLoader.play(SoundLoader.CLICK);
     state.less(this);
   }
 
+  /**
+   * Called when "+" button is pressed.
+   * Calls the {@code more()} method of the current State.
+   */
   @Override
   public void more() {
     SoundLoader.play(SoundLoader.CLICK);
@@ -243,6 +286,9 @@ public class Context implements IMachine {
     }
   }
 
+  /**
+   * @param chosenDrink the new Drink that may be ordered by the client
+   */
   public void setChosenDrink(Drink chosenDrink) {
     this.chosenDrink = chosenDrink;
   }
@@ -259,10 +305,18 @@ public class Context implements IMachine {
     heatingSystem.setObserver(observer);
   }
 
+  /**
+   * Tells the UI to display {@code msg} temporarily.
+   * 
+   * @param msg the String to display temporarily
+   */
   public void setTemporaryNorthText(String msg) {
     machineGUI.setTemporaryNorthText(msg);
   }
 
+  /**
+   * Simulates what happens when the client takes his change.
+   */
   @Override
   public void takeChange() {
     setChangeBool(false);
@@ -270,18 +324,17 @@ public class Context implements IMachine {
       changeOut.put(coin, 0);
     }
     machineGUI.updateChangeOutInfo();
-    if (SoundLoader.CLING != null) { // Plutôt le mettre dans SoundLoader ?
-      SoundLoader.CLING.stop(); // stops the sound effect is the change is taken.
-    }
+    SoundLoader.stop(SoundLoader.CLING); // stops the sound effect is the change is taken.
     log.info("Change taken.");
   }
 
+  /**
+   * Simulates what happens when the client takes his cup.
+   */
   @Override
   public void takeCup() {
     setCupBool(false);
-    if (SoundLoader.BEEP != null) {
-      SoundLoader.BEEP.stop(); // stops the sound effect is the cup is taken.
-    }
+    SoundLoader.stop(SoundLoader.BEEP); // stops the sound effect is the cup is taken.
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 
@@ -290,9 +343,13 @@ public class Context implements IMachine {
     heatingSystem.setWaterSupply(bool);
   }
 
+  /**
+   * @return a String about the coins currently waiting to be taken
+   */
   @Override
   public String getChangeOutInfo() {
-    final StringBuilder sb = new StringBuilder("<html>");
+    final StringBuilder sb = new StringBuilder(40);
+    sb.append("<html>");
     int nbrCoins;
     int total = 0;
     for (Coin coin: Coin.COINS) {
@@ -305,12 +362,22 @@ public class Context implements IMachine {
     return sb.toString();
   }
 
+  /**
+   * Adds the specified Coin to the container to be taken by the client.
+   * 
+   * @param coin the Coin that is given back
+   */
   public void addChangeOutCoin(Coin coin) {
     changeOut.put(coin, changeOut.get(coin) + 1);
     machineGUI.updateChangeOutInfo();
     log.info(coin.TEXT + " inserted but not allowed.");
   }
 
+  /**
+   * Adds a Map<Coin, Integer> of Coin's to the outside container.
+   * 
+   * @param moneyToGive the Map<Coin, Integer> to add to {@code changeOut}
+   */
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
     for (Coin coin: Coin.COINS) {
       changeOut.put(coin, changeOut.get(coin) + moneyToGive.get(coin));
@@ -318,6 +385,9 @@ public class Context implements IMachine {
     machineGUI.updateChangeOutInfo();
   }
 
+  /**
+   * @return a String with the current information about sugar
+   */
   @Override
   public String getSugarText() {
     return state.getSugarText(this);
@@ -335,6 +405,9 @@ public class Context implements IMachine {
     machineGUI.updateInfo();
   }
 
+  /**
+   * @return true if the stocks of the machine can be currently changed, false otherwise
+   */
   @Override
   public boolean isAvailableForMaintenance() {
     return state.isAvailableForMaintenance();
