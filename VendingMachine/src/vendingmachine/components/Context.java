@@ -21,6 +21,9 @@ public class Context implements IMachine {
 
   private static final Logger log = LogManager.getLogger("Context");
   
+  /**
+   * The Drink's that the machine dispenses.
+   */
   private final List<Drink> drinkList;
   
   /*
@@ -39,9 +42,22 @@ public class Context implements IMachine {
    * The amount of money inside of the machine (in cents).
    */
   private int amountInside;
+  
+  /**
+   * If there is (true) or not (false) a cup inside.
+   */
   private boolean cupInside;
+  
+  /**
+   * The drink that is currently ordered.
+   */
   private Drink chosenDrink;
-  private int chosenSugar;
+  
+  private int chosenSugar; //le mettre dans Asking ?
+  
+  /**
+   * The Coin's and their number that are currently in the container to be given back.
+   */
   private Map<Coin, Integer> changeOut;
 
   private IMachineGUI machineGUI;
@@ -167,9 +183,10 @@ public class Context implements IMachine {
     return stock;
   }
 
-  public void giveChange() {
-    addChangeOut(changeMachine.giveChange());
-    if (amountInside > chosenDrink.getPrice()) {
+  public void giveChangeOnDrink() {
+    int amountToGive = amountInside - chosenDrink.getPrice();
+    addChangeOut(changeMachine.giveChange(amountToGive));
+    if (amountToGive > 0) {
       setChangeBool(true);
       SoundLoader.play(SoundLoader.CLING);
     }
@@ -178,7 +195,7 @@ public class Context implements IMachine {
   }
   
   public void giveChangeOnCancel() {
-    addChangeOut(changeMachine.giveChange());
+    addChangeOut(changeMachine.giveChange(amountInside));
     setChangeBool(true);
     SoundLoader.play(SoundLoader.CLING);
     amountInside = 0;
@@ -196,7 +213,6 @@ public class Context implements IMachine {
     machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
     machineGUI.updateInfo();
     SoundLoader.play(SoundLoader.FOP);
-    log.info(coin.TEXT + " inserted.");
   }
 
   public boolean isCupInside() {

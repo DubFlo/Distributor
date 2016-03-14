@@ -52,7 +52,7 @@ public final class Idle extends State {
           c.changeState(Asking.getInstance());
         }
       } else {
-        c.giveChange();
+        c.giveChangeOnDrink();
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
       }    

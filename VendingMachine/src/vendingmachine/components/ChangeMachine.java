@@ -8,14 +8,30 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 
+/**
+ * This class is able to perform operations about change and coins.
+ * It uses as an attribute a stock of Coin's. Coin's can be inserted.
+ * It can also give change on a specified amount (if it is possible).
+ * Some coins can be refused.
+ * 
+ * @see Coin
+ */
 public class ChangeMachine {
 
   private static final Logger log = LogManager.getLogger("ChangeMachine");
   
   private final Map<Coin, Integer> coinsStock;
-  private Map<Coin, Integer> coinsStockTemp;
   private final Map<Coin, Boolean> acceptedCoins;
+  
+  private Map<Coin, Integer> coinsStockTemp;
 
+  /**
+   * Builds a change machine with the specified coins stock.
+   * Each coin may be accepted or not by the change machine.
+   * 
+   * @param coinsStock a Map<Coin, Integer> that maps each Coin to its stock value.
+   * @param acceptedCoins a Map<Coin, Boolean> that tells if each Coin is accepted or not.
+   */
   public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
@@ -27,7 +43,10 @@ public class ChangeMachine {
    * Updates the coinsStock with the value computed in isChangePossible(int) and stored
    * in coinsStockTemp. Returns a Map<Coin, Integer> of the money that is given back.
    */
-  public Map<Coin, Integer> giveChange() { // à n'utiliser que si isPossibleChange(amount) == true
+  public Map<Coin, Integer> giveChange(int amount) { // à n'utiliser que si isPossibleChange(amount) == true
+    if (!isChangePossible(amount)) {
+      //throw new Exception
+    }
     Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
     for (Coin coin: Coin.COINS) {
       moneyToGive.put(coin, coinsStock.get(coin) - coinsStockTemp.get(coin));
@@ -37,12 +56,13 @@ public class ChangeMachine {
   }
 
   /**
-   * Add the specified coin to the stock.
+   * Adds the specified coin to the stock.
    * 
    * @param coin the Coin to add to the stock
    */
   public void insertCoin(Coin coin) {
     coinsStock.put(coin, coinsStock.get(coin) + 1);
+    log.info(coin.TEXT + " inserted.");
   }
 
   /**
@@ -96,9 +116,9 @@ public class ChangeMachine {
   public void setCoinStock(Coin coin, int value) {
     final int difference = value - coinsStock.get(coin);
     if (difference > 0) {
-      log.info(difference + " " + coin.TEXT + "coin(s) resupplied.");
+      log.info(difference + " \"" + coin.TEXT + "\" coin(s) resupplied.");
     } else if (difference < 0) {
-      log.info(-difference + " " + coin.TEXT + "coin(s) removed from the stock.");
+      log.info(-difference + " \"" + coin.TEXT + "\" coin(s) removed from the stock.");
     }
     
     coinsStock.put(coin, value);
