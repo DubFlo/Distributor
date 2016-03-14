@@ -28,11 +28,17 @@ public class ChangeMachine {
   /**
    * Builds a change machine with the specified coins stock.
    * Each coin may be accepted or not by the change machine.
+   * Throws an IllegalArgumentException if a stock value is negative.
    * 
    * @param coinsStock a Map<Coin, Integer> that maps each Coin to its stock value.
    * @param acceptedCoins a Map<Coin, Boolean> that tells if each Coin is accepted or not.
    */
   public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
+    for (Integer i: coinsStock.values()) {
+      if (i < 0) {
+        throw new IllegalArgumentException("coinsStock values can not be negative");
+      }
+    }
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
     
@@ -68,11 +74,15 @@ public class ChangeMachine {
   /**
    * Returns true if it is possible to give change with the current stock
    * for the amount value (in cents), false otherwise. Updates coinsStockTemp 
-   * accordingly, which is the new value that the coinsStock should take after giving the change.
+   * accordingly, which is the new value coinsStock should take after giving the change.
+   * Throws an IllegalArgumentException if {@code amount} is negative.
    * 
    * @param amount  number of cents to give change for.
    */
   public boolean isChangePossible(int amount) {
+    if (amount < 0) {
+      throw new IllegalArgumentException("Can't give change on negative amount");
+    }
     coinsStockTemp = copy(coinsStock);
     for (Coin coin: Coin.COINS) {
       while (amount >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
@@ -108,12 +118,15 @@ public class ChangeMachine {
 
   /**
    * Updates the stock of {@code coin} to the {@code value} specified.
-   * Logs the operation done.
+   * Throws an IllegalArgumentException if the value is negative.
    * 
    * @param coin the Coin whose stock must be changed
    * @param value the new value for the {@code coin} (must be positive)
    */
   public void setCoinStock(Coin coin, int value) {
+    if (value < 0) {
+      throw new IllegalArgumentException();
+    }
     final int difference = value - coinsStock.get(coin);
     if (difference > 0) {
       log.info(difference + " \"" + coin.TEXT + "\" coin(s) resupplied.");

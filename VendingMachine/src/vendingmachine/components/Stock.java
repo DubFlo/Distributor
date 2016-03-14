@@ -24,7 +24,24 @@ public class Stock {
    */
   private final Map<Drink, Integer> drinkQty;
 
+  /**
+   * Creates a Stock with the specified values.
+   * Throws an IllegalArgumentException if a value is negative.
+   * 
+   * @param sugarCubesNbr the number of sugar cubes
+   * @param cupsNbr the number of cups
+   * @param spoonsNbr the number of spoons
+   * @param drinkQty a Map<Drink, Integer> mapping each Drink to its stock value
+   */
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
+    if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
+      throw new IllegalArgumentException("The values for the stock can not be negative");
+    }
+    for (Integer i: drinkQty.values()) {
+      if (i < 0) {
+        throw new IllegalArgumentException("The stock of a Drink can not be negative");
+      }
+    }
     this.sugarCubesNbr = sugarCubesNbr;
     this.cupsNbr = cupsNbr;
     this.spoonsNbr = spoonsNbr;
@@ -65,8 +82,12 @@ public class Stock {
    * Removes one cup from the stock.
    */
   public void removeCup() {
-    cupsNbr -= 1;
-    if (isCupInStock()) {
+    if (cupsNbr > 0) {
+      cupsNbr -= 1;
+    } else {
+      //throw new ;
+    }
+    if (cupsNbr > 0) {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
@@ -78,7 +99,11 @@ public class Stock {
    * @param drink the Drink to remove
    */
   public void removeDrink(Drink drink) {
-    drinkQty.put(drink, drinkQty.get(drink) - 1);
+    if (isDrinkInStock(drink)) {
+      drinkQty.put(drink, drinkQty.get(drink) - 1);
+    } else {
+      //throw new ;
+    }
     if (isDrinkInStock(drink)) {
       log.info(drink.getName() + " prepared (" + drinkQty.get(drink) + " remaining).");
     } else {
@@ -90,7 +115,11 @@ public class Stock {
    * Removes one spoon from the stock.
    */
   public void removeSpoon() {
-    spoonsNbr -= 1;
+    if (isSpoonInStock()) {
+      spoonsNbr -= 1;
+    } else {
+      //throw new ;
+    }
     if (isSpoonInStock()) {
       log.info(spoonsNbr + " spoons remaining.");
     } else {
@@ -102,7 +131,11 @@ public class Stock {
    * @param Removes {@code i} sugar cubes from the stock.
    */
   public void removeSugarCubes(int i) {
-    sugarCubesNbr -= i;
+    if (isSugarInStock(i)) {
+      sugarCubesNbr -= i;
+    } else {
+      //throw new ;
+    }
     if (sugarCubesNbr > 0) {
       log.info(i + " sugar cubes ordered (" + sugarCubesNbr + " remaining).");
     } else {
@@ -130,12 +163,15 @@ public class Stock {
 
   /**
    * Updates the stock of {@code drink} to the {@code value} specified.
-   * Logs the operation done.
+   * Throws an IllegalArgumentException if {@code value} is negative.
    * 
    * @param drink the Drink whose stock must be changed
-   * @param value the new value for the {@code drink} (must be positive)
+   * @param value the new value for the {@code drink} stock (must be positive)
    */
   public void setDrinkQty(Drink drink, int value) {
+    if (value < 0) {
+      throw new IllegalArgumentException("the value can not be negative");
+    }
     final int difference = value - drinkQty.get(drink);
     if (difference > 0) {
       log.info(difference + " " + drink.getName() + " resupplied.");
