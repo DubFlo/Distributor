@@ -28,7 +28,8 @@ public class ChangeMachine {
   /**
    * Builds a change machine with the specified coins stock.
    * Each coin may be accepted or not by the change machine.
-   * Throws an IllegalArgumentException if a stock value is negative.
+   * Throws an IllegalArgumentException if a stock value is negative, or if
+   * {@code coinsStock} or {@code acceptedCoins} do not list all the coins of Coin.
    * 
    * @param coinsStock a Map<Coin, Integer> that maps each Coin to its stock value.
    * @param acceptedCoins a Map<Coin, Boolean> that tells if each Coin is accepted or not.
@@ -38,6 +39,12 @@ public class ChangeMachine {
       if (i < 0) {
         throw new IllegalArgumentException("coinsStock values can not be negative");
       }
+    }
+    if (!coinsStock.keySet().containsAll(Coin.COINS)) {
+      throw new IllegalArgumentException("coinsStock has to list all the coins defined in Coin");
+    }
+    if (!acceptedCoins.keySet().containsAll(Coin.COINS)) {
+      throw new IllegalArgumentException("acceptedCoins has to list all the coins defined in Coin");
     }
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
@@ -125,7 +132,7 @@ public class ChangeMachine {
    */
   public void setCoinStock(Coin coin, int value) {
     if (value < 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("The stock value can't be negative");
     }
     final int difference = value - coinsStock.get(coin);
     if (difference > 0) {

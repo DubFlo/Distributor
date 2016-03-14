@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Drink;
+import vendingmachine.states.NoCup;
 
 /**
  * The Stock class lists all the stock values needed for a drinks vending machine 
@@ -23,6 +24,8 @@ public class Stock {
    * A Map that maps to each Drink its stock as an Integer.
    */
   private final Map<Drink, Integer> drinkQty;
+
+  private Context context;
 
   /**
    * Creates a Stock with the specified values.
@@ -91,6 +94,9 @@ public class Stock {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
+      if (context != null) {
+        context.changeState(NoCup.getInstance());
+      }
     }
   }
 
@@ -180,6 +186,20 @@ public class Stock {
     }
     
     drinkQty.put(drink, value);
+  }
+
+  public void setContext(Context context) {
+    if (context != null) {
+      //throw new ;
+    }
+    if (!context.getDrinks().containsAll(drinkQty.keySet()) ||
+        !drinkQty.keySet().containsAll(context.getDrinks())) {
+      throw new IllegalArgumentException();
+    }
+    this.context = context;
+    if (cupsNbr == 0) {
+      context.changeState(NoCup.getInstance());
+    }
   }
   
 }

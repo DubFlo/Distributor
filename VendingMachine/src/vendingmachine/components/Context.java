@@ -64,12 +64,19 @@ public class Context implements IMachine {
   
   private final Timer preparingTimer;
 
+  /**
+   * @param drinkList the Drink's the machine must dispense
+   * @param changeMachine the ChangeMachine associated with the Context
+   * @param stock the Stock associated with the Context
+   */
   public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
+    this.state = Idle.getInstance();
+    
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
+    this.stock.setContext(this);
     
-    this.state = Idle.getInstance();
     this.heatingSystem = new HeatingSystem(this);
     this.amountInside = 0;
     this.chosenSugar = 0;
@@ -121,7 +128,9 @@ public class Context implements IMachine {
   public void changeState(State newState) {
     state = newState;
     state.entry(this);
-    machineGUI.updateUI();
+    if (machineGUI != null) {
+      machineGUI.updateUI();
+    }
   }
 
   @Override
