@@ -34,9 +34,7 @@ public final class Idle extends State {
 
   @Override
   public void drinkButton(Drink d, Context c) {
-    if (!c.getStock().isCupInStock()) {
-      c.changeState(NoCup.getInstance());
-    } else if (!c.getStock().isDrinkInStock(d)) {
+    if (!c.getStock().isDrinkInStock(d)) {
       c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " €)");
       log.warn("Attempt to order " + d.getName() + " but no left in stock.");
     } else if (c.isCupInside()) {
@@ -52,7 +50,7 @@ public final class Idle extends State {
           c.changeState(Asking.getInstance());
         }
       } else {
-        c.giveChange();
+        c.giveChangeOnDrink();
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
       }    

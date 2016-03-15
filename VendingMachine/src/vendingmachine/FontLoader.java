@@ -15,6 +15,9 @@ public final class FontLoader {
 
   private static final Logger log = LogManager.getLogger("FontLoader");
   
+  /**
+   * Font that looks like a vending machine display.
+   */
   public static final Font DIGITAL_FONT = getFont("digitalFont.ttf");
 
   /**
@@ -23,14 +26,13 @@ public final class FontLoader {
    * 
    * @param file the name of the font file, placed in the resources/ folder.
    * @return the Font loaded from the file if it exists, null otherwise.
-   * @see Font
    */
   private static Font getFont(String file) {
     Font font;
-    InputStream is;
+    InputStream inputStream;
     try {
-      is = FontLoader.class.getResourceAsStream("/resources/" + file);
-      font = Font.createFont(Font.TRUETYPE_FONT, is);
+      inputStream = FontLoader.class.getResourceAsStream("/resources/" + file);
+      font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
       font = font.deriveFont(24f);
     } catch (IOException | FontFormatException e) {
       font = null;

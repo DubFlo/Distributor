@@ -233,9 +233,9 @@ public class Configuration extends JFrame {
   }
 
   /**
-   * Called when {@code createButton} is pressed. Checks the information the user entered.
-   * If everything is OK, creates the vending machine. Otherwise, displays an error message
-   * that allows the user to change what was wrong.
+   * Checks the information the user entered in the config frame.
+   * If everything is OK, creates the vending machine. Otherwise, displays
+   * an error message that allows the user to change what was wrong.
    */
   private void check() {
     // Fetches the values for the drinks
@@ -243,13 +243,15 @@ public class Configuration extends JFrame {
     final Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
     try {
       for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
-        if (drinksNames[i].getText().equals("") || drinksNames[i].getText().length() > 18) {
-          throw new IllegalArgumentException();
-        }
-        final Drink d = new Drink(drinksNames[i].getText(), drinksSugar[i].isSelected(),
-            Integer.parseInt(drinksPrices[i].getText()));
+        final String name = drinksNames[i].getText();
+        final int price = Integer.parseInt(drinksPrices[i].getText());
+        final int stock = Integer.parseInt(drinksStocks[i].getText());
+        checkString(name);
+        checkInt(price);
+        checkInt(stock);
+        final Drink d = new Drink(name, drinksSugar[i].isSelected(), price);
         drinkList.add(d);
-        drinkQty.put(d, Integer.parseInt(drinksStocks[i].getText()));
+        drinkQty.put(d, stock);
       }
     } catch (IllegalArgumentException e) {
       problemLabel.setText(getProblemText("drink"));
@@ -262,46 +264,54 @@ public class Configuration extends JFrame {
     final Map<Coin, Boolean> coinsAccepted = new Hashtable<Coin, Boolean>();
     try {
       for (Coin coin: Coin.COINS) {
-        coinsStock.put(coin, Integer.parseInt(coinsStockValues.get(coin).getText()));
+        final int stock = Integer.parseInt(coinsStockValues.get(coin).getText());
+        checkInt(stock);
+        coinsStock.put(coin, stock);
         coinsAccepted.put(coin, acceptedCoinsBoxes.get(coin).isSelected());
       }
     } catch (NumberFormatException e) {
-      problemLabel.setText(getProblemText("change machine"));
+      problemLabel.setText(getProblemText("coin"));
       this.pack();
       return;
     }
     final ChangeMachine changeMachine = new ChangeMachine(coinsStock, coinsAccepted);
 
     // Fetches the values for the stock
-    int sugarCubeNbr;
+    int sugarCubesNbr;
     int cupsNbr;
     int spoonsNbr;
     try {
-      sugarCubeNbr = Integer.parseInt(sugarCubesNbrValue.getText());
+      sugarCubesNbr = Integer.parseInt(sugarCubesNbrValue.getText());
       cupsNbr = Integer.parseInt(cupsNbrValue.getText());
       spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
+      checkInt(sugarCubesNbr);
+      checkInt(cupsNbr);
+      checkInt(spoonsNbr);
     } catch (NumberFormatException e) {
       problemLabel.setText(getProblemText("stock"));
       this.pack();
       return;
     }
-    final Stock stock = new Stock(sugarCubeNbr, cupsNbr, spoonsNbr, drinkQty);
+    final Stock stock = new Stock(sugarCubesNbr, cupsNbr, spoonsNbr, drinkQty);
 
     final Context context = new Context(drinkList, changeMachine, stock);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
     
     SwingUtilities.invokeLater(new Runnable() {
+      /**
+       * If everything went well, creates the GUI on the EDT.
+       */
       @Override
       public void run() {
-        gui.init(); // if everything went well, creates the GUI on the EDT
+        gui.init();
       }
     });
   }
   
   /**
-   * Called when the number of drinks is changed to repaint {@code drinkPanel} accordingly.
-   * It removes all the components and then places them again with the new number of drinks.
+   * Repaints {@code drinkPanel} accordingly if the number of drinks is changed.
+   * Removes all the components and places them again with the new number of drinks.
    */
   private void updateDrinkPanel() {
     final Integer NBR_DRINKS = (Integer)drinkNbrComboBox.getSelectedItem();
@@ -331,7 +341,20 @@ public class Configuration extends JFrame {
 
   private static String getProblemText(String part) {
     return "<html>Error while parsing " + part + " info. Fields can't be empty.<br>"
-        + "Names can't be longer than 18 characters. Integers can't be larger than 2^31.</html>";
+        + "Names can't be longer than 18 characters.<br>"
+        + "Integers can't be negative or larger than 2^31.</html>";
+  }
+  
+  private static void checkInt(int i) {
+    if (i < 0) {
+      throw new IllegalArgumentException();
+    }
+  }
+  
+  private static void checkString(String s) {
+    if (s.equals("") || s.length() > 18) {
+      throw new IllegalArgumentException();
+    }
   }
 
 }

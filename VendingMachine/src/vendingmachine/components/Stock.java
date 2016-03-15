@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Drink;
+import vendingmachine.states.NoCup;
 
 /**
  * The Stock class lists all the stock values needed for a drinks vending machine 
@@ -24,7 +25,26 @@ public class Stock {
    */
   private final Map<Drink, Integer> drinkQty;
 
+  private Context context;
+
+  /**
+   * Creates a Stock with the specified values.
+   * Throws an IllegalArgumentException if a value is negative.
+   * 
+   * @param sugarCubesNbr the number of sugar cubes
+   * @param cupsNbr the number of cups
+   * @param spoonsNbr the number of spoons
+   * @param drinkQty a Map<Drink, Integer> mapping each Drink to its stock value
+   */
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
+    if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
+      throw new IllegalArgumentException("The values for the stock can not be negative");
+    }
+    for (Integer i: drinkQty.values()) {
+      if (i < 0) {
+        throw new IllegalArgumentException("The stock of a Drink can not be negative");
+      }
+    }
     this.sugarCubesNbr = sugarCubesNbr;
     this.cupsNbr = cupsNbr;
     this.spoonsNbr = spoonsNbr;
@@ -65,11 +85,18 @@ public class Stock {
    * Removes one cup from the stock.
    */
   public void removeCup() {
-    cupsNbr -= 1;
+    if (isCupInStock()) {
+      cupsNbr -= 1;
+    } else {
+      //throw new ;
+    }
     if (isCupInStock()) {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
+      if (context != null) {
+        context.changeState(NoCup.getInstance());
+      }
     }
   }
 
@@ -78,7 +105,11 @@ public class Stock {
    * @param drink the Drink to remove
    */
   public void removeDrink(Drink drink) {
-    drinkQty.put(drink, drinkQty.get(drink) - 1);
+    if (isDrinkInStock(drink)) {
+      drinkQty.put(drink, drinkQty.get(drink) - 1);
+    } else {
+      //throw new ;
+    }
     if (isDrinkInStock(drink)) {
       log.info(drink.getName() + " prepared (" + drinkQty.get(drink) + " remaining).");
     } else {
@@ -90,7 +121,11 @@ public class Stock {
    * Removes one spoon from the stock.
    */
   public void removeSpoon() {
-    spoonsNbr -= 1;
+    if (isSpoonInStock()) {
+      spoonsNbr -= 1;
+    } else {
+      //throw new ;
+    }
     if (isSpoonInStock()) {
       log.info(spoonsNbr + " spoons remaining.");
     } else {
@@ -102,7 +137,11 @@ public class Stock {
    * @param Removes {@code i} sugar cubes from the stock.
    */
   public void removeSugarCubes(int i) {
-    sugarCubesNbr -= i;
+    if (isSugarInStock(i)) {
+      sugarCubesNbr -= i;
+    } else {
+      //throw new ;
+    }
     if (sugarCubesNbr > 0) {
       log.info(i + " sugar cubes ordered (" + sugarCubesNbr + " remaining).");
     } else {
@@ -130,12 +169,15 @@ public class Stock {
 
   /**
    * Updates the stock of {@code drink} to the {@code value} specified.
-   * Logs the operation done.
+   * Throws an IllegalArgumentException if {@code value} is negative.
    * 
    * @param drink the Drink whose stock must be changed
-   * @param value the new value for the {@code drink} (must be positive)
+   * @param value the new value for the {@code drink} stock (must be positive)
    */
   public void setDrinkQty(Drink drink, int value) {
+    if (value < 0) {
+      throw new IllegalArgumentException("The value can not be negative");
+    }
     final int difference = value - drinkQty.get(drink);
     if (difference > 0) {
       log.info(difference + " " + drink.getName() + " resupplied.");
@@ -144,6 +186,28 @@ public class Stock {
     }
     
     drinkQty.put(drink, value);
+  }
+
+  /**
+   * Sets a Context as an attribute of the stock. Can be accessed only once.
+   * Should be accessed only from the class Context.
+   * Throws an IllegalArgumentException if the drinks in the Stock
+   * and the Context are not the same.
+   * 
+   * @param context the Context to associate with the Stock
+   */
+  public void setContext(Context context) {
+    if (context != null) { // Can only be set once (makes context almost final)
+      //throw new ;
+    }
+    if (!context.getDrinks().containsAll(drinkQty.keySet()) ||
+        !drinkQty.keySet().containsAll(context.getDrinks())) {
+      throw new IllegalArgumentException("The stock and machine Drink's are different");
+    }
+    this.context = context;
+    if (cupsNbr == 0) {
+      context.changeState(NoCup.getInstance());
+    }
   }
   
 }

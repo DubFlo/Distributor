@@ -14,7 +14,7 @@ public final class NoSpoon extends State {
   private NoSpoon() {}
   
   @Override
-  public String getDefaultText(Context c){
+  public String getDefaultText(Context c) {
     return "No spoon. Confirm to continue or Cancel";
   }
   

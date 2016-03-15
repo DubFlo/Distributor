@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The enumeration Coin gives all the coins that could be accepted by a vending machine.
+ * This enum gives all the coins that could be accepted by a vending machine.
  * This gives all the Euro coins, but it can be easily changed.
  */
 public enum Coin { // Coins should be listed in descending order of their values
@@ -21,7 +21,7 @@ public enum Coin { // Coins should be listed in descending order of their values
   COIN1   (1, "0.01 €", PictureLoader.CENT1_ICON);
 
   /**
-   * Provides an unmodifiable List of all the coins, in descending order of their values.
+   * Unmodifiable List of all the coins, in descending order of their values.
    */
   public static final List<Coin> COINS = Collections.unmodifiableList(Arrays.asList(Coin.values()));
   

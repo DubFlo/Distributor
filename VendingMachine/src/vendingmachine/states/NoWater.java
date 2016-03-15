@@ -2,6 +2,10 @@ package vendingmachine.states;
 
 import vendingmachine.components.Context;
 
+/**
+ * This State is reached when the water supply is disabled.
+ * No drink can be ordered.
+ */
 public final class NoWater extends Problem {
 
   private static final NoWater INSTANCE = new NoWater();
@@ -10,7 +14,6 @@ public final class NoWater extends Problem {
     return INSTANCE;
   }
 
-  // Singleton design pattern
   private NoWater() {}
 
   @Override

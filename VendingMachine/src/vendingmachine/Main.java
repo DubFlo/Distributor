@@ -10,6 +10,9 @@ import vendingmachine.ui.Configuration;
  */
 public final class Main {
 
+  /**
+   * Calls static method {@code run()}.
+   */
   public static void main(String[] args) {
     run();
   }
