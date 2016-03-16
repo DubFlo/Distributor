@@ -25,7 +25,7 @@ public final class Idle extends State {
   
   @Override
   public void coinInserted(Coin coin, Context c) {
-    if (!isCoinStuck(c)) {
+    if (!isCoinStuck(coin, c)) {
       if (c.getChangeMachine().isCoinAccepted(coin)) {
         c.insertCoin(coin);
         SoundLoader.play(SoundLoader.FOP);

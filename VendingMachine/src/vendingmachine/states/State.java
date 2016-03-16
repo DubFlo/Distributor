@@ -37,7 +37,7 @@ public abstract class State {
    * @param c the Context associated with the State
    */
   public void coinInserted(Coin coin, Context c) {
-    if (!isCoinStuck(c)) {
+    if (!isCoinStuck(coin, c)) {
       c.setChangeBool(true);
       c.addChangeOutCoin(coin);
     }
@@ -66,6 +66,8 @@ public abstract class State {
   public void more(Context c) {}
 
   public void entry(Context c) {}
+  
+  public void exit(Context c) {}
 
   /**
    * Returns a message that should be displayed by the vending machine.
@@ -91,7 +93,7 @@ public abstract class State {
    */
   @Override
   public final String toString() {
-    return this.getClass().getSimpleName(); // instead of getName() to avoid the package name
+    return this.getClass().getSimpleName(); // instead of getName() to avoid package name
   }
 
   /**
@@ -99,11 +101,14 @@ public abstract class State {
    */
   public abstract boolean isAvailableForMaintenance();
 
-  protected final boolean isCoinStuck(Context c) {
+  protected final boolean isCoinStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
       c.changeState(StuckCoin.getInstance());
+      c.coinInserted(coin);
       return true;
     }
     return false;
   }
+
+
 }

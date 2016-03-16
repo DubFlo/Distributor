@@ -18,12 +18,26 @@ public class StuckCoin extends State {
   private StuckCoin() {}
   
   public static State getInstance() {
+    return INSTANCE;
+  }
+  
+  @Override
+  public void entry(Context c) {
     for (Coin coin: Coin.COINS) {
       coinsEnteredDespiteMessage.put(coin, 0);
     }
-    return INSTANCE;
+    c.enableRepair(true);
   }
 
+  @Override
+  public void exit(Context c) {
+    if (Coin.totalValue(coinsEnteredDespiteMessage) > 0) {
+      c.addChangeOut(coinsEnteredDespiteMessage);
+      c.setChangeBool(true);
+    }
+    c.enableRepair(false);
+  }
+  
   @Override
   public void coinInserted(Coin coin, Context c) {
     coinsEnteredDespiteMessage.put(coin, coinsEnteredDespiteMessage.get(coin) + 1);

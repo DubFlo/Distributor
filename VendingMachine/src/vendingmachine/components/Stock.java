@@ -25,7 +25,7 @@ public class Stock {
    */
   private final Map<Drink, Integer> drinkQty;
 
-  private Context context;
+  private IMachineInside context;
 
   /**
    * Creates a Stock with the specified values.
@@ -88,15 +88,13 @@ public class Stock {
     if (isCupInStock()) {
       cupsNbr -= 1;
     } else {
-      //throw new ;
+      throw new IllegalArgumentException("Can't remove a cup when none in stock");
     }
     if (isCupInStock()) {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
-      if (context != null) {
-        context.changeState(NoCup.getInstance());
-      }
+      context.changeState(NoCup.getInstance());
     }
   }
 
@@ -155,9 +153,9 @@ public class Stock {
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
     sb.append("Drink(s): \n");
-    for (Map.Entry<Drink, Integer> entry : drinkQty.entrySet()) {
-      sb.append(entry.getKey().getName()).append(": ")
-      .append(entry.getValue()).append(" available.\n");
+    for (Drink drink: context.getDrinks()) {
+      sb.append(drink.getName()).append(": ")
+      .append(drinkQty.get(drink)).append(" available.\n");
     }
     
     sb.append("\n")
@@ -190,15 +188,15 @@ public class Stock {
 
   /**
    * Sets a Context as an attribute of the stock. Can be accessed only once.
-   * Should be accessed only from the class Context.
+   * Should be accessed only once from the class Context.
    * Throws an IllegalArgumentException if the drinks in the Stock
    * and the Context are not the same.
    * 
    * @param context the Context to associate with the Stock
    */
-  public void setContext(Context context) {
-    if (context != null) { // Can only be set once (makes context almost final)
-      //throw new ;
+  public void setContext(IMachineInside context) {
+    if (this.context != null) { // Can only be set once (makes context almost final)
+      throw new IllegalArgumentException("setContext(c) can only be called once");
     }
     if (!context.getDrinks().containsAll(drinkQty.keySet()) ||
         !drinkQty.keySet().containsAll(context.getDrinks())) {

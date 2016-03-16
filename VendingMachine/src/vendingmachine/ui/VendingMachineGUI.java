@@ -37,7 +37,7 @@ import vendingmachine.PictureLoader;
 import vendingmachine.components.IMachine;
 
 /**
- * This class creates a GUI of a vending machine using a Machine object.
+ * This class creates a GUI of a vending machine using a IMachine object.
  */
 public class VendingMachineGUI extends JFrame implements IMachineGUI, TemperatureListener {
 
@@ -68,6 +68,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   private final JButton cancelButton;
   
   private final JMenuBar menuBar;
+  private final JMenuItem unstickCoins;
 
   /**
    * Timer that restarts each time a text must be displayed temporarily.
@@ -143,6 +144,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     cancelButton = new JButton("Cancel");   
     
     menuBar = new JMenuBar();
+    unstickCoins = new JMenuItem("Unstick stuck coins");
     
     textTimer = new Timer(2500, e -> updateNorthText());
     textTimer.setRepeats(false);
@@ -279,28 +281,33 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     final JMenu waterSupplyMenu = new JMenu("Water Supply");
     final JMenu coinsMenu = new JMenu("Coin Stock");
     final JMenu drinksMenu = new JMenu("Drink Stock");
+    final JMenu repairMenu = new JMenu("Repair");
     final JMenu settings = new JMenu("Settings");
     menuBar.add(waterSupplyMenu);
     menuBar.add(coinsMenu);
     menuBar.add(drinksMenu);
+    menuBar.add(repairMenu);
     menuBar.add(settings);
     
     final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
-    final JMenuItem instantWarming = new JMenuItem("Instant Warming");
+    final JMenuItem instantWarming = new JMenuItem("Instant Warming"); 
     final JMenuItem newVM = new JMenuItem("New Vending Machine");
     final JMenuItem quit = new JMenuItem("Quit");
     waterSupplyMenu.add(waterSupplyBox);
     waterSupplyMenu.add(instantWarming);
+    repairMenu.add(unstickCoins);
     settings.add(newVM);
     settings.add(quit);
     
+    waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
+    instantWarming.addActionListener(e -> machine.setTemperature(93));
+    unstickCoins.addActionListener(e -> machine.repairStuckCoins());
+    unstickCoins.setEnabled(false);
     newVM.addActionListener(e -> {
       dispose();
       Main.run();
     });
     quit.addActionListener(e -> System.exit(0));
-    waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
-    instantWarming.addActionListener(e -> machine.setTemperature(93));
     
     for (Coin coin: Coin.COINS) {
       final JMenuItem item = new JMenuItem(coin.TEXT);
@@ -430,6 +437,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (value >= 0) {
       machine.setDrinkStock(drink, value);
     }
+  }
+
+  @Override
+  public void enableRepair(boolean b) {
+    unstickCoins.setEnabled(b);
   }
   
 }

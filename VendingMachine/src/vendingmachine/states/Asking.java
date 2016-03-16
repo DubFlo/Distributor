@@ -19,7 +19,6 @@ public final class Asking extends State {
   @Override
   public void cancel(Context c) {
     super.cancel(c);
-    chosenSugar = 0;
     c.changeState(Idle.getInstance());
   }
 
@@ -29,8 +28,12 @@ public final class Asking extends State {
       c.getStock().removeSugarCubes(chosenSugar);
     }
     c.giveChangeOnDrink(); // On a vérifié que le change était possible dans Idle
-    chosenSugar = 0;
     c.changeState(Preparing.getInstance());
+  }
+  
+  @Override
+  public void exit(Context c) {
+    chosenSugar = 0;
   }
 
   @Override

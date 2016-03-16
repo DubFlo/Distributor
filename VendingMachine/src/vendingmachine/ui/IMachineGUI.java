@@ -53,4 +53,6 @@ public interface IMachineGUI {
    */
   void updateUI();
 
+  void enableRepair(boolean b);
+
 }

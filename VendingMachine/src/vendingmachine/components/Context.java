@@ -14,10 +14,11 @@ import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
 import vendingmachine.states.Idle;
 import vendingmachine.states.State;
+import vendingmachine.states.StuckCoin;
 import vendingmachine.ui.IMachineGUI;
 import vendingmachine.ui.TemperatureListener;
 
-public class Context implements IMachine {
+public class Context implements IMachine, IMachineInside {
 
   private static final Logger log = LogManager.getLogger("Context");
 
@@ -101,7 +102,7 @@ public class Context implements IMachine {
     log.info("New Vending Machine Built");
   }
 
-  private void preparingOver() {
+  private void preparingOver() { //Dans Preparing ?
     setCupBool(true);
     stock.removeCup();
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
@@ -129,11 +130,10 @@ public class Context implements IMachine {
    * @param newState the State the machine should be in
    */
   public void changeState(State newState) {
-    state = newState;
-    state.entry(this);
-    if (machineGUI != null) {
-      machineGUI.updateUI();
-    }
+    this.state.exit(this);
+    this.state = newState;
+    this.state.entry(this);
+    machineGUI.updateUI();
   }
 
   @Override
@@ -394,6 +394,17 @@ public class Context implements IMachine {
 
   public void restartPreparingTimer() {
     preparingTimer.restart();
+  }
+
+  @Override
+  public void repairStuckCoins() {
+    if (state == StuckCoin.getInstance()) {
+      changeState(Idle.getInstance());
+    }
+  }
+
+  public void enableRepair(boolean b) {
+    machineGUI.enableRepair(b);
   }
 
 }

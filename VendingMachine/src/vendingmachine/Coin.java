@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This enum gives all the coins that could be accepted by a vending machine.
@@ -41,10 +42,32 @@ public enum Coin { // Coins should be listed in descending order of their values
    */
   public final ImageIcon ICON;
 
+  /**
+   * Creates a Coin object with three attributes.
+   * If the value is negative or the text representation is empty,
+   * an IllegalArgumentException is thrown.
+   * 
+   * @param value the value of the coin (in cents, positive)
+   * @param text the String representation of the coin (can't be empty)
+   * @param icon the ImageIcon of the Coin
+   */
   private Coin(int value, String text, ImageIcon icon) {
+    if (value <= 0) {
+      throw new IllegalArgumentException("Value of a Coin should be strictly positive");
+    }
+    if (text.equals("")) {
+      throw new IllegalArgumentException("Text of a Coin can't be empty");
+    }
     this.VALUE = value;
     this.TEXT = text;
     this.ICON = icon;
   }
   
+  public static int totalValue(Map<Coin, Integer> m) { // à déplacer ??
+    int amount = 0;
+    for (Coin coin: COINS) {
+      amount += coin.VALUE + m.get(coin);
+    }
+    return amount;
+  }
 }
