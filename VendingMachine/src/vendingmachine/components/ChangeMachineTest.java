@@ -28,25 +28,18 @@ public class ChangeMachineTest {
       cm = new ChangeMachine (coinsStock, acceptedCoins);
     }
     @Test
-    //copy is private
-    public void testCopy() {
-      assertEquals(coinsStock,ChangeMachine.copy(coinsStock));
-      assertNotSame(coinsStock, ChangeMachine.copy(coinsStock));
-    }
-    @Test
-    public void testIsChangePossible(){
-      if (cm.isChangePossible(422))
-        fail("Shortage of stock");
+    public void isChangePossibleTest(){
+      assertFalse("Shortage of stock",cm.isChangePossible(422));
       
-      if (!cm.isChangePossible(342))
-        fail("Case : All was working");
+      assertTrue("Giving back change should be possible",cm.isChangePossible(342));
       
-      if (cm.isChangePossible(500))
-        fail("Problem of accepted coins");
+      assertFalse("Problem of accepted coins",cm.isChangePossible(500));
     }
-    @Test
-    public void testGiveChange() {
-      assertTrue(true);
+    @Test(expected = IllegalArgumentException.class )
+    public void setCoinsStockTest() {
+     cm.setCoinStock(Coin.COIN1, -1); 
+     cm.setCoinStock(Coin.COIN1, 4);
+     assertEquals(cm.coinsStock.Coin.COIN1,4);
     }
    
     
