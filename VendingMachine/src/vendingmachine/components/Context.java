@@ -20,7 +20,7 @@ import vendingmachine.ui.TemperatureListener;
 public class Context implements IMachine {
 
   private static final Logger log = LogManager.getLogger("Context");
-  
+
   /**
    * The Drink's that the machine dispenses.
    */
@@ -53,7 +53,10 @@ public class Context implements IMachine {
    */
   private Drink chosenDrink;
   
-  private int chosenSugar; //le mettre dans Asking ?
+  /**
+   * The probability for a coin to get stuck (between 0 and 1).
+   */
+  public final double COIN_STUCK_PROB;
   
   /**
    * The Coin's currently in the container to be given back.
@@ -69,17 +72,17 @@ public class Context implements IMachine {
    * @param changeMachine the ChangeMachine associated with the Context
    * @param stock the Stock associated with the Context
    */
-  public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock) {
+  public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock, double coinStuckProb) {
     this.state = Idle.getInstance();
     
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
     this.stock.setContext(this);
+    this.COIN_STUCK_PROB = coinStuckProb;
     
     this.heatingSystem = new HeatingSystem(this);
     this.amountInside = 0;
-    this.chosenSugar = 0;
     this.cupInside = false;
     this.changeOut = new Hashtable<Coin, Integer>();
     for (Coin coin: Coin.COINS) {
@@ -95,7 +98,7 @@ public class Context implements IMachine {
     preparingTimer = new Timer(delay, e -> this.preparingOver());
     preparingTimer.setRepeats(false);
     
-    log.info("New Vending Machine Created");
+    log.info("New Vending Machine Built");
   }
 
   private void preparingOver() {
@@ -106,7 +109,7 @@ public class Context implements IMachine {
     }
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.BEEP);
-    machineGUI.setTemporaryNorthText("Your " + chosenDrink + " is ready !");
+    machineGUI.setTemporaryNorthText("Your " + chosenDrink + " is ready!");
     heatingSystem.drinkOrdered();
     if (heatingSystem.isWaterSupplyEnabled()) {
       changeState(Idle.getInstance());
@@ -144,15 +147,6 @@ public class Context implements IMachine {
     state.confirm(this);
   }
 
-  public void decrementChosenSugar() {
-    chosenSugar -= 1;
-    machineGUI.updateSugarText();
-  }
-
-  public int getChosenSugar() {
-    return chosenSugar;
-  }
-
   @Override
   public void drinkButton(Drink drink) {
     SoundLoader.play(SoundLoader.CLICK);
@@ -179,6 +173,7 @@ public class Context implements IMachine {
   public String getInfo() {
     final StringBuilder sb = new StringBuilder(30);
     sb.append("State: ").append(state).append("\n\n")
+    .append("Stuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
     .append(amountInside / 100.0).append(" € inserted.\n");
 
     sb.append("\n").append(changeMachine.getInfo());
@@ -232,11 +227,6 @@ public class Context implements IMachine {
     }
   }
 
-  public void incrementChosenSugar() {
-    chosenSugar += 1;
-    machineGUI.updateSugarText();
-  }
-
   /**
    * Simulates the insertion of the specified Coin.
    * 
@@ -247,7 +237,6 @@ public class Context implements IMachine {
     changeMachine.insertCoin(coin);
     machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
     machineGUI.updateInfo();
-    SoundLoader.play(SoundLoader.FOP);
   }
 
   /**
@@ -261,6 +250,7 @@ public class Context implements IMachine {
   public void less() {
     SoundLoader.play(SoundLoader.CLICK);
     state.less(this);
+    machineGUI.updateSugarText();
   }
 
   /**
@@ -271,10 +261,7 @@ public class Context implements IMachine {
   public void more() {
     SoundLoader.play(SoundLoader.CLICK);
     state.more(this);
-  }
-
-  public void resetChosenSugar() {
-    chosenSugar = 0;
+    machineGUI.updateSugarText();
   }
 
   @Override

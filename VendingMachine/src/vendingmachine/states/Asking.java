@@ -6,6 +6,8 @@ public final class Asking extends State {
 
   private static final Asking INSTANCE = new Asking();
   private static final byte MAX_SUGAR = 5;
+  
+  private int chosenSugar = 0;
 
   public static Asking getInstance() {
     return INSTANCE;
@@ -17,17 +19,17 @@ public final class Asking extends State {
   @Override
   public void cancel(Context c) {
     super.cancel(c);
-    c.resetChosenSugar();
+    chosenSugar = 0;
     c.changeState(Idle.getInstance());
   }
 
   @Override
   public void confirm(Context c) {
-    if (c.getChosenSugar() > 0) {
-      c.getStock().removeSugarCubes(c.getChosenSugar());
+    if (chosenSugar > 0) {
+      c.getStock().removeSugarCubes(chosenSugar);
     }
     c.giveChangeOnDrink(); // On a vérifié que le change était possible dans Idle
-    c.resetChosenSugar();
+    chosenSugar = 0;
     c.changeState(Preparing.getInstance());
   }
 
@@ -38,21 +40,21 @@ public final class Asking extends State {
 
   @Override
   public String getSugarText(Context c) {
-    return "Sugar: " + c.getChosenSugar() + "/" + MAX_SUGAR;
+    return "Sugar: " + chosenSugar + "/" + MAX_SUGAR;
   }
 
   @Override
   public void less(Context c) {
-    if (c.getChosenSugar() > 0 && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
-      c.decrementChosenSugar();
+    if (chosenSugar > 0) {
+      chosenSugar -= 1;
     }
   }
 
   @Override
   public void more(Context c) {
-    if (c.getChosenSugar() < MAX_SUGAR && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
-      c.incrementChosenSugar();
-    } else if (c.getChosenSugar() == MAX_SUGAR) {
+    if (chosenSugar < MAX_SUGAR && c.getStock().isSugarInStock(chosenSugar + 1)) {
+      chosenSugar += 1;
+    } else if (chosenSugar == MAX_SUGAR) {
       c.setTemporaryNorthText("Maximum quantity of sugar : " + MAX_SUGAR);
     } else {
       c.setTemporaryNorthText("No more sugar in stock");

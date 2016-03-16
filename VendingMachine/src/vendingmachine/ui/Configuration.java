@@ -82,6 +82,7 @@ public class Configuration extends JFrame {
   private final JTextField sugarCubesNbrValue;
   private final JTextField cupsNbrValue;
   private final JTextField spoonsNbrValue;
+  private final JTextField coinStuckProbValue;
 
   private final JButton createButton;
   private final JLabel problemLabel;
@@ -136,6 +137,8 @@ public class Configuration extends JFrame {
     ((AbstractDocument)cupsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
     spoonsNbrValue = new JTextField("8", 4);
     ((AbstractDocument)spoonsNbrValue.getDocument()).setDocumentFilter(myDocumentFilter);
+    coinStuckProbValue = new JTextField("1", 4);
+    ((AbstractDocument)coinStuckProbValue.getDocument()).setDocumentFilter(myDocumentFilter);
     
     createButton = new JButton("Click here to begin the simulation!");
     createButton.addActionListener(e -> check());
@@ -195,6 +198,7 @@ public class Configuration extends JFrame {
     final JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
     final JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
     final JLabel spoonsNbrLabel = new JLabel("Number of spoons availables: ");
+    final JLabel coinStuckProbLabel = new JLabel("Probability of a coin to get stuck in % (between 0 and 100): ");
     
     c3.gridy = 0; c3.gridx = 0;
     stockPanel.add(sugarCubesNbrLabel, c3);
@@ -210,6 +214,11 @@ public class Configuration extends JFrame {
     stockPanel.add(spoonsNbrLabel, c3);
     c3.gridx = 1;
     stockPanel.add(spoonsNbrValue, c3);
+    
+    c3.gridy += 1;  c3.gridx = 0;
+    stockPanel.add(coinStuckProbLabel, c3);
+    c3.gridx = 1;
+    stockPanel.add(coinStuckProbValue, c3);
 
     c1.gridy = 4;
     myPanel.add(stockPanel, c1);
@@ -293,8 +302,18 @@ public class Configuration extends JFrame {
       return;
     }
     final Stock stock = new Stock(sugarCubesNbr, cupsNbr, spoonsNbr, drinkQty);
+    
+    double coinStuckProb;
+    try {
+      coinStuckProb = Double.parseDouble(coinStuckProbValue.getText());
+      checkDouble(coinStuckProb);
+    } catch (NumberFormatException e) {
+      problemLabel.setText("Error while parsing probability of stuck coins.");
+      this.pack();
+      return;
+    }
 
-    final Context context = new Context(drinkList, changeMachine, stock);
+    final Context context = new Context(drinkList, changeMachine, stock, coinStuckProb/100.0);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
     
@@ -308,7 +327,8 @@ public class Configuration extends JFrame {
       }
     });
   }
-  
+
+
   /**
    * Repaints {@code drinkPanel} accordingly if the number of drinks is changed.
    * Removes all the components and places them again with the new number of drinks.
@@ -347,13 +367,20 @@ public class Configuration extends JFrame {
   
   private static void checkInt(int i) {
     if (i < 0) {
-      throw new IllegalArgumentException();
+      throw new NumberFormatException();
     }
   }
   
   private static void checkString(String s) {
     if (s.equals("") || s.length() > 18) {
       throw new IllegalArgumentException();
+    }
+  }
+  
+  
+  private static void checkDouble(double d) {
+    if (d < 0 || d > 100) {
+      throw new NumberFormatException();
     }
   }
 

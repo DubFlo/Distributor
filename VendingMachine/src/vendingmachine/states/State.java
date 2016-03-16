@@ -37,8 +37,10 @@ public abstract class State {
    * @param c the Context associated with the State
    */
   public void coinInserted(Coin coin, Context c) {
-    c.setChangeBool(true);
-    c.addChangeOutCoin(coin);
+    if (!isCoinStuck(c)) {
+      c.setChangeBool(true);
+      c.addChangeOutCoin(coin);
+    }
   }
   
   /**
@@ -97,4 +99,11 @@ public abstract class State {
    */
   public abstract boolean isAvailableForMaintenance();
 
+  protected final boolean isCoinStuck(Context c) {
+    if (Math.random() < c.COIN_STUCK_PROB) {
+      c.changeState(StuckCoin.getInstance());
+      return true;
+    }
+    return false;
+  }
 }

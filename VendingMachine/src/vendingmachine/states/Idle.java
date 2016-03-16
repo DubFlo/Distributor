@@ -2,6 +2,7 @@ package vendingmachine.states;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.SoundLoader;
 import vendingmachine.components.Context;
 
 public final class Idle extends State {
@@ -24,11 +25,15 @@ public final class Idle extends State {
   
   @Override
   public void coinInserted(Coin coin, Context c) {
-    if (c.getChangeMachine().isCoinAccepted(coin)) {
-      c.insertCoin(coin);
-    } else {
-      super.coinInserted(coin, c);
-      c.setTemporaryNorthText("Coin not recognized by the machine");
+    if (!isCoinStuck(c)) {
+      if (c.getChangeMachine().isCoinAccepted(coin)) {
+        c.insertCoin(coin);
+        SoundLoader.play(SoundLoader.FOP);
+      } else {
+        c.setChangeBool(true);
+        c.addChangeOutCoin(coin);
+        c.setTemporaryNorthText("Coin not recognized by the machine");
+      }
     }
   }
 
