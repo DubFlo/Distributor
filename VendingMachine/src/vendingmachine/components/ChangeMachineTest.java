@@ -12,7 +12,7 @@ public class ChangeMachineTest {
   private Hashtable<Coin,Integer> coinsStock;
   private Hashtable<Coin,Boolean> acceptedCoins;
   private ChangeMachine cm;
-  
+  // Constructeur non testé
     @Before
     public void setUp(){
       
@@ -36,10 +36,29 @@ public class ChangeMachineTest {
       assertFalse("Problem of accepted coins",cm.isChangePossible(500));
     }
     @Test(expected = IllegalArgumentException.class )
-    public void setCoinsStockTest() {
+    public void setCoinsStockErrorTest() {
      cm.setCoinStock(Coin.COIN1, -1); 
-     cm.setCoinStock(Coin.COIN1, 4);
-     assertEquals(cm.coinsStock.Coin.COIN1,4);
+    }
+    @Test
+    public void setCoinsStockTest() {
+      cm.setCoinStock(Coin.COIN10, 5);
+      assertEquals(cm.getCoinStock().get(Coin.COIN10),new Integer(5));
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void giveChangeErrorTest() {
+      cm.giveChange(171);
+    }
+    @Test
+    // Problème avec CoinsStockTemp(utilisation de isChangePossible pr effet de bord)
+    // Pas tester si coinsStock avait bien été remplacé par coinsStockTemp(trivial)
+    public void giveChangeTest() {
+      cm.isChangePossible(109);
+      Hashtable<Coin,Integer>otherMTG = new Hashtable<Coin,Integer>();
+      int[] otherMTGTab = {0,1,0,0,0,0,4,1};
+      for (int i = 0; i<8; i++) {
+        otherMTG.put(Coin.COINS.get(i),otherMTGTab[i]);
+      }
+      assertEquals(cm.giveChange(109),otherMTG);
     }
    
     

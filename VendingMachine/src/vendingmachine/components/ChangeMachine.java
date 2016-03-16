@@ -58,7 +58,7 @@ public class ChangeMachine {
    */
   public Map<Coin, Integer> giveChange(int amount) { // à n'utiliser que si isPossibleChange(amount) == true
     if (!isChangePossible(amount)) {
-      //throw new Exception
+      throw new IllegalArgumentException();
     }
     Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
     for (Coin coin: Coin.COINS) {
@@ -143,7 +143,9 @@ public class ChangeMachine {
     
     coinsStock.put(coin, value);
   }
-  
+  public Map<Coin,Integer> getCoinStock() {
+    return this.coinsStock;
+  }
   public static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
     final Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
     for (Coin coin : Coin.COINS) {
