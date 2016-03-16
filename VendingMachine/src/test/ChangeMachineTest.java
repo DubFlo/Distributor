@@ -1,11 +1,13 @@
-package vendingmachine.components;
+package test;
 
 import org.junit.*;
+
 import static org.junit.Assert.*;
 
 import java.util.Hashtable;
 
 import vendingmachine.Coin;
+import vendingmachine.components.ChangeMachine;
 
 public class ChangeMachineTest {
   
@@ -60,7 +62,6 @@ public class ChangeMachineTest {
       }
       assertEquals(cm.giveChange(109),otherMTG);
     }
-   
     
  }      
 
