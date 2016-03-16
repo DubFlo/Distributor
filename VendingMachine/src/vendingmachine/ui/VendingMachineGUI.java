@@ -144,7 +144,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     cancelButton = new JButton("Cancel");   
     
     menuBar = new JMenuBar();
-    unstickCoins = new JMenuItem("Unstick stuck coins");
+    unstickCoins = new JMenuItem("Unstick Stuck Coins");
     
     textTimer = new Timer(2500, e -> updateNorthText());
     textTimer.setRepeats(false);
@@ -320,6 +320,10 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       item.addActionListener(e -> drinkStockDialog(drink));
       drinksMenu.add(item);
     }
+    
+    final JMenuItem cupNbrItem = new JMenuItem("Cups Stock");
+    cupNbrItem.addActionListener(e -> cupStockDialog());
+    repairMenu.add(cupNbrItem);
   }
 
   @Override
@@ -374,6 +378,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     updateNorthText();
     updateSugarText();
     updateChangeOutInfo();
+  }
+
+  @Override
+  public void enableRepair(boolean b) {
+    unstickCoins.setEnabled(b);
   }
 
   @Override
@@ -438,10 +447,12 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       machine.setDrinkStock(drink, value);
     }
   }
-
-  @Override
-  public void enableRepair(boolean b) {
-    unstickCoins.setEnabled(b);
+  
+  private void cupStockDialog() {
+    int value = stockDialog("cups");
+    if (value >= 0) {
+      machine.setCupStock(value);
+    }
   }
   
 }

@@ -207,5 +207,22 @@ public class Stock {
       context.changeState(NoCup.getInstance());
     }
   }
+
+  public void setCupStock(int newCupsNbr) {
+    if (cupsNbr < 0) {
+      throw new IllegalArgumentException();
+    }
+    final int difference = newCupsNbr - cupsNbr;
+    this.cupsNbr = newCupsNbr;
+    if (difference > 0) {
+      log.info(difference + " cups resupplied (now " + cupsNbr + " available).");
+    } else if (difference < 0) {
+      log.info(-difference + " cups removed from the stock (now " + cupsNbr + " available).");
+    }
+    if (newCupsNbr == 0) {
+      context.changeState(NoCup.getInstance());
+    }
+    
+  }
   
 }

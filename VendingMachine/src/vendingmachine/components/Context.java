@@ -407,4 +407,9 @@ public class Context implements IMachine, IMachineInside {
     machineGUI.enableRepair(b);
   }
 
+  @Override
+  public void setCupStock(int value) {
+    stock.setCupStock(value);
+  }
+
 }

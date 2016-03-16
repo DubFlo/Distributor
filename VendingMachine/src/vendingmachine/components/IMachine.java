@@ -94,6 +94,8 @@ public interface IMachine {
   void setCoinStock(Coin coin, int value);
 
   void setDrinkStock(Drink drink, int value);
+  
+  void setCupStock(int value);
 
   /**
    * @return true if the stocks of the machine can be currently changed, false otherwise

@@ -12,7 +12,7 @@ import vendingmachine.components.Context;
  */
 public class StuckCoin extends Problem {
 
-  private static final Map<Coin, Integer> coinsEnteredDespiteMessage = new Hashtable<Coin, Integer>();
+  private final Map<Coin, Integer> coinsEnteredDespiteMessage = new Hashtable<Coin, Integer>();
   private static final StuckCoin INSTANCE = new StuckCoin();
   
   private StuckCoin() {}
