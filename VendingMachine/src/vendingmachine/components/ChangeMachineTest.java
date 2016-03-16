@@ -1,22 +1,21 @@
 package vendingmachine.components;
 
+import org.junit.*;
 import static org.junit.Assert.*;
 
 import java.util.Hashtable;
 
-import org.junit.*;
-
 import vendingmachine.Coin;
 
 public class ChangeMachineTest {
+  
   private Hashtable<Coin,Integer> coinsStock;
   private Hashtable<Coin,Boolean> acceptedCoins;
   private ChangeMachine cm;
   
-
-   
     @Before
     public void setUp(){
+      
       int[]coinsStockTab = {1,1,0,3,0,0,4,1};
       coinsStock = new Hashtable<Coin,Integer>();
       boolean[] acceptedCoinsTab = {false, true, false, true, false, true, true, true};
@@ -28,25 +27,19 @@ public class ChangeMachineTest {
       }
       cm = new ChangeMachine (coinsStock, acceptedCoins);
     }
-    @Ignore
-    //copy is private
-    public void testCopy() {
-      assertEquals(coinsStock,ChangeMachine.copy(coinsStock));
-    }
     @Test
-    public void testIsChangePossible(){
-      if (cm.isChangePossible(422))
-        fail("Shortage of stock");
+    public void isChangePossibleTest(){
+      assertFalse("Shortage of stock",cm.isChangePossible(422));
       
-      if (!cm.isChangePossible(342))
-        fail("All is ok");
+      assertTrue("Giving back change should be possible",cm.isChangePossible(342));
       
-      if (cm.isChangePossible(500))
-        fail("Problem of accepted coins");
+      assertFalse("Problem of accepted coins",cm.isChangePossible(500));
     }
-    @Test
-    public void testGiveChange() {
-      
+    @Test(expected = IllegalArgumentException.class )
+    public void setCoinsStockTest() {
+     cm.setCoinStock(Coin.COIN1, -1); 
+     cm.setCoinStock(Coin.COIN1, 4);
+     assertEquals(cm.coinsStock.Coin.COIN1,4);
     }
    
     
