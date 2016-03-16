@@ -110,5 +110,9 @@ public abstract class State {
     return false;
   }
 
+  public boolean isProblem() {
+    return false;
+  }
+
 
 }

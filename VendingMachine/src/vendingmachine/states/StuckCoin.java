@@ -10,7 +10,7 @@ import vendingmachine.components.Context;
  * State reached when a coin is stuck inside the machine.
  *  TO DOOOO
  */
-public class StuckCoin extends State {
+public class StuckCoin extends Problem {
 
   private static final Map<Coin, Integer> coinsEnteredDespiteMessage = new Hashtable<Coin, Integer>();
   private static final StuckCoin INSTANCE = new StuckCoin();
@@ -47,11 +47,6 @@ public class StuckCoin extends State {
   @Override
   public String getDefaultText(Context c) {
     return "A coin is stuck. Please call technician";
-  }
-
-  @Override
-  public boolean isAvailableForMaintenance() {
-    return true;
   }
 
 }

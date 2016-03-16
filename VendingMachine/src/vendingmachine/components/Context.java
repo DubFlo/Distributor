@@ -110,11 +110,11 @@ public class Context implements IMachine, IMachineInside {
     }
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.BEEP);
-    machineGUI.setTemporaryNorthText("Your " + chosenDrink + " is ready!");
     heatingSystem.drinkOrdered();
-    if (heatingSystem.isWaterSupplyEnabled()) {
+    if (!state.isProblem()) {
       changeState(Idle.getInstance());
     }
+    machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
   }
 
   @Override
