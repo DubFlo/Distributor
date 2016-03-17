@@ -16,32 +16,43 @@ import org.apache.logging.log4j.Logger;
  */
 public final class SoundLoader {
   
+  private static SoundLoader INSTANCE;
+  
+  private SoundLoader() {}
+  
+  public static SoundLoader getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new SoundLoader();
+    }
+    return INSTANCE;
+  }
+  
   private static final Logger log = LogManager.getLogger("PictureLoader");
   
   /**
    * Sound that indicates that something is ready (five beeps).
    */
-  public static final Clip BEEP = getSound("beep.wav");
+  public final Clip BEEP = getSound("beep.wav");
   
   /**
    * Sound of coins falling on the ground.
    */
-  public static final Clip CLING = getSound("cling.wav");
+  public final Clip CLING = getSound("cling.wav");
   
   /**
    * Sound of a coin falling inside a machine.
    */
-  public static final Clip FOP = getSound("fop.wav");
+  public final Clip FOP = getSound("fop.wav");
   
   /**
    * Sound of a small button being pressed.
    */
-  public static final Clip CLICK = getSound("click.wav");
+  public final Clip CLICK = getSound("click.wav");
   
   /**
    * Sound of a cup that is filling with water.
    */
-  public static final Clip FILLING = getSound("filling.wav");
+  public final Clip FILLING = getSound("filling.wav");
 
     // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
 
@@ -98,7 +109,5 @@ public final class SoundLoader {
     }
     return clip;
   }
-  
-  private SoundLoader() {}
 
 }

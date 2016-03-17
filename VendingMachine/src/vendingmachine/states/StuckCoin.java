@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import vendingmachine.Coin;
+import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
 /**
@@ -31,7 +32,7 @@ public class StuckCoin extends Problem {
 
   @Override
   public void exit(Context c) {
-    if (Coin.totalValue(coinsEnteredDespiteMessage) > 0) {
+    if (Utils.totalValue(coinsEnteredDespiteMessage) > 0) {
       c.addChangeOut(coinsEnteredDespiteMessage);
       c.setChangeBool(true);
     }

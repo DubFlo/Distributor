@@ -4,6 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 import vendingmachine.Coin;
+import vendingmachine.PictureLoader;
 
 /**
  * The CoinJButton class extends JButton and only adds a Coin attribute.
@@ -25,8 +26,9 @@ public class CoinJButton extends JButton {
    */
   public CoinJButton(Coin coin) {
     super();
-    if (coin.ICON != null) {
-      this.setIcon(coin.ICON);
+    final PictureLoader icons = PictureLoader.getInstance();
+    if (icons.COINS_IMAGES.get(coin) != null) {
+      this.setIcon(icons.COINS_IMAGES.get(coin));
       setBorder(BorderFactory.createEmptyBorder());
       setContentAreaFilled(false);
     } else { 

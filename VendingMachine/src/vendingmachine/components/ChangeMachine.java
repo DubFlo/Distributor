@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
+import vendingmachine.Utils;
 
 /**
  * This class is able to perform operations about change and coins.
@@ -90,7 +91,7 @@ public class ChangeMachine {
     if (amount < 0) {
       throw new IllegalArgumentException("Can't give change on negative amount");
     }
-    coinsStockTemp = copy(coinsStock);
+    coinsStockTemp = Utils.copy(coinsStock);
     for (Coin coin: Coin.COINS) {
       while (amount >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
         coinsStockTemp.put(coin, coinsStockTemp.get(coin) - 1);
@@ -142,14 +143,6 @@ public class ChangeMachine {
     }
     
     coinsStock.put(coin, value);
-  }
-
-  public static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
-    final Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
-    for (Coin coin : Coin.COINS) {
-      res.put(coin, map.get(coin)); // copy of the Integer
-    }
-    return res;
   }
   
 }

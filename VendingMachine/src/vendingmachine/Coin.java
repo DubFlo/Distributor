@@ -1,7 +1,5 @@
 package vendingmachine;
 
-import javax.swing.ImageIcon;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +10,14 @@ import java.util.Map;
  * This gives all the Euro coins, but it can be easily changed.
  */
 public enum Coin { // Coins should be listed in descending order of their values
-  COIN200 (200, "2 €", PictureLoader.EURO2_ICON),
-  COIN100 (100, "1 €", PictureLoader.EURO1_ICON),
-  COIN50  (50, "0.50 €", PictureLoader.CENT50_ICON),
-  COIN20  (20, "0.20 €", PictureLoader.CENT20_ICON), 
-  COIN10  (10, "0.10 €", PictureLoader.CENT10_ICON),
-  COIN5   (5, "0.05 €", PictureLoader.CENT5_ICON),
-  COIN2   (2, "0.02 €", PictureLoader.CENT2_ICON),
-  COIN1   (1, "0.01 €", PictureLoader.CENT1_ICON);
+  COIN200 (200, "2 €"),
+  COIN100 (100, "1 €"),
+  COIN50  (50, "0.50 €"),
+  COIN20  (20, "0.20 €"), 
+  COIN10  (10, "0.10 €"),
+  COIN5   (5, "0.05 €"),
+  COIN2   (2, "0.02 €"),
+  COIN1   (1, "0.01 €");
 
   /**
    * Unmodifiable List of all the coins, in descending order of their values.
@@ -35,12 +33,6 @@ public enum Coin { // Coins should be listed in descending order of their values
    * The String representation of the coin ("0.50 €" for instance).
    */
   public final String TEXT;
-  
-  /**
-   * An icon that looks like the coin. It can be null, but the
-   * vending machine will be uglier.
-   */
-  public final ImageIcon ICON;
 
   /**
    * Creates a Coin object with three attributes.
@@ -51,7 +43,7 @@ public enum Coin { // Coins should be listed in descending order of their values
    * @param text the String representation of the coin (can't be empty)
    * @param icon the ImageIcon of the Coin
    */
-  private Coin(int value, String text, ImageIcon icon) {
+  private Coin(int value, String text) {
     if (value <= 0) {
       throw new IllegalArgumentException("Value of a Coin should be strictly positive");
     }
@@ -60,14 +52,6 @@ public enum Coin { // Coins should be listed in descending order of their values
     }
     this.VALUE = value;
     this.TEXT = text;
-    this.ICON = icon;
   }
   
-  public static int totalValue(Map<Coin, Integer> m) { // à déplacer ??
-    int amount = 0;
-    for (Coin coin: COINS) {
-      amount += coin.VALUE + m.get(coin);
-    }
-    return amount;
-  }
 }

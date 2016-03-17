@@ -21,13 +21,13 @@ public class DoorJPanel extends JPanel {
   /**
    * The width of the black rectangle.
    */
-  public static final int WIDTH = PictureLoader.CUP_ICON.getIconWidth();
+  public final int WIDTH;
   
   /**
    * The maximal height of the black rectangle
    * (from which the step will be subtracted).
    */
-  public static final int HEIGHT = PictureLoader.CUP_ICON.getIconHeight();
+  public final int HEIGHT;
 
   /**
    * A value that is subtracted from the height to draw the rectangle.
@@ -43,10 +43,15 @@ public class DoorJPanel extends JPanel {
     super();
     this.step = 0;
     this.setDoubleBuffered(true);
+    
+    PictureLoader pictures = PictureLoader.getInstance();
+    WIDTH = pictures.CUP_ICON.getIconWidth();
+    HEIGHT = pictures.CUP_ICON.getIconHeight();
+    
     doorTimer = new Timer(5, e -> {
       step += 1;
       repaint();
-      if (step >= DoorJPanel.HEIGHT) {
+      if (step >= this.HEIGHT) {
         ((Timer)e.getSource()).stop(); // stops the doorTimer
       }
     });

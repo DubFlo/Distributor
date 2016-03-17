@@ -2,6 +2,8 @@ package vendingmachine;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -25,14 +27,8 @@ public final class PictureLoader {
   public final BufferedImage SLOT_IMAGE = getImage("slot.jpg");
   public final ImageIcon SUGAR_DISPLAY = getIcon("sugarDisplay.jpg");
   public final ImageIcon DRINK_BUTTON = getIcon("drinkButton.png");
-  public final ImageIcon EURO2_ICON = getIcon("2euro.png");
-  public final ImageIcon EURO1_ICON = getIcon("1euro.png");
-  public final ImageIcon CENT50_ICON = getIcon("50cent.png");
-  public final ImageIcon CENT20_ICON = getIcon("20cent.png");
-  public final ImageIcon CENT10_ICON = getIcon("10cent.png");
-  public final ImageIcon CENT5_ICON = getIcon("5cent.png");
-  public final ImageIcon CENT2_ICON = getIcon("2cent.png");
-  public final ImageIcon CENT1_ICON = getIcon("1cent.png");
+  
+  public final Map<Coin, ImageIcon> COINS_IMAGES;
   
   /**
    * Returns a BufferedImage loaded from the file name specified.
@@ -79,6 +75,16 @@ public final class PictureLoader {
     return INSTANCE;
   }
   
-  private PictureLoader() {}
+  private PictureLoader() {
+    COINS_IMAGES = new Hashtable<Coin, ImageIcon>();
+    COINS_IMAGES.put(Coin.COIN200, getIcon("2euro.png"));
+    COINS_IMAGES.put(Coin.COIN100, getIcon("1euro.png"));
+    COINS_IMAGES.put(Coin.COIN50, getIcon("50cent.png"));
+    COINS_IMAGES.put(Coin.COIN20, getIcon("20cent.png"));
+    COINS_IMAGES.put(Coin.COIN10, getIcon("10cent.png"));
+    COINS_IMAGES.put(Coin.COIN5, getIcon("5cent.png"));
+    COINS_IMAGES.put(Coin.COIN2, getIcon("2cent.png"));
+    COINS_IMAGES.put(Coin.COIN1, getIcon("1cent.png"));
+  }
   
 }

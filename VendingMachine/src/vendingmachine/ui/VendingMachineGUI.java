@@ -86,6 +86,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     super();
     this.setTitle("Vending Machine");
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    final PictureLoader pictures = PictureLoader.getInstance();
     
     this.machine = machine;
     this.machine.setObserver(this);
@@ -96,18 +97,18 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     
     northLabel = new JLabel();
     northLabel.setForeground(Color.RED);
-    northLabel.setFont(FontLoader.DIGITAL_FONT);
+    northLabel.setFont(FontLoader.getInstance().DIGITAL_FONT);
     
     sugarLabel = new JLabel();
-    if (FontLoader.DIGITAL_FONT != null) {
-      sugarLabel.setFont(FontLoader.DIGITAL_FONT.deriveFont(16f));
+    if (FontLoader.getInstance().DIGITAL_FONT != null) {
+      sugarLabel.setFont(FontLoader.getInstance().DIGITAL_FONT.deriveFont(16f));
     }
     sugarLabel.setForeground(Color.RED);
-    sugarLabel.setIcon(PictureLoader.SUGAR_DISPLAY);
+    sugarLabel.setIcon(pictures.SUGAR_DISPLAY);
     sugarLabel.setHorizontalTextPosition(SwingConstants.CENTER);   
     
     temperatureLabel = new JLabel();
-    temperatureLabel.setFont(FontLoader.DIGITAL_FONT);
+    temperatureLabel.setFont(FontLoader.getInstance().DIGITAL_FONT);
     temperatureLabel.setHorizontalAlignment(SwingConstants.CENTER);
     temperatureLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     temperatureLabel.setBackground(Color.WHITE);
@@ -136,7 +137,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     changeButton.setContentAreaFilled(false);
     changeButton.setOpaque(true);
     changeButton.setBackground(Color.BLACK);
-    changeButton.setPreferredSize(new Dimension(PictureLoader.CHANGE_ICON.getIconWidth(), 100));
+    changeButton.setPreferredSize(new Dimension(pictures.CHANGE_ICON.getIconWidth(), 100));
     
     lessSugar = new JButton("-");
     moreSugar = new JButton("+");
@@ -155,18 +156,19 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
    */
   public void init() {
     final Container myContainer = getContentPane();
+    final PictureLoader pictures = PictureLoader.getInstance();
 
     // Main Panel
     final JPanel myPanel = new JPanel(new BorderLayout());
 
     // North Panel
-    final JPanel northPanel = new BackgroundJPanel(PictureLoader.DISPLAY_PANEL);
+    final JPanel northPanel = new BackgroundJPanel(pictures.DISPLAY_PANEL);
     northPanel.add(northLabel);
     northPanel.setPreferredSize(new Dimension(100, 45));
     myPanel.add(northPanel, BorderLayout.PAGE_START);
 
     // Center Panel
-    final JPanel centerPanel = new BackgroundJPanel(PictureLoader.COFFEE_IMAGE);
+    final JPanel centerPanel = new BackgroundJPanel(pictures.COFFEE_IMAGE);
     centerPanel.setLayout(new GridLayout((machine.getDrinks().size() + 1) / 2, 2, 30, 0));
     for (DrinkJButton myButton: drinkButtonsList) {
       centerPanel.add(myButton);
@@ -179,7 +181,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     myPanel.add(leftPanel, BorderLayout.LINE_START);
 
     // Right Panel
-    final JPanel rightPanel = new BackgroundJPanel(PictureLoader.SLOT_IMAGE);
+    final JPanel rightPanel = new BackgroundJPanel(pictures.SLOT_IMAGE);
     rightPanel.setLayout(new GridBagLayout());
     final GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
@@ -329,7 +331,8 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   @Override
   public void setChangeBool(boolean bool) {
     if (bool) {
-      changeButton.setIcon(PictureLoader.CHANGE_ICON);
+      PictureLoader pictures = PictureLoader.getInstance();
+      changeButton.setIcon(pictures.CHANGE_ICON);
     } else {
       changeButton.setIcon(null);
     }
@@ -338,7 +341,8 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   @Override
   public void setCupBool(boolean bool) {
     if (bool) {
-      cupButton.setIcon(PictureLoader.CUP_ICON);
+      PictureLoader pictures = PictureLoader.getInstance();
+      cupButton.setIcon(pictures.CUP_ICON);
       leftPanel.doorAnimation();
     } else {
       cupButton.setIcon(null);

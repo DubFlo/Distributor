@@ -212,7 +212,7 @@ public class Stock {
     if (cupsNbr < 0) {
       throw new IllegalArgumentException();
     }
-    final int difference = newCupsNbr - cupsNbr;
+    final int difference = newCupsNbr - this.cupsNbr;
     this.cupsNbr = newCupsNbr;
     if (difference > 0) {
       log.info(difference + " cups resupplied (now " + cupsNbr + " available).");
@@ -221,8 +221,7 @@ public class Stock {
     }
     if (newCupsNbr == 0) {
       context.changeState(NoCup.getInstance());
-    }
-    
+    }  
   }
   
 }

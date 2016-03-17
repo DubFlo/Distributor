@@ -1,8 +1,9 @@
-package vendingmachine.components;
+package test;
 
 import java.util.List;
 
 import vendingmachine.Drink;
+import vendingmachine.components.IMachineInside;
 import vendingmachine.states.State;
 
 public class EmptyContext implements IMachineInside {

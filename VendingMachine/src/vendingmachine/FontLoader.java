@@ -13,12 +13,23 @@ import org.apache.logging.log4j.Logger;
  */
 public final class FontLoader {
 
+  private static FontLoader INSTANCE;
+  
+  private FontLoader() {}
+  
+  public static FontLoader getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new FontLoader();
+    }
+    return INSTANCE;
+  }
+  
   private static final Logger log = LogManager.getLogger("FontLoader");
   
   /**
    * Font that looks like a vending machine display.
    */
-  public static final Font DIGITAL_FONT = getFont("digitalFont.ttf");
+  public final Font DIGITAL_FONT = getFont("digitalFont.ttf");
 
   /**
    * Returns a Font loaded from the file name specified.
@@ -40,7 +51,5 @@ public final class FontLoader {
     }
     return font;
   }
-
-  private FontLoader() {}
   
 }

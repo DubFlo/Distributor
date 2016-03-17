@@ -91,8 +91,8 @@ public class Context implements IMachine, IMachineInside {
     }
 
     int delay;
-    if (SoundLoader.FILLING != null) {
-      delay = (int) SoundLoader.FILLING.getMicrosecondLength() / 1000;
+    if (SoundLoader.getInstance().FILLING != null) {
+      delay = (int) SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000;
     } else {
       delay = 3000; // milliseconds
     }
@@ -109,7 +109,7 @@ public class Context implements IMachine, IMachineInside {
       stock.removeSpoon();
     }
     stock.removeDrink(chosenDrink);
-    SoundLoader.play(SoundLoader.BEEP);
+    SoundLoader.play(SoundLoader.getInstance().BEEP);
     heatingSystem.drinkOrdered();
     if (!state.isProblem()) {
       changeState(Idle.getInstance());
@@ -119,7 +119,7 @@ public class Context implements IMachine, IMachineInside {
 
   @Override
   public void cancel() {
-    SoundLoader.play(SoundLoader.CLICK);
+    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.cancel(this);
   }
 
@@ -143,13 +143,13 @@ public class Context implements IMachine, IMachineInside {
 
   @Override
   public void confirm() {
-    SoundLoader.play(SoundLoader.CLICK);
+    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.confirm(this);
   }
 
   @Override
   public void drinkButton(Drink drink) {
-    SoundLoader.play(SoundLoader.CLICK);
+    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.drinkButton(drink, this);
   }
 
@@ -208,7 +208,7 @@ public class Context implements IMachine, IMachineInside {
     addChangeOut(changeMachine.giveChange(amountToGive));
     if (amountToGive > 0) {
       setChangeBool(true);
-      SoundLoader.play(SoundLoader.CLING);
+      SoundLoader.play(SoundLoader.getInstance().CLING);
     }
     amountInside = 0;
     machineGUI.updateInfo();
@@ -221,7 +221,7 @@ public class Context implements IMachine, IMachineInside {
     if (amountInside > 0) {
       addChangeOut(changeMachine.giveChange(amountInside));
       setChangeBool(true);
-      SoundLoader.play(SoundLoader.CLING);
+      SoundLoader.play(SoundLoader.getInstance().CLING);
       amountInside = 0;
       machineGUI.updateInfo();
     }
@@ -248,7 +248,7 @@ public class Context implements IMachine, IMachineInside {
 
   @Override
   public void less() {
-    SoundLoader.play(SoundLoader.CLICK);
+    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.less(this);
     machineGUI.updateSugarText();
   }
@@ -259,7 +259,7 @@ public class Context implements IMachine, IMachineInside {
    */
   @Override
   public void more() {
-    SoundLoader.play(SoundLoader.CLICK);
+    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.more(this);
     machineGUI.updateSugarText();
   }
@@ -268,7 +268,7 @@ public class Context implements IMachine, IMachineInside {
   public void setChangeBool(boolean bool) {
     machineGUI.setChangeBool(bool);
     if (bool) {
-      SoundLoader.play(SoundLoader.CLING);
+      SoundLoader.play(SoundLoader.getInstance().CLING);
     }
   }
 
@@ -307,7 +307,7 @@ public class Context implements IMachine, IMachineInside {
       changeOut.put(coin, 0);
     }
     machineGUI.updateChangeOutInfo();
-    SoundLoader.stop(SoundLoader.CLING); // stops the sound effect is the change is taken.
+    SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken.
     log.info("Change taken.");
   }
 
@@ -317,7 +317,7 @@ public class Context implements IMachine, IMachineInside {
   @Override
   public void takeCup() {
     setCupBool(false);
-    SoundLoader.stop(SoundLoader.BEEP); // stops the sound effect is the cup is taken.
+    SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken.
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 

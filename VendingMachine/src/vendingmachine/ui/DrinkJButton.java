@@ -29,8 +29,9 @@ public class DrinkJButton extends JButton {
     super();
     this.drink = drink;
     this.setText(drink.getName());
-    if (PictureLoader.DRINK_BUTTON != null) {
-      this.setIcon(PictureLoader.DRINK_BUTTON);
+    PictureLoader pictures = PictureLoader.getInstance();
+    if (pictures.DRINK_BUTTON != null) {
+      this.setIcon(pictures.DRINK_BUTTON);
       this.setBorder(BorderFactory.createEmptyBorder());
       this.setContentAreaFilled(false);
       this.setHorizontalTextPosition(SwingConstants.CENTER);

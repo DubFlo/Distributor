@@ -18,7 +18,7 @@ public final class Preparing extends State {
   public void entry(Context c) {
     super.entry(c);
     c.restartPreparingTimer();
-    SoundLoader.play(SoundLoader.FILLING);
+    SoundLoader.play(SoundLoader.getInstance().FILLING);
   }
   
   @Override

@@ -28,7 +28,7 @@ public final class Idle extends State {
     if (!isCoinStuck(coin, c)) {
       if (c.getChangeMachine().isCoinAccepted(coin)) {
         c.insertCoin(coin);
-        SoundLoader.play(SoundLoader.FOP);
+        SoundLoader.play(SoundLoader.getInstance().FOP);
       } else {
         c.setChangeBool(true);
         c.addChangeOutCoin(coin);
