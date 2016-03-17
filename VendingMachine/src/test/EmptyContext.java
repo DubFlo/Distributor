@@ -1,12 +1,14 @@
 package test;
 
 import java.util.List;
+import java.util.Map;
 
+import vendingmachine.Coin;
 import vendingmachine.Drink;
-import vendingmachine.components.IMachineInside;
+import vendingmachine.components.IContext;
 import vendingmachine.states.State;
 
-public class EmptyContext implements IMachineInside {
+public class EmptyContext implements IContext {
 
   public EmptyContext() { }
 
@@ -17,5 +19,8 @@ public class EmptyContext implements IMachineInside {
 
   @Override
   public void changeState(State instance) {}
+
+  @Override
+  public void addChangeOut(Map<Coin, Integer> moneyToGive) {}
 
 }

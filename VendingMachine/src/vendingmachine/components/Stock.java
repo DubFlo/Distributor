@@ -25,7 +25,7 @@ public class Stock {
    */
   private final Map<Drink, Integer> drinkQty;
 
-  private IMachineInside context;
+  private IContext context;
 
   /**
    * Creates a Stock with the specified values.
@@ -194,7 +194,7 @@ public class Stock {
    * 
    * @param context the Context to associate with the Stock
    */
-  public void setContext(IMachineInside context) {
+  public void setContext(IContext context) {
     if (this.context != null) { // Can only be set once (makes context almost final)
       throw new IllegalArgumentException("setContext(c) can only be called once");
     }

@@ -25,6 +25,8 @@ public class ChangeMachine {
   private final Map<Coin, Boolean> acceptedCoins;
   
   private Map<Coin, Integer> coinsStockTemp;
+  
+  private IContext context;
 
   /**
    * Builds a change machine with the specified coins stock.
@@ -66,6 +68,7 @@ public class ChangeMachine {
       moneyToGive.put(coin, coinsStock.get(coin) - coinsStockTemp.get(coin));
       coinsStock.put(coin, coinsStockTemp.get(coin));
     }
+    context.addChangeOut(moneyToGive);
     return moneyToGive;
   }
 
@@ -99,7 +102,7 @@ public class ChangeMachine {
       }
     }
     
-    return (amount == 0) ? true : false;
+    return (amount == 0);
   }
 
   /**
@@ -143,6 +146,13 @@ public class ChangeMachine {
     }
     
     coinsStock.put(coin, value);
+  }
+
+  /**
+   * @param context the IContext to set
+   */
+  public void setContext(IContext context) {
+    this.context = context;
   }
   
 }

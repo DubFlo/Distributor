@@ -18,7 +18,7 @@ import vendingmachine.states.StuckCoin;
 import vendingmachine.ui.IMachineGUI;
 import vendingmachine.ui.TemperatureListener;
 
-public class Context implements IMachine, IMachineInside {
+public class Context implements IMachine, IContext {
 
   private static final Logger log = LogManager.getLogger("Context");
 
@@ -79,7 +79,6 @@ public class Context implements IMachine, IMachineInside {
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
-    this.stock.setContext(this);
     this.COIN_STUCK_PROB = coinStuckProb;
     
     this.heatingSystem = new HeatingSystem(this);
@@ -98,6 +97,9 @@ public class Context implements IMachine, IMachineInside {
     }
     preparingTimer = new Timer(delay, e -> this.preparingOver());
     preparingTimer.setRepeats(false);
+    
+    this.stock.setContext(this);
+    this.changeMachine.setContext(this);
     
     log.info("New Vending Machine Built");
   }
@@ -205,7 +207,7 @@ public class Context implements IMachine, IMachineInside {
    */
   public void giveChangeOnDrink() {
     int amountToGive = amountInside - chosenDrink.getPrice();
-    addChangeOut(changeMachine.giveChange(amountToGive));
+    changeMachine.giveChange(amountToGive);
     if (amountToGive > 0) {
       setChangeBool(true);
       SoundLoader.play(SoundLoader.getInstance().CLING);
@@ -219,7 +221,7 @@ public class Context implements IMachine, IMachineInside {
    */
   public void giveChangeOnCancel() {
     if (amountInside > 0) {
-      addChangeOut(changeMachine.giveChange(amountInside));
+      changeMachine.giveChange(amountInside);
       setChangeBool(true);
       SoundLoader.play(SoundLoader.getInstance().CLING);
       amountInside = 0;

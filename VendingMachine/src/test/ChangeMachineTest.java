@@ -17,10 +17,11 @@ public class ChangeMachineTest {
   private static Hashtable<Coin,Integer> coinsStock;
   private static Hashtable<Coin,Boolean> acceptedCoins;
   private ChangeMachine cm;
+  
   @Before
-  public void setUp(){
+  public void setUp() {
 
-    int[]coinsStockTab = {1,1,0,3,0,0,4,1};
+    int[] coinsStockTab = {1,1,0,3,0,0,4,1};
     coinsStock = new Hashtable<Coin,Integer>();
     boolean[] acceptedCoinsTab = {false, true, false, true, false, true, true, true};
     acceptedCoins = new Hashtable<Coin, Boolean>();
@@ -30,14 +31,16 @@ public class ChangeMachineTest {
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
     cm = new ChangeMachine (coinsStock, acceptedCoins);
+    cm.setContext(new EmptyContext());
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void isChangePossibleErrorTest(){
     cm.isChangePossible(-1);
   }
+  
   @Test
-  public void isChangePossibleTest(){
+  public void isChangePossibleTest() {
     assertFalse("Shortage of stock",cm.isChangePossible(422));
 
     assertTrue("Giving back change should be possible",cm.isChangePossible(342));
@@ -45,7 +48,7 @@ public class ChangeMachineTest {
     assertFalse("Problem of accepted coins",cm.isChangePossible(500));
   }
 
-  @Test(expected = IllegalArgumentException.class )
+  @Test(expected = IllegalArgumentException.class)
   public void setCoinsStockErrorTest() {
     cm.setCoinStock(Coin.COIN1, -1);
   }
@@ -77,19 +80,21 @@ public class ChangeMachineTest {
   @Test(expected = IllegalArgumentException.class)
   public void constructorErrorStockTest() {
     coinsStock.put(Coin.COIN2, -4);
-    ChangeMachine newCm = new ChangeMachine(coinsStock, acceptedCoins);
+    new ChangeMachine(coinsStock, acceptedCoins);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void constructorErrorCoinContainTest() {
     coinsStock.remove(Coin.COIN2);
-    ChangeMachine newCm = new ChangeMachine(coinsStock, acceptedCoins);
+    new ChangeMachine(coinsStock, acceptedCoins);
   }
+  
   @Test(expected = IllegalArgumentException.class)
   public void constructorErrorStockContainTest() {
     acceptedCoins.remove(Coin.COIN5);
-    ChangeMachine newCm = new ChangeMachine(coinsStock, acceptedCoins);
+    new ChangeMachine(coinsStock, acceptedCoins);
   }
+  
 }
 
 
