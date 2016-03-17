@@ -9,13 +9,16 @@ import vendingmachine.Drink;
 import vendingmachine.states.NoCup;
 
 /**
- * The Stock class lists all the stock values needed for a drinks vending machine 
+ * The Stock class lists all the stock values needed for a drinks vending machine
  * (sugar cubes, cups, spoons and drinks).
  */
 public class Stock {
 
   private static final Logger log = LogManager.getLogger("Stock");
-  
+
+  /*
+   * The number of sugar, cups and spoons in stock.
+   */
   private int sugarCubesNbr;
   private int cupsNbr;
   private int spoonsNbr;
@@ -25,7 +28,11 @@ public class Stock {
    */
   private final Map<Drink, Integer> drinkQty;
 
-  private IContext context;
+  /**
+   * The Context that is associated with the Stock.
+   * It must be set to the Stock after building each Stock instance.
+   */
+  private IContext context; // Dans un constructeur ?
 
   /**
    * Creates a Stock with the specified values.
@@ -39,7 +46,7 @@ public class Stock {
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
     if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
       throw new IllegalArgumentException("The values for the stock can not be negative");
-    } 
+    }
     for (Integer i: drinkQty.values()) {
       if (i < 0) {
         throw new IllegalArgumentException("The stock of a Drink can not be negative");
@@ -106,7 +113,7 @@ public class Stock {
     if (isDrinkInStock(drink)) {
       drinkQty.put(drink, drinkQty.get(drink) - 1);
     } else {
-      //throw new ;
+      throw new IllegalArgumentException("Can't remove a " + drink.getName() + "; none left in stock");
     }
     if (isDrinkInStock(drink)) {
       log.info(drink.getName() + " prepared (" + drinkQty.get(drink) + " remaining).");
@@ -122,23 +129,26 @@ public class Stock {
     if (isSpoonInStock()) {
       spoonsNbr -= 1;
     } else {
-      //throw new ;
+      throw new IllegalArgumentException("Can't remove a spoon when none in stock");
     }
     if (isSpoonInStock()) {
       log.info(spoonsNbr + " spoons remaining.");
     } else {
-      log.warn("No more spoon in stock!");
+      log.warn("No more spoons in stock!");
     }
   }
 
   /**
-   * @param Removes {@code i} sugar cubes from the stock.
+   * Removes {@code i} sugar cubes from the stock.
+   * 
+   * @param i number of sugar cubes to remove.
    */
   public void removeSugarCubes(int i) {
     if (isSugarInStock(i)) {
       sugarCubesNbr -= i;
     } else {
-      //throw new ;
+      throw new IllegalArgumentException(
+          "Can't remove " + i + " sugar cubes; only " + sugarCubesNbr + " remaining.");
     }
     if (sugarCubesNbr > 0) {
       log.info(i + " sugar cubes ordered (" + sugarCubesNbr + " remaining).");
@@ -157,33 +167,12 @@ public class Stock {
       sb.append(drink.getName()).append(": ")
       .append(drinkQty.get(drink)).append(" available.\n");
     }
-    
+
     sb.append("\n")
     .append(cupsNbr).append(" cup(s) available.\n")
     .append(sugarCubesNbr).append(" sugar cube(s) available.\n")
     .append(spoonsNbr).append(" spoon(s) available.\n");
     return sb.toString();
-  }
-
-  /**
-   * Updates the stock of {@code drink} to the {@code value} specified.
-   * Throws an IllegalArgumentException if {@code value} is negative.
-   * 
-   * @param drink the Drink whose stock must be changed
-   * @param value the new value for the {@code drink} stock (must be positive)
-   */
-  public void setDrinkQty(Drink drink, int value) {
-    if (value < 0) {
-      throw new IllegalArgumentException("The value can not be negative");
-    }
-    final int difference = value - drinkQty.get(drink);
-    if (difference > 0) {
-      log.info(difference + " " + drink.getName() + " resupplied.");
-    } else if (difference < 0) {
-      log.info(-difference + " " + drink.getName() + " removed from the stock.");
-    }
-    
-    drinkQty.put(drink, value);
   }
 
   /**
@@ -208,8 +197,36 @@ public class Stock {
     }
   }
 
+  /**
+   * Updates the stock of {@code drink} to the {@code value} specified.
+   * Throws an IllegalArgumentException if {@code value} is negative.
+   * Logs the change that is done.
+   * 
+   * @param drink the Drink whose stock must be changed
+   * @param value the new value for the {@code drink} stock (must be positive)
+   */
+  public void setDrinkQty(Drink drink, int value) {
+    if (value < 0) {
+      throw new IllegalArgumentException("The value can not be negative");
+    }
+    final int difference = value - drinkQty.get(drink);
+    if (difference > 0) {
+      log.info(difference + " " + drink.getName() + " resupplied (" + value + " in stock).");
+    } else if (difference < 0) {
+      log.info(-difference + " " + drink.getName() + " removed from the stock (" + value + " remaining).");
+    }
+
+    drinkQty.put(drink, value);
+  }
+
+  /**
+   * Sets a new number of cups in stock.
+   * Logs the change that is done.
+   * 
+   * @param newCupsNbr the number of cups to set
+   */
   public void setCupStock(int newCupsNbr) {
-    if (cupsNbr < 0) {
+    if (newCupsNbr < 0) {
       throw new IllegalArgumentException();
     }
     final int difference = newCupsNbr - this.cupsNbr;
@@ -219,9 +236,9 @@ public class Stock {
     } else if (difference < 0) {
       log.info(-difference + " cups removed from the stock (now " + cupsNbr + " available).");
     }
-    if (newCupsNbr == 0) {
+    if (this.cupsNbr == 0) {
       context.changeState(NoCup.getInstance());
-    }  
+    }
   }
-  
+
 }

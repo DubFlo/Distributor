@@ -26,7 +26,7 @@ public class Context implements IMachine, IContext {
    * The Drink's that the machine dispenses.
    */
   private final List<Drink> drinkList;
-  
+
   /*
    * The different parts of the machine.
    */
@@ -43,29 +43,29 @@ public class Context implements IMachine, IContext {
    * The amount of money inside of the machine (in cents).
    */
   private int amountInside;
-  
+
   /**
    * If there is (true) or not (false) a cup inside.
    */
   private boolean cupInside;
-  
+
   /**
    * The drink that is currently ordered.
    */
   private Drink chosenDrink;
-  
+
   /**
    * The probability for a coin to get stuck (between 0 and 1).
    */
   public final double COIN_STUCK_PROB;
-  
+
   /**
    * The Coin's currently in the container to be given back.
    */
   private final Map<Coin, Integer> changeOut;
 
   private IMachineGUI machineGUI;
-  
+
   private final Timer preparingTimer;
 
   /**
@@ -75,12 +75,12 @@ public class Context implements IMachine, IContext {
    */
   public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock, double coinStuckProb) {
     this.state = Idle.getInstance();
-    
+
     this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
     this.COIN_STUCK_PROB = coinStuckProb;
-    
+
     this.heatingSystem = new HeatingSystem(this);
     this.amountInside = 0;
     this.cupInside = false;
@@ -97,10 +97,10 @@ public class Context implements IMachine, IContext {
     }
     preparingTimer = new Timer(delay, e -> this.preparingOver());
     preparingTimer.setRepeats(false);
-    
+
     this.stock.setContext(this);
     this.changeMachine.setContext(this);
-    
+
     log.info("New Vending Machine Built");
   }
 
@@ -131,6 +131,7 @@ public class Context implements IMachine, IContext {
    * 
    * @param newState the State the machine should be in
    */
+  @Override
   public void changeState(State newState) {
     this.state.exit(this);
     this.state = newState;
@@ -215,7 +216,7 @@ public class Context implements IMachine, IContext {
     amountInside = 0;
     machineGUI.updateInfo();
   }
-  
+
   /**
    * Simulates the giving of the change on the amount entered by the client.
    */
@@ -360,6 +361,7 @@ public class Context implements IMachine, IContext {
    * 
    * @param moneyToGive the Map<Coin, Integer> to add to {@code changeOut}
    */
+  @Override
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
     for (Coin coin: Coin.COINS) {
       changeOut.put(coin, changeOut.get(coin) + moneyToGive.get(coin));
