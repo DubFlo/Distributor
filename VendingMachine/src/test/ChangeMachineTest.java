@@ -32,6 +32,10 @@ public class ChangeMachineTest {
     cm = new ChangeMachine (coinsStock, acceptedCoins);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void isChangePossibleErrorTest(){
+    cm.isChangePossible(-1);
+  }
   @Test
   public void isChangePossibleTest(){
     assertFalse("Shortage of stock",cm.isChangePossible(422));
