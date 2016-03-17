@@ -143,9 +143,7 @@ public class ChangeMachine {
     
     coinsStock.put(coin, value);
   }
-  public Map<Coin,Integer> getCoinStock() {
-    return this.coinsStock;
-  }
+
   public static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
     final Map<Coin, Integer> res = new Hashtable<Coin, Integer>();
     for (Coin coin : Coin.COINS) {

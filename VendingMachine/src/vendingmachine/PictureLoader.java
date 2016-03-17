@@ -14,23 +14,25 @@ import org.apache.logging.log4j.Logger;
  */
 public final class PictureLoader {
 
+  private static PictureLoader INSTANCE; // final ?
+  
   private static final Logger log = LogManager.getLogger("PictureLoader");
   
-  public static final ImageIcon CUP_ICON = getIcon("cup.jpg");
-  public static final ImageIcon CHANGE_ICON = getIcon("change.png");
-  public static final BufferedImage DISPLAY_PANEL = getImage("displayPanel.jpg");
-  public static final BufferedImage COFFEE_IMAGE = getImage("coffee.png");
-  public static final BufferedImage SLOT_IMAGE = getImage("slot.jpg");
-  public static final ImageIcon SUGAR_DISPLAY = getIcon("sugarDisplay.jpg");
-  public static final ImageIcon DRINK_BUTTON = getIcon("drinkButton.png");
-  public static final ImageIcon EURO2_ICON = getIcon("2euro.png");
-  public static final ImageIcon EURO1_ICON = getIcon("1euro.png");
-  public static final ImageIcon CENT50_ICON = getIcon("50cent.png");
-  public static final ImageIcon CENT20_ICON = getIcon("20cent.png");
-  public static final ImageIcon CENT10_ICON = getIcon("10cent.png");
-  public static final ImageIcon CENT5_ICON = getIcon("5cent.png");
-  public static final ImageIcon CENT2_ICON = getIcon("2cent.png");
-  public static final ImageIcon CENT1_ICON = getIcon("1cent.png");
+  public final ImageIcon CUP_ICON = getIcon("cup.jpg");
+  public final ImageIcon CHANGE_ICON = getIcon("change.png");
+  public final BufferedImage DISPLAY_PANEL = getImage("displayPanel.jpg");
+  public final BufferedImage COFFEE_IMAGE = getImage("coffee.png");
+  public final BufferedImage SLOT_IMAGE = getImage("slot.jpg");
+  public final ImageIcon SUGAR_DISPLAY = getIcon("sugarDisplay.jpg");
+  public final ImageIcon DRINK_BUTTON = getIcon("drinkButton.png");
+  public final ImageIcon EURO2_ICON = getIcon("2euro.png");
+  public final ImageIcon EURO1_ICON = getIcon("1euro.png");
+  public final ImageIcon CENT50_ICON = getIcon("50cent.png");
+  public final ImageIcon CENT20_ICON = getIcon("20cent.png");
+  public final ImageIcon CENT10_ICON = getIcon("10cent.png");
+  public final ImageIcon CENT5_ICON = getIcon("5cent.png");
+  public final ImageIcon CENT2_ICON = getIcon("2cent.png");
+  public final ImageIcon CENT1_ICON = getIcon("1cent.png");
   
   /**
    * Returns a BufferedImage loaded from the file name specified.
@@ -68,6 +70,13 @@ public final class PictureLoader {
       log.error(file + " not properly loaded. Graphical glitches are expected.");
     }
     return icon;
+  }
+  
+  public static PictureLoader getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new PictureLoader();
+    }
+    return INSTANCE;
   }
   
   private PictureLoader() {}

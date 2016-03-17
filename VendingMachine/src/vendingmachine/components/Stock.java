@@ -39,7 +39,7 @@ public class Stock {
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
     if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
       throw new IllegalArgumentException("The values for the stock can not be negative");
-    }
+    } 
     for (Integer i: drinkQty.values()) {
       if (i < 0) {
         throw new IllegalArgumentException("The stock of a Drink can not be negative");

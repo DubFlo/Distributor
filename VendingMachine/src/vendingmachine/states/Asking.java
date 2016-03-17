@@ -18,7 +18,7 @@ public final class Asking extends State {
 
   @Override
   public void cancel(Context c) {
-    super.cancel(c);
+    super.cancel(c); 
     c.changeState(Idle.getInstance());
   }
 

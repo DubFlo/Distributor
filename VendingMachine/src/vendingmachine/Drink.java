@@ -21,7 +21,7 @@ public class Drink {
     this.name = name;
     this.sugar = sugar;
     this.price = price;
-  }
+  } 
 
   /**
    * @return the name of the Drink
