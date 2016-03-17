@@ -24,6 +24,8 @@ public class ChangeMachine {
   private final Map<Coin, Integer> coinsStock;
   private final Map<Coin, Boolean> acceptedCoins;
   
+  //private final Change change;
+  
   private Map<Coin, Integer> coinsStockTemp;
   
   private IContext context;
@@ -49,6 +51,7 @@ public class ChangeMachine {
     if (!acceptedCoins.keySet().containsAll(Coin.COINS)) {
       throw new IllegalArgumentException("acceptedCoins has to list all the coins defined in Coin");
     }
+    //change = new Change(coinsStock, acceptedCoins);
     this.coinsStock = coinsStock;
     this.acceptedCoins = acceptedCoins;
     

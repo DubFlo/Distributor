@@ -10,22 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Supply a digital font which looks like a vending machine display.
+ * Uses the singleton design pattern.
  */
 public final class FontLoader {
 
   private static FontLoader INSTANCE;
-  
-  private FontLoader() {}
-  
-  public static FontLoader getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new FontLoader();
-    }
-    return INSTANCE;
-  }
-  
+
   private static final Logger log = LogManager.getLogger("FontLoader");
-  
+
   /**
    * Font that looks like a vending machine display.
    */
@@ -33,7 +25,7 @@ public final class FontLoader {
 
   /**
    * Returns a Font loaded from the file name specified.
-   * If the file does not exists or is not an valid font file, returns null.
+   * If the file does not exist or is not an valid font file, returns null.
    * 
    * @param file the name of the font file, placed in the resources/ folder.
    * @return the Font loaded from the file if it exists, null otherwise.
@@ -51,5 +43,17 @@ public final class FontLoader {
     }
     return font;
   }
-  
+
+  private FontLoader() {}
+
+  /**
+   * @return the only FontLoader instance (creates it if it doesn't exist)
+   */
+  public static FontLoader getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new FontLoader();
+    }
+    return INSTANCE;
+  }
+
 }

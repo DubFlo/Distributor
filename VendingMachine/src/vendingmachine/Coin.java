@@ -3,7 +3,6 @@ package vendingmachine;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This enum gives all the coins that could be accepted by a vending machine.

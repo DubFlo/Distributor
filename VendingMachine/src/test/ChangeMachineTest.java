@@ -56,7 +56,7 @@ public class ChangeMachineTest {
   @Test
   public void setCoinsStockTest() {
     cm.setCoinStock(Coin.COIN10, 5);
-    assertEquals(coinsStock.get(Coin.COIN10),new Integer(5));
+    assertEquals(coinsStock.get(Coin.COIN10), Integer.valueOf(5));
   }
 
   @Test(expected = IllegalArgumentException.class)
