@@ -24,6 +24,7 @@ import javax.swing.text.AbstractDocument;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.Utils;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.Stock;
@@ -253,9 +254,9 @@ public class Configuration extends JFrame {
         final String name = drinksNames[i].getText();
         final int price = Integer.parseInt(drinksPrices[i].getText());
         final int stock = Integer.parseInt(drinksStocks[i].getText());
-        checkString(name);
-        checkInt(price);
-        checkInt(stock);
+        Utils.checkName(name);
+        Utils.checkPositiveInt(price);
+        Utils.checkPositiveInt(stock);
         final Drink d = new Drink(name, drinksSugar[i].isSelected(), price);
         drinkQty.put(d, stock);
       }
@@ -271,7 +272,7 @@ public class Configuration extends JFrame {
     try {
       for (Coin coin: Coin.COINS) {
         final int stock = Integer.parseInt(coinsStockValues.get(coin).getText());
-        checkInt(stock);
+        Utils.checkPositiveInt(stock);
         coinsStock.put(coin, stock);
         coinsAccepted.put(coin, acceptedCoinsBoxes.get(coin).isSelected());
       }
@@ -290,9 +291,9 @@ public class Configuration extends JFrame {
       sugarCubesNbr = Integer.parseInt(sugarCubesNbrValue.getText());
       cupsNbr = Integer.parseInt(cupsNbrValue.getText());
       spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
-      checkInt(sugarCubesNbr);
-      checkInt(cupsNbr);
-      checkInt(spoonsNbr);
+      Utils.checkPositiveInt(sugarCubesNbr);
+      Utils.checkPositiveInt(cupsNbr);
+      Utils.checkPositiveInt(spoonsNbr);
     } catch (NumberFormatException e) {
       problemLabel.setText(getProblemText("stock"));
       this.pack();
@@ -300,10 +301,10 @@ public class Configuration extends JFrame {
     }
     final Stock stock = new Stock(sugarCubesNbr, cupsNbr, spoonsNbr, drinkQty);
     
-    double coinStuckProb;
+    int coinStuckProb;
     try {
-      coinStuckProb = Double.parseDouble(coinStuckProbValue.getText());
-      checkDouble(coinStuckProb);
+      coinStuckProb = Integer.parseInt(coinStuckProbValue.getText());
+      Utils.checkPercentage(coinStuckProb);
     } catch (NumberFormatException e) {
       problemLabel.setText("Error while parsing probability of stuck coins.");
       this.pack();
@@ -360,24 +361,6 @@ public class Configuration extends JFrame {
     return "<html>Error while parsing " + part + " info. Fields can't be empty.<br>"
         + "Names can't be longer than 18 characters.<br>"
         + "Integers can't be negative or larger than 2^31.</html>";
-  }
-  
-  private static void checkInt(int i) {
-    if (i < 0) {
-      throw new NumberFormatException();
-    }
-  }
-  
-  private static void checkString(String s) {
-    if (s.equals("") || s.length() > 18) {
-      throw new IllegalArgumentException();
-    }
-  } 
-  
-  private static void checkDouble(double d) {
-    if (d < 0 || d > 100) {
-      throw new NumberFormatException();
-    }
   }
 
 }

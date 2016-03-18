@@ -11,9 +11,12 @@ public final class Main {
 
   /**
    * Calls static method {@code run()} to display the configuration.
+   * Load resources while user inputs information to be faster.
    */
   public static void main(String[] args) {
     run();
+
+    Utils.loadResources(); 
   }
 
   /**
