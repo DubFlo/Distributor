@@ -96,7 +96,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     leftPanel.setPreferredSize(new Dimension(120, 550));
     
     northLabel = new JLabel();
-    northLabel.setForeground(Color.RED);
+    northLabel.setForeground(Color.WHITE);
     northLabel.setFont(FontLoader.getInstance().DIGITAL_FONT);
     
     sugarLabel = new JLabel();

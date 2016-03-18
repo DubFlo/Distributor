@@ -1,7 +1,8 @@
 package vendingmachine;
 
 /**
- * Defines drinks objects consisting of a name, a price (in cents) and a 
+ * Defines drinks objects consisting of three attributes. 
+ * The attributes are a String name, an price (in cents) and a 
  * boolean "sugar" to tell if the drink is likely or not to contain sugar.
  */
 public class Drink {
@@ -24,7 +25,7 @@ public class Drink {
   } 
 
   /**
-   * @return the name of the Drink
+   * @return the String name of the Drink
    */
   public String getName() {
     return this.name;
@@ -38,7 +39,7 @@ public class Drink {
   }
 
   /**
-   * @return true if the Drink can contain sugar, false otherwise
+   * @return true if the Drink may contain sugar, false otherwise
    */
   public boolean isSugar() {
     return this.sugar;

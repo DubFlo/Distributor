@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * This enumeration gives all the coins that could be accepted by a vending machine.
- * This gives all the Euro coins, but it can be easily changed.
+ * This gives the eight Euro coins.
  * Coins are and should be listed in descending order of their values.
  */
 public enum Coin {
@@ -47,7 +47,7 @@ public enum Coin {
       throw new IllegalArgumentException("Value of a Coin should be strictly positive");
     }
     if (text == null || text.isEmpty()) {
-      throw new IllegalArgumentException("Text of a Coin can't be empty");
+      throw new IllegalArgumentException("Text of a Coin can't be empty or null");
     }
     this.VALUE = value;
     this.TEXT = text;

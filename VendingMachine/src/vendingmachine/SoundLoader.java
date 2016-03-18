@@ -12,8 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Supply Clip sounds useful to a vending machine.
- * Uses the singleton design pattern.
+ * This class supplies Clip sounds useful to a vending machine.
+ * Uses the singleton design pattern to be created only once when needed.
  */
 public final class SoundLoader {
 
@@ -23,40 +23,37 @@ public final class SoundLoader {
 
   /**
    * Sound that indicates that something is ready (five beeps).
+   * Source: http://goo.gl/DH8JSJ
    */
   public final Clip BEEP = getSound("beep.wav");
 
   /**
-   * Sound of coins falling on the ground.
-   */
-  public final Clip CLING = getSound("cling.wav");
-
-  /**
-   * Sound of a coin falling inside a machine.
-   */
-  public final Clip FOP = getSound("fop.wav");
-
-  /**
    * Sound of a small button being pressed.
+   * Source: https://goo.gl/ElAFZv
    */
   public final Clip CLICK = getSound("click.wav");
 
   /**
+   * Sound of coins falling on the ground.
+   * Source: http://goo.gl/7mYUOv under the name
+   * "Money, Multiple Coins Drop On Hard Surface 001"
+   * Credit: http://www.freesfx.co.uk/
+   */
+  public final Clip CLING = getSound("cling.wav");
+
+  /**
    * Sound of a cup that is filling with water.
+   * Source: https://goo.gl/EDangj
    */
   public final Clip FILLING = getSound("filling.wav");
 
-  // http://www.freesound.org/people/AlaskaRobotics/sounds/221087/
-
-  // http://www.freesfx.co.uk/sfx/coins?p=3
-  // money_multiple_coins_drop_on_hard_surface_001
-
-  // http://www.freesfx.co.uk/sfx/coins?p=1
-  // several_coins_placed_lightly_down_on_table
-
-  //https://www.freesound.org/people/kwahmah_02/sounds/256116/
-
-  //https://www.freesound.org/people/sam_tura/sounds/211504/
+  /**
+   * Sound of a coin falling inside a machine.
+   * Source: http://goo.gl/bV1Tao under the name
+   * "Several Coins Placed Lightly Down On Table"
+   * Credit: http://www.freesfx.co.uk/
+   */
+  public final Clip FOP = getSound("fop.wav");
 
   /**
    * Plays the specified clip from the beginning (if it exists).
@@ -97,7 +94,7 @@ public final class SoundLoader {
     Clip clip;
     AudioInputStream stream;
     try {
-      stream = AudioSystem.getAudioInputStream(SoundLoader.class.getResource("/resources/" + file));
+      stream = AudioSystem.getAudioInputStream(SoundLoader.class.getResource("/resources/sounds/" + file));
       clip = AudioSystem.getClip();
       clip.open(stream);
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | NullPointerException e) {

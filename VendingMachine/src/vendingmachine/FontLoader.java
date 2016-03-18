@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Supply a digital font which looks like a vending machine display.
- * Uses the singleton design pattern.
+ * Uses the singleton design pattern to be created only once when needed.
  */
 public final class FontLoader {
 
@@ -20,6 +20,7 @@ public final class FontLoader {
 
   /**
    * Font that looks like a vending machine display.
+   * Source: 
    */
   public final Font DIGITAL_FONT = getFont("digitalFont.ttf");
 

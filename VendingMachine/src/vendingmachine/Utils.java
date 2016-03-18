@@ -75,7 +75,7 @@ public final class Utils {
   }
 
   /**
-   * Checks if an integer is a valid percentage (between 0 and 100).
+   * Checks if an integer is a valid integer percentage (between 0 and 100).
    * If it is not a valid percentage, throws a NumberFormatException.
    * 
    * @param i the int to check
@@ -86,6 +86,10 @@ public final class Utils {
     }
   }
   
+  /**
+   * Loads all the images, sounds and font of the project.
+   * Run at the right time, it may make the application faster.
+   */
   public static void loadResources() {
     PictureLoader.getInstance();
     SoundLoader.getInstance();

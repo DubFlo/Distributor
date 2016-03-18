@@ -1,5 +1,7 @@
 package vendingmachine.ui;
 
+import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -21,14 +23,15 @@ public class DrinkJButton extends JButton {
 
   /**
    * Associates a JButton with the Drink specified.
-   * Sets the name of the drink and the icon of a button (if it loaded properly).
+   * Sets the name of the drink and the icon of a red button (if it loaded properly).
    * 
    * @param drink the Drink to associate with the JButton
    */
   public DrinkJButton(Drink drink) {
     super();
     this.drink = drink;
-    this.setText(drink.getName());
+    this.setText("<html>" + drink.getName() + "<br><center>" + drink.getPrice()/100.0 + " €");
+    this.setForeground(Color.WHITE);
     PictureLoader pictures = PictureLoader.getInstance();
     if (pictures.DRINK_BUTTON != null) {
       this.setIcon(pictures.DRINK_BUTTON);
