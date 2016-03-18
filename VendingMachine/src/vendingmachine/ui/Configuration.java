@@ -193,7 +193,7 @@ public class Configuration extends JFrame {
     
     // Creates the stock Panel
     final JPanel stockPanel = new JPanel(new GridBagLayout());
-    stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Stock Information"));
+    stockPanel.setBorder(BorderFactory.createTitledBorder(grayLine, "Other Information"));
     final GridBagConstraints c3 = new GridBagConstraints();
     final JLabel sugarCubesNbrLabel = new JLabel("Number of sugar cubes available: ");
     final JLabel cupsNbrLabel = new JLabel("Number of cups available: ");
@@ -319,7 +319,7 @@ public class Configuration extends JFrame {
     
     SwingUtilities.invokeLater(new Runnable() {
       /**
-       * If everything went well, creates the GUI on the EDT.
+       * If everything went well, creates the MachineGUI on the EDT.
        */
       @Override
       public void run() {
@@ -375,8 +375,7 @@ public class Configuration extends JFrame {
     if (s.equals("") || s.length() > 18) {
       throw new IllegalArgumentException();
     }
-  }
-  
+  } 
   
   private static void checkDouble(double d) {
     if (d < 0 || d > 100) {

@@ -45,11 +45,11 @@ public class HeatingSystem {
 
   public void setTemperature(double temperature) {
     this.temperature = temperature;
-    if (observer != null) {
-      observer.setTemperature(this.temperature);
-    }
     if (waterSupply) {
       updateState();
+      if (observer != null) {
+        observer.setTemperature(this.temperature);
+      }
     }
   }
 
@@ -60,8 +60,8 @@ public class HeatingSystem {
       context.problemSolved(NoWater.getInstance());
       timer.restart();
     } else if (waterSupply && !bool) {
+      setTemperature(-1);
       this.waterSupply = bool;
-      setTemperature(-1); //peu propre
       context.addProblem(NoWater.getInstance());
       timer.stop();
     }

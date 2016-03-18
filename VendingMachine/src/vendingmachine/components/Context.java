@@ -176,7 +176,7 @@ public class Context implements IMachine, IContext {
         changeState(Idle.getInstance());
       } else if (this.state == problem) {
         System.out.println("should be 2");
-        changeState(problem);
+        changeState(currentProblems.iterator().next());
       } else {
         System.out.println("should be 3");
         problem.exit(this);
