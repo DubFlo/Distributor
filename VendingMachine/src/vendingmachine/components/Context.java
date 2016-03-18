@@ -15,6 +15,7 @@ import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
 import vendingmachine.Utils;
 import vendingmachine.states.Idle;
+import vendingmachine.states.NoCup;
 import vendingmachine.states.Problem;
 import vendingmachine.states.State;
 import vendingmachine.states.StuckCoin;
@@ -91,12 +92,16 @@ public class Context implements IMachine, IContext {
     this.amountInside = 0;
     this.cupInside = false;
     this.changeOut = new Hashtable<Coin, Integer>();
-    for (Coin coin: Coin.COINS) {
-      this.changeOut.put(coin, 0);
-    }
+    Utils.resetCoinsMap(changeOut);
+    
     currentProblems = new HashSet<Problem>();
     stuckCoins = new Hashtable<Coin, Integer>();
-
+    Utils.resetCoinsMap(stuckCoins);
+    if (!stock.isCupInStock()) {
+      this.state = NoCup.getInstance();
+      currentProblems.add(NoCup.getInstance());
+    }
+    
     int delay;
     if (SoundLoader.getInstance().FILLING != null) {
       delay = (int) SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000;
@@ -448,6 +453,7 @@ public class Context implements IMachine, IContext {
   @Override
   public void setCupStock(int value) {
     stock.setCupStock(value);
+    machineGUI.updateInfo();
   }
 
   public Map<Coin, Integer> getStuckCoins() {

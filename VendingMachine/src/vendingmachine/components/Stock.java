@@ -192,9 +192,6 @@ public class Stock {
       throw new IllegalArgumentException("The stock and machine Drink's are different");
     }
     this.context = context;
-    if (cupsNbr == 0) {
-      context.addProblem(NoCup.getInstance());
-    }
   }
 
   /**

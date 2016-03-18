@@ -14,14 +14,6 @@ public final class Idle extends State {
   }
 
   private Idle() {}
-
-  @Override
-  public void entry(Context c) {
-    super.entry(c);
-    if (!c.getStock().isCupInStock()) {
-      c.changeState(NoCup.getInstance());
-    }
-  }
   
   @Override
   public void coinInserted(Coin coin, Context c) {

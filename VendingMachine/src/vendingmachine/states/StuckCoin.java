@@ -1,8 +1,5 @@
 package vendingmachine.states;
 
-import java.util.Hashtable;
-import java.util.Map;
-
 import vendingmachine.Coin;
 import vendingmachine.Utils;
 import vendingmachine.components.Context;
