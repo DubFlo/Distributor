@@ -44,8 +44,8 @@ public class HeatingSystem {
   }
 
   public void setTemperature(double temperature) {
-    this.temperature = temperature;
     if (waterSupply) {
+      this.temperature = temperature;
       updateState();
       if (observer != null) {
         observer.setTemperature(this.temperature);

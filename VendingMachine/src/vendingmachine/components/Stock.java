@@ -1,5 +1,7 @@
 package vendingmachine.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -239,6 +241,10 @@ public class Stock {
     }
     
     this.cupsNbr = newCupsNbr;
+  }
+
+  public List<Drink> getDrinks() {
+    return new ArrayList<Drink>(drinkQty.keySet());
   }
 
 }

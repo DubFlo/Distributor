@@ -4,9 +4,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -248,8 +247,7 @@ public class Configuration extends JFrame {
    */
   private void check() {
     // Fetches the values for the drinks
-    final List<Drink> drinkList = new ArrayList<Drink>();
-    final Map<Drink, Integer> drinkQty = new Hashtable<Drink, Integer>();
+    final Map<Drink, Integer> drinkQty = new LinkedHashMap<Drink, Integer>();
     try {
       for (int i = 0; i < (Integer)drinkNbrComboBox.getSelectedItem(); i++) {
         final String name = drinksNames[i].getText();
@@ -259,7 +257,6 @@ public class Configuration extends JFrame {
         checkInt(price);
         checkInt(stock);
         final Drink d = new Drink(name, drinksSugar[i].isSelected(), price);
-        drinkList.add(d);
         drinkQty.put(d, stock);
       }
     } catch (IllegalArgumentException e) {
@@ -313,7 +310,7 @@ public class Configuration extends JFrame {
       return;
     }
 
-    final Context context = new Context(drinkList, changeMachine, stock, coinStuckProb/100.0);
+    final Context context = new Context(changeMachine, stock, coinStuckProb/100.0);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
     

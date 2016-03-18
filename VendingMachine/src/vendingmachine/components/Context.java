@@ -26,11 +26,6 @@ public class Context implements IMachine, IContext {
 
   private static final Logger log = LogManager.getLogger("Context");
 
-  /**
-   * The Drink's that the machine dispenses.
-   */
-  private final List<Drink> drinkList;
-
   /*
    * The different parts of the machine.
    */
@@ -80,10 +75,9 @@ public class Context implements IMachine, IContext {
    * @param changeMachine the ChangeMachine associated with the Context
    * @param stock the Stock associated with the Context
    */
-  public Context(List<Drink> drinkList, ChangeMachine changeMachine, Stock stock, double coinStuckProb) {
+  public Context(ChangeMachine changeMachine, Stock stock, double coinStuckProb) {
     this.state = Idle.getInstance();
 
-    this.drinkList = drinkList;
     this.changeMachine = changeMachine;
     this.stock = stock;
     this.COIN_STUCK_PROB = coinStuckProb;
@@ -214,7 +208,7 @@ public class Context implements IMachine, IContext {
 
   @Override
   public List<Drink> getDrinks() {
-    return drinkList;
+    return stock.getDrinks();
   }
 
   @Override
