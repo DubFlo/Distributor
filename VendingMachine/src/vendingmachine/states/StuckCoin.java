@@ -1,6 +1,5 @@
 package vendingmachine.states;
 
-import vendingmachine.Coin;
 import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
@@ -31,12 +30,6 @@ public class StuckCoin extends Problem {
       c.setChangeBool(true);
     }
     c.enableRepair(false);
-  }
-  
-  @Override
-  public void coinInserted(Coin coin, Context c) {
-    c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
-    c.setTemporaryNorthText("Please do not add more coins!");
   }
   
   @Override

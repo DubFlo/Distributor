@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
 /**
@@ -37,9 +38,14 @@ public abstract class State {
    * @param c the Context associated with the State
    */
   public void coinInserted(Coin coin, Context c) {
-    if (!isCoinStuck(coin, c)) {
-      c.setChangeBool(true);
-      c.addChangeOutCoin(coin);
+    if (Utils.totalValue(c.getStuckCoins()) == 0) {
+      if (!isCoinStuck(coin, c)) {
+        c.setChangeBool(true);
+        c.addChangeOutCoin(coin);
+      }
+    } else {
+      c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
+      c.setTemporaryNorthText("Please do not add more coins!");
     }
   }
   
@@ -109,7 +115,7 @@ public abstract class State {
   protected final boolean isCoinStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
       c.addProblem(StuckCoin.getInstance());
-      c.coinInserted(coin);
+      c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
       return true;
     }
     return false;
