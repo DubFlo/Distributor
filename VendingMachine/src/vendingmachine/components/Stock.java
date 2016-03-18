@@ -180,18 +180,12 @@ public class Stock {
   /**
    * Sets a Context as an attribute of the stock. Can be accessed only once.
    * Should be accessed only once from the class Context.
-   * Throws an IllegalArgumentException if the drinks in the Stock
-   * and the Context are not the same.
    * 
    * @param context the Context to associate with the Stock
    */
   public void setContext(IContext context) {
     if (this.context != null) { // Can only be set once (makes context almost final)
       throw new IllegalArgumentException("setContext(c) can only be called once");
-    }
-    if (!context.getDrinks().containsAll(drinkQty.keySet()) ||
-        !drinkQty.keySet().containsAll(context.getDrinks())) {
-      throw new IllegalArgumentException("The stock and machine Drink's are different");
     }
     this.context = context;
   }
