@@ -5,6 +5,7 @@ import java.util.Map;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.states.Problem;
 import vendingmachine.states.State;
 
 /**
@@ -17,8 +18,12 @@ public interface IContext {
    */
   List<Drink> getDrinks();
 
-  void changeState(State instance);
+  void addChangeOut(Map<Coin, Integer> moneyToGive);
 
-  void addChangeOut(Map<Coin, Integer> moneyToGive); 
+  void problemSolved(Problem problem);
+
+  void addProblem(Problem instance);
+
+  State getState(); 
 
 }

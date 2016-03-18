@@ -97,13 +97,18 @@ public abstract class State {
   }
 
   /**
+   * Tells if the stocks may currently be changed without causing errors.
+   * By default, returns false.
+   * 
    * @return true if the stocks can be changed without causing problems, false otherwise
    */
-  public abstract boolean isAvailableForMaintenance();
+  public boolean isAvailableForMaintenance() {
+    return false;
+  }
 
   protected final boolean isCoinStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
-      c.changeState(StuckCoin.getInstance());
+      c.addProblem(StuckCoin.getInstance());
       c.coinInserted(coin);
       return true;
     }

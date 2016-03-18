@@ -101,7 +101,7 @@ public class Stock {
       log.info(cupsNbr + " cups remaining.");
     } else {
       log.warn("No more cups!");
-      context.changeState(NoCup.getInstance());
+      context.addProblem(NoCup.getInstance());
     }
   }
 
@@ -193,7 +193,7 @@ public class Stock {
     }
     this.context = context;
     if (cupsNbr == 0) {
-      context.changeState(NoCup.getInstance());
+      context.addProblem(NoCup.getInstance());
     }
   }
 
@@ -230,15 +230,18 @@ public class Stock {
       throw new IllegalArgumentException();
     }
     final int difference = newCupsNbr - this.cupsNbr;
-    this.cupsNbr = newCupsNbr;
     if (difference > 0) {
-      log.info(difference + " cups resupplied (now " + cupsNbr + " available).");
+      log.info(difference + " cups resupplied (now " + newCupsNbr + " available).");
     } else if (difference < 0) {
-      log.info(-difference + " cups removed from the stock (now " + cupsNbr + " available).");
+      log.info(-difference + " cups removed from the stock (now " + newCupsNbr + " available).");
     }
-    if (this.cupsNbr == 0) {
-      context.changeState(NoCup.getInstance());
+    if (newCupsNbr == 0) {
+      context.addProblem(NoCup.getInstance());
+    } else if (this.cupsNbr == 0 && newCupsNbr > 0) {
+      context.problemSolved(NoCup.getInstance());
     }
+    
+    this.cupsNbr = newCupsNbr;
   }
 
 }

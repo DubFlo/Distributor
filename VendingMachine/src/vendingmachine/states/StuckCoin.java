@@ -9,31 +9,28 @@ import vendingmachine.components.Context;
 
 /**
  * State reached when a coin is stuck inside the machine.
- *  TO DOOOO
+ * Coins can be inserted but are only given back when the problem is repaired.
  */
 public class StuckCoin extends Problem {
 
-  private final Map<Coin, Integer> coinsEnteredDespiteMessage = new Hashtable<Coin, Integer>();
   private static final StuckCoin INSTANCE = new StuckCoin();
   
   private StuckCoin() {}
   
-  public static State getInstance() {
+  public static StuckCoin getInstance() {
     return INSTANCE;
   }
   
   @Override
   public void entry(Context c) {
-    for (Coin coin: Coin.COINS) {
-      coinsEnteredDespiteMessage.put(coin, 0);
-    }
     c.enableRepair(true);
   }
 
   @Override
   public void exit(Context c) {
-    if (Utils.totalValue(coinsEnteredDespiteMessage) > 0) {
-      c.addChangeOut(coinsEnteredDespiteMessage);
+    if (Utils.totalValue(c.getStuckCoins()) > 0) {
+      c.addChangeOut(c.getStuckCoins());
+      Utils.resetCoinsMap(c.getStuckCoins());
       c.setChangeBool(true);
     }
     c.enableRepair(false);
@@ -41,7 +38,7 @@ public class StuckCoin extends Problem {
   
   @Override
   public void coinInserted(Coin coin, Context c) {
-    coinsEnteredDespiteMessage.put(coin, coinsEnteredDespiteMessage.get(coin) + 1);
+    c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
     c.setTemporaryNorthText("Please do not add more coins!");
   }
   

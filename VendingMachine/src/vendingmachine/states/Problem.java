@@ -8,7 +8,7 @@ public abstract class Problem extends State {
   }
   
   @Override
-  public boolean isProblem() {
+  public final boolean isProblem() {
     return true;
   }
   

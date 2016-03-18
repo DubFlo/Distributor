@@ -32,7 +32,7 @@ public final class Asking extends State {
   }
   
   @Override
-  public void exit(Context c) {
+  public void entry(Context c) {
     chosenSugar = 0;
   }
 
@@ -62,11 +62,6 @@ public final class Asking extends State {
     } else {
       c.setTemporaryNorthText("No more sugar in stock");
     }
-  }
-
-  @Override
-  public boolean isAvailableForMaintenance() {
-    return false;
   }
   
 }

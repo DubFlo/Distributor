@@ -3,7 +3,6 @@ package vendingmachine.components;
 import javax.swing.Timer;
 
 import vendingmachine.states.ColdWater;
-import vendingmachine.states.Idle;
 import vendingmachine.states.NoWater;
 import vendingmachine.ui.TemperatureListener;
 
@@ -22,7 +21,7 @@ public class HeatingSystem {
 
   private boolean heating;
   private TemperatureListener observer;
-  private final Context context;
+  private final IContext context;
   
   private final Timer timer;
 
@@ -45,26 +44,27 @@ public class HeatingSystem {
   }
 
   public void setTemperature(double temperature) {
+    this.temperature = temperature;
+    if (observer != null) {
+      observer.setTemperature(this.temperature);
+    }
     if (waterSupply) {
-      this.temperature = temperature;
-      if (observer != null) {
-        observer.setTemperature(this.temperature);
-      }
       updateState();
     }
   }
 
   public void setWaterSupply(boolean bool) {
     if (!waterSupply && bool) {
-      temperature = RUNNING_WATER_TEMPERATURE; //Running water is reintroduced in the system
-      updateState();
+      this.waterSupply = bool;
+      setTemperature(RUNNING_WATER_TEMPERATURE); // Running water is reintroduced in the system
+      context.problemSolved(NoWater.getInstance());
       timer.restart();
     } else if (waterSupply && !bool) {
+      this.waterSupply = bool;
       setTemperature(-1); //peu propre
-      context.changeState(NoWater.getInstance());
+      context.addProblem(NoWater.getInstance());
       timer.stop();
     }
-    this.waterSupply = bool;
   }
 
   private void updateState() {
@@ -74,10 +74,10 @@ public class HeatingSystem {
       heating = true;
     }
     
-    if (context.getState() == ColdWater.getInstance() && temperature >= COLD_LIMIT) {
-      context.changeState(Idle.getInstance());
+    if (temperature >= COLD_LIMIT) {
+      context.problemSolved(ColdWater.getInstance());
     } else if (context.getState() != ColdWater.getInstance() && temperature < COLD_LIMIT) {
-      context.changeState(ColdWater.getInstance());
+      context.addProblem(ColdWater.getInstance());
     }
   }
 

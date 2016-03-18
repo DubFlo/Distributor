@@ -31,9 +31,5 @@ public final class Preparing extends State {
   public String getDefaultText(Context c) {
     return "Your drink is in preparation...";
   }
-
-  @Override
-  public boolean isAvailableForMaintenance() {
-    return false;
-  }
+  
 }

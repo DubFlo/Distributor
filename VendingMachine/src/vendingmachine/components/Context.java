@@ -1,5 +1,6 @@
 package vendingmachine.components;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,9 @@ import org.apache.logging.log4j.Logger;
 import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
+import vendingmachine.Utils;
 import vendingmachine.states.Idle;
+import vendingmachine.states.Problem;
 import vendingmachine.states.State;
 import vendingmachine.states.StuckCoin;
 import vendingmachine.ui.IMachineGUI;
@@ -67,6 +70,9 @@ public class Context implements IMachine, IContext {
   private IMachineGUI machineGUI;
 
   private final Timer preparingTimer;
+  
+  private final HashSet<Problem> currentProblems;
+  private final Map<Coin, Integer> stuckCoins;
 
   /**
    * @param drinkList the Drink's the machine must dispense
@@ -88,6 +94,8 @@ public class Context implements IMachine, IContext {
     for (Coin coin: Coin.COINS) {
       this.changeOut.put(coin, 0);
     }
+    currentProblems = new HashSet<Problem>();
+    stuckCoins = new Hashtable<Coin, Integer>();
 
     int delay;
     if (SoundLoader.getInstance().FILLING != null) {
@@ -131,12 +139,44 @@ public class Context implements IMachine, IContext {
    * 
    * @param newState the State the machine should be in
    */
-  @Override
   public void changeState(State newState) {
+    System.out.println("nouvel état: " + newState);
     this.state.exit(this);
     this.state = newState;
     this.state.entry(this);
+    
     machineGUI.updateUI();
+  }
+  
+  @Override
+  public void addProblem(Problem problem) {
+    System.out.println("Problem added " + problem);
+    currentProblems.add(problem);
+    if (!this.state.isProblem()) {
+      changeState(problem);
+    } else {
+      System.out.println("nouvel état: " + problem);
+      this.state = problem;
+      this.state.entry(this);
+      machineGUI.updateUI();
+    }
+  }
+  
+  @Override
+  public void problemSolved(Problem problem) {
+    if (currentProblems.remove(problem)) {
+      System.out.println(problem + " removed");
+      if (currentProblems.isEmpty()) {
+        System.out.println("should be Idle");
+        changeState(Idle.getInstance());
+      } else if (this.state == problem) {
+        System.out.println("should be 2");
+        changeState(problem);
+      } else {
+        System.out.println("should be 3");
+        problem.exit(this);
+      }
+    }
   }
 
   @Override
@@ -333,15 +373,11 @@ public class Context implements IMachine, IContext {
   public String getChangeOutInfo() {
     final StringBuilder sb = new StringBuilder(40);
     sb.append("<html>");
-    int nbrCoins;
-    int total = 0;
     for (Coin coin: Coin.COINS) {
-      nbrCoins = changeOut.get(coin);
       sb.append(coin.TEXT).append(": ");
-      sb.append(nbrCoins).append(" coin(s).<br>");
-      total += nbrCoins * coin.VALUE;
+      sb.append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(total/100.0).append(" €.</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" €.</html>");
     return sb.toString();
   }
 
@@ -402,9 +438,7 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void repairStuckCoins() {
-    if (state == StuckCoin.getInstance()) {
-      changeState(Idle.getInstance());
-    }
+    problemSolved(StuckCoin.getInstance());
   }
 
   public void enableRepair(boolean b) {
@@ -414,6 +448,10 @@ public class Context implements IMachine, IContext {
   @Override
   public void setCupStock(int value) {
     stock.setCupStock(value);
+  }
+
+  public Map<Coin, Integer> getStuckCoins() {
+    return stuckCoins;
   }
 
 }
