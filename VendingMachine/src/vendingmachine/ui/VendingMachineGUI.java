@@ -366,7 +366,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     PictureLoader pictures = PictureLoader.getInstance();
     if (cup) {
       if (spoon) {
-        cupButton.setIcon(pictures.CUP_ICON);
+        cupButton.setIcon(pictures.CUP_SPOON_ICON);
       } else {
         cupButton.setIcon(pictures.CUP_ICON);
       }
