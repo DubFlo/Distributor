@@ -344,9 +344,9 @@ public class Context implements IMachine, IContext {
   }
 
   @Override
-  public <T extends IMachineGUI & TemperatureListener> void setObserver(T observer) {
-    this.machineGUI = observer;
-    heatingSystem.setObserver(observer);
+  public <T extends IMachineGUI & TemperatureListener> void setUI(T machineGUI) {
+    this.machineGUI = machineGUI;
+    heatingSystem.setObserver(machineGUI);
   }
 
   /**

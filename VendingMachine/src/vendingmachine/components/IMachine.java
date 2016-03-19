@@ -87,7 +87,7 @@ public interface IMachine {
 
   void setCupBool(boolean cup, boolean spoon);
 
-  <T extends IMachineGUI & TemperatureListener> void setObserver(T observer);
+  <T extends IMachineGUI & TemperatureListener> void setUI(T observer);
   
   void setWaterSupply(boolean bool);
 

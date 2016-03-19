@@ -105,7 +105,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     final PictureLoader pictures = PictureLoader.getInstance();
 
     this.machine = machine;
-    this.machine.setObserver(this);
+    this.machine.setUI(this);
 
     leftPanel = new DoorJPanel(); // Makes possible the animation of the door
     leftPanel.setLayout(new BorderLayout());
