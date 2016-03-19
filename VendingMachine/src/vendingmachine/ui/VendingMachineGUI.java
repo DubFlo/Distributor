@@ -140,7 +140,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
     coinButtonsList = new ArrayList<CoinJButton>();
     for (Coin coin: Coin.COINS) {
-      coinButtonsList.add(new CoinJButton(coin));
+      coinButtonsList.add(new CoinJButton(coin, machine.isCoinAccepted(coin)));
     }
 
     cupButton = new JButton();

@@ -80,7 +80,13 @@ public final class PictureLoader {
    * Map linking each Coin to its corresponding ImageIcon.
    * Source of all the images (loaded in constructor): http://goo.gl/3tfjDG
    */
-  public final Map<Coin, ImageIcon> COINS_IMAGES;
+  public final Map<Coin, ImageIcon> COINS_ICONS;
+  
+  /**
+   * Map linking each Coin to its corresponding ImageIcon with a red cross on it.
+   * Source of all the images (loaded in constructor): http://goo.gl/3tfjDG
+   */
+  public final Map<Coin, ImageIcon> REFUSED_COINS_ICONS;
 
   /**
    * Returns a BufferedImage loaded from the file name specified.
@@ -119,15 +125,25 @@ public final class PictureLoader {
   }
 
   private PictureLoader() {
-    COINS_IMAGES = new Hashtable<Coin, ImageIcon>();
-    COINS_IMAGES.put(Coin.COIN200, getIcon("2euro.png"));
-    COINS_IMAGES.put(Coin.COIN100, getIcon("1euro.png"));
-    COINS_IMAGES.put(Coin.COIN50, getIcon("50cent.png"));
-    COINS_IMAGES.put(Coin.COIN20, getIcon("20cent.png"));
-    COINS_IMAGES.put(Coin.COIN10, getIcon("10cent.png"));
-    COINS_IMAGES.put(Coin.COIN5, getIcon("5cent.png"));
-    COINS_IMAGES.put(Coin.COIN2, getIcon("2cent.png"));
-    COINS_IMAGES.put(Coin.COIN1, getIcon("1cent.png"));
+    COINS_ICONS = new Hashtable<Coin, ImageIcon>();
+    COINS_ICONS.put(Coin.COIN200, getIcon("2euro.png"));
+    COINS_ICONS.put(Coin.COIN100, getIcon("1euro.png"));
+    COINS_ICONS.put(Coin.COIN50, getIcon("50cent.png"));
+    COINS_ICONS.put(Coin.COIN20, getIcon("20cent.png"));
+    COINS_ICONS.put(Coin.COIN10, getIcon("10cent.png"));
+    COINS_ICONS.put(Coin.COIN5, getIcon("5cent.png"));
+    COINS_ICONS.put(Coin.COIN2, getIcon("2cent.png"));
+    COINS_ICONS.put(Coin.COIN1, getIcon("1cent.png"));
+    
+    REFUSED_COINS_ICONS = new Hashtable<Coin, ImageIcon>();
+    REFUSED_COINS_ICONS.put(Coin.COIN200, getIcon("2euroNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN100, getIcon("1euroNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN50, getIcon("50centNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN20, getIcon("20centNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN10, getIcon("10centNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN5, getIcon("5centNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN2, getIcon("2centNO.png"));
+    REFUSED_COINS_ICONS.put(Coin.COIN1, getIcon("1centNO.png"));
   }
 
   /**

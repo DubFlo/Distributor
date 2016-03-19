@@ -172,7 +172,7 @@ public class Context implements IMachine, IContext {
       }
     }
   }
-  public boolean isDrinksFree() {
+  public boolean areDrinksFree() {
     for (Drink drink : stock.getDrinks()) {
       if (drink.getPrice() != 0)
         return false;
@@ -469,6 +469,11 @@ public class Context implements IMachine, IContext {
 
   public Map<Coin, Integer> getStuckCoins() {
     return stuckCoins;
+  }
+
+  @Override
+  public boolean isCoinAccepted(Coin coin) {
+    return changeMachine.isCoinAccepted(coin);
   }
 
 }

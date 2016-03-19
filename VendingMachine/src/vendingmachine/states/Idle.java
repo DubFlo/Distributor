@@ -19,7 +19,7 @@ public final class Idle extends State {
   @Override
   public void coinInserted(Coin coin, Context c) {
     if (!isCoinStuck(coin, c)) {
-      if (c.getChangeMachine().isCoinAccepted(coin)) {
+      if (c.isCoinAccepted(coin)) {
         c.insertCoin(coin);
         SoundLoader.play(SoundLoader.getInstance().FOP);
       } else {
@@ -65,7 +65,7 @@ public final class Idle extends State {
     if (c.getAmountInside() > 0) {
       msg = "Please make your choice" + " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
     }
-    else if (c.isDrinksFree()) {
+    else if (c.areDrinksFree()) {
       msg = "Please make your choice, all is FREE";
     }
     return msg;

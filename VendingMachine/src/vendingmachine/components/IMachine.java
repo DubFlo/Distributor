@@ -109,5 +109,7 @@ public interface IMachine {
   void setTemperature(int i);
 
   void repairStuckCoins();
+  
+  boolean isCoinAccepted(Coin coin);
 
 }

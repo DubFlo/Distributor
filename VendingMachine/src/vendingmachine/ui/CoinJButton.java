@@ -7,7 +7,7 @@ import vendingmachine.Coin;
 import vendingmachine.PictureLoader;
 
 /**
- * The CoinJButton class extends JButton and only adds a Coin attribute.
+ * The CoinJButton class extends JButton and only adds a Coin field.
  * 
  * @see Coin
  */
@@ -21,17 +21,23 @@ public class CoinJButton extends JButton {
   private final Coin coin;
 
   /**
-   * Creates a JButton that has a Coin as a attribute.
-   * Sets the ImageIcon gotten in COINS_IMAGES of PictureLoader.
+   * Creates a JButton that has a Coin as an attribute.
+   * Sets an ImageIcon gotten in PictureLoader. If the Coin is accepted,
+   * sets the usual image. If not, sets an image with a red cross instead.
    * If the image is null, simply sets the Coin.TEXT on the button.
    * 
    * @param coin the coin linked with the button
+   * @param accepted boolean specifying if the coin is accepted or not by the machine
    */
-  public CoinJButton(Coin coin) {
+  public CoinJButton(Coin coin, boolean accepted) {
     super();
     final PictureLoader icons = PictureLoader.getInstance();
-    if (icons.COINS_IMAGES.get(coin) != null) {
-      this.setIcon(icons.COINS_IMAGES.get(coin));
+    if (accepted) {
+      this.setIcon(icons.COINS_ICONS.get(coin));
+    } else {
+      this.setIcon(icons.REFUSED_COINS_ICONS.get(coin));
+    }
+    if (this.getIcon() != null) {
       this.setBorder(BorderFactory.createEmptyBorder());
       this.setContentAreaFilled(false);
     } else {
