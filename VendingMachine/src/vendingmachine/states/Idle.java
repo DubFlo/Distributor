@@ -48,7 +48,7 @@ public final class Idle extends State {
           c.changeState(Asking.getInstance());
         }
       } else {
-        c.giveChangeOnDrink();
+        c.giveChange(c.getAmountInside() - c.getChosenDrink().getPrice());
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
       }    

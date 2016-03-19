@@ -165,7 +165,7 @@ public class Context implements IMachine, IContext {
   @Override
   public void problemSolved(Problem problem) {
     if (currentProblems.remove(problem)) {
-      log.warn(problem + " problem solved!");
+      log.info(problem + " problem solved!");
       if (currentProblems.isEmpty()) {
         changeState(Idle.getInstance());
       } else if (this.state == problem) {
@@ -246,26 +246,14 @@ public class Context implements IMachine, IContext {
   }
 
   /**
-   * Simulates the giving of the change, based on the {@code chosenDrink}.
-   * Change to give is {@code chosenDrink.getPrice() - amountInside}.
+   * Simulates the giving of the change on the amount specified.
+   * 
+   * @param amount the value (in cents) to give change on
    */
-  public void giveChangeOnDrink() {
-    int amountToGive = amountInside - chosenDrink.getPrice();
-    changeMachine.giveChange(amountToGive);
-    if (amountToGive > 0) {
-      setChangeBool(true);
-      SoundLoader.play(SoundLoader.getInstance().CLING);
-    }
-    amountInside = 0;
-    machineGUI.updateInfo();
-  }
-
-  /**
-   * Simulates the giving of the change on the amount entered by the client.
-   */
-  public void giveChangeOnCancel() {
-    if (amountInside > 0) {
-      changeMachine.giveChange(amountInside);
+  public void giveChange(int amount) {
+    if (amount > 0) {
+      changeMachine.giveChange(amount);
+      log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);
       SoundLoader.play(SoundLoader.getInstance().CLING);
       amountInside = 0;

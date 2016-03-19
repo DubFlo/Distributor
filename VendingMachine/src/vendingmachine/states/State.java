@@ -25,7 +25,7 @@ public abstract class State {
   public void cancel(Context c) {
     if (c.getAmountInside() > 0) {
       if (c.getChangeMachine().isChangePossible(c.getAmountInside())) {
-        c.giveChangeOnCancel();
+        c.giveChange(c.getAmountInside());
       } else {
         c.setTemporaryNorthText("Unable to give back change");
       }

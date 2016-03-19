@@ -27,7 +27,7 @@ public final class Asking extends State {
     if (chosenSugar > 0) {
       c.getStock().removeSugarCubes(chosenSugar);
     }
-    c.giveChangeOnDrink();
+    c.giveChange(c.getAmountInside() - c.getChosenDrink().getPrice());
     c.changeState(Preparing.getInstance());
   }
   
