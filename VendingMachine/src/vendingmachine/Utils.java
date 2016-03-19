@@ -10,6 +10,11 @@ import java.util.Map;
 public final class Utils {
 
   /**
+   * Unicode code for the Euro symbol.
+   */
+  public static final String EURO = "\u20ac";
+  
+  /**
    * Returns the total amount stored in a Map.
    * (The sum for each Coin of its value times the Integer it is mapped to.)
    * 

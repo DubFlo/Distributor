@@ -3,6 +3,7 @@ package vendingmachine.states;
 import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
+import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
 public final class Idle extends State {
@@ -32,12 +33,12 @@ public final class Idle extends State {
   @Override
   public void drinkButton(Drink d, Context c) {
     if (!c.getStock().isDrinkInStock(d)) {
-      c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " \u20ac)");
+      c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " " + Utils.EURO + ")");
       log.warn("Attempt to order " + d.getName() + " but no left in stock.");
     } else if (c.isCupInside()) {
       c.setTemporaryNorthText("Please remove the cup before ordering");
     } else if (d.getPrice() > c.getAmountInside()) {
-      c.setTemporaryNorthText("Price: " + d.getPrice() / 100.0 + " \u20ac");
+      c.setTemporaryNorthText("Price: " + d.getPrice() / 100.0 + " " + Utils.EURO);
     } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
@@ -61,7 +62,7 @@ public final class Idle extends State {
   public String getDefaultText(Context c) {
     String msg = "Please make your choice";
     if (c.getAmountInside() > 0) {
-      msg += " (" + c.getAmountInside() / 100.0 + " \u20ac entered)";
+      msg += " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
     }
     return msg;
   }
