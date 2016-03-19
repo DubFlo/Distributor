@@ -25,9 +25,16 @@ public final class PictureLoader {
   private static final Logger log = LogManager.getLogger("PictureLoader");
 
   /**
-   * The ImageIcon of a red cup. Source: http://goo.gl/8TG1ki
+   * The ImageIcon of a red cup.
+   * Source: http://goo.gl/8TG1ki
    */
   public final ImageIcon CUP_ICON = getIcon("cup.jpg");
+  
+  /**
+   * The ImageIcon of a red cup with a spoon.
+   * Source: http://goo.gl/8TG1ki
+   */
+  public final ImageIcon CUP_SPOON_ICON = getIcon("cupSpoon.jpg");
 
   /**
    * The ImageIcon of a gray background.
@@ -35,7 +42,8 @@ public final class PictureLoader {
   public final ImageIcon GRAY_RECTANGLE = getIcon("gray.jpg");
 
   /**
-   * The ImageIcon of a stack of coins. Source: https://goo.gl/IsWpYR
+   * The ImageIcon of a stack of coins.
+   * Source: https://goo.gl/IsWpYR
    */
   public final ImageIcon CHANGE_ICON = getIcon("change.png");
 
