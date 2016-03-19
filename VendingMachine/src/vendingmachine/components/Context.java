@@ -141,7 +141,6 @@ public class Context implements IMachine, IContext {
    * @param newState the State the machine should be in
    */
   public void changeState(State newState) {
-    System.out.println("nouvel état: " + newState);
     this.state.exit(this);
     this.state = newState;
     this.state.entry(this);
@@ -151,12 +150,10 @@ public class Context implements IMachine, IContext {
   
   @Override
   public void addProblem(Problem problem) {
-    System.out.println("Problem added " + problem);
     currentProblems.add(problem);
     if (!this.state.isProblem()) {
       changeState(problem);
     } else {
-      System.out.println("nouvel état: " + problem);
       this.state = problem;
       this.state.entry(this);
       machineGUI.updateUI();
@@ -166,15 +163,11 @@ public class Context implements IMachine, IContext {
   @Override
   public void problemSolved(Problem problem) {
     if (currentProblems.remove(problem)) {
-      System.out.println(problem + " removed");
       if (currentProblems.isEmpty()) {
-        System.out.println("should be Idle");
         changeState(Idle.getInstance());
       } else if (this.state == problem) {
-        System.out.println("should be 2");
         changeState(currentProblems.iterator().next());
       } else {
-        System.out.println("should be 3");
         problem.exit(this);
       }
     }
