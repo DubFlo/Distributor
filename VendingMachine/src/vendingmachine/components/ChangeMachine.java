@@ -152,5 +152,8 @@ public class ChangeMachine {
     
     coinsStock.put(coin, value);
   }
+  public int getCoinsStock(Coin coin) {
+    return coinsStock.get(coin);
+  }
   
 }
