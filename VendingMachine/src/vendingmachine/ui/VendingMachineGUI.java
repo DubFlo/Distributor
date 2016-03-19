@@ -507,4 +507,9 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       machine.setSpoonsStock(value);
     }
   }
+
+  @Override
+  public void setCupText(String msg) {
+    cupButton.setToolTipText(msg);
+  }
 }

@@ -63,4 +63,6 @@ public interface IMachineGUI {
    */
   void enableRepair(boolean bool);
 
+  void setCupText(String msg);
+
 }
