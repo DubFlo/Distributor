@@ -6,8 +6,8 @@ package vendingmachine.ui;
 public interface IMachineGUI {
 
   /**
-   * Tells the UI to display change is of the machine (if {@code cup} is true)
-   * or to remove the change icon (if {@code cup} is false).
+   * Tells the UI to display change on the machine (if {@code bool} is true)
+   * or to remove the change icon (if {@code bool} is false).
    * 
    * @param bool true if change must be displayed, false otherwise
    */
@@ -24,7 +24,7 @@ public interface IMachineGUI {
   void setCupBool(boolean cup, boolean spoon);
 
   /**
-   * Sets a temporary north text. The north text rebecomes then the default one.
+   * Sets a temporary north text. The north text then rebecomes the default one.
    * 
    * @param msg the String to display temporarily
    */

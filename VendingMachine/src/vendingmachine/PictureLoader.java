@@ -13,17 +13,19 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Supplies ImageIcon's or BufferedImage's useful to display a vending machine.
- * Uses the singleton design pattern to be created only once when needed.
+ * Uses the singleton design pattern to be created only once when needed (thread-safe). This
+ * solution has been found on http://stackoverflow.com/a/11165975 . As explained on this link,
+ * "The class [PictureLoader].Loader is first accessed inside the getInstance() method, so the Loader
+ * class loads when getInstance() is called for the first time. Further, the class loader
+ * guarantees that all static initialization is complete before you get access to the class -
+ * that's what gives you thread-safety."
  */
 public final class PictureLoader {
-
-  private static PictureLoader INSTANCE;
 
   private static final Logger log = LogManager.getLogger("PictureLoader");
 
   /**
-   * The ImageIcon of a red cup.
-   * Source: http://goo.gl/8TG1ki
+   * The ImageIcon of a red cup. Source: http://goo.gl/8TG1ki
    */
   public final ImageIcon CUP_ICON = getIcon("cup.jpg");
 
@@ -31,10 +33,9 @@ public final class PictureLoader {
    * The ImageIcon of a gray background.
    */
   public final ImageIcon GRAY_RECTANGLE = getIcon("gray.jpg");
-  
+
   /**
-   * The ImageIcon of a stack of coins.
-   * Source: https://goo.gl/IsWpYR
+   * The ImageIcon of a stack of coins. Source: https://goo.gl/IsWpYR
    */
   public final ImageIcon CHANGE_ICON = getIcon("change.png");
 
@@ -125,10 +126,11 @@ public final class PictureLoader {
    * @return the only PictureLoader instance (creates it if it doesn't exist)
    */
   public static PictureLoader getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new PictureLoader();
-    }
-    return INSTANCE;
+    return Loader.INSTANCE;
   }
-  
+
+  private static class Loader {
+    public static final PictureLoader INSTANCE = new PictureLoader();
+  }
+
 }
