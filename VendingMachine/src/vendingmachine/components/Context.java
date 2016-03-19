@@ -42,6 +42,11 @@ public class Context implements IMachine, IContext {
    * The amount of money inside of the machine (in cents).
    */
   private int amountInside;
+  
+  /**
+   * The amount of sugar chosen by the client.
+   */
+  private int chosenSugar;
 
   /**
    * If there is (true) or not (false) a cup inside.
@@ -84,6 +89,7 @@ public class Context implements IMachine, IContext {
 
     this.heatingSystem = new HeatingSystem(this);
     this.amountInside = 0;
+    this.setChosenSugar(0);
     this.cupInside = false;
     this.changeOut = new Hashtable<Coin, Integer>();
     Utils.resetCoinsMap(changeOut);
@@ -111,22 +117,37 @@ public class Context implements IMachine, IContext {
     log.info("New Vending Machine Built");
   }
 
-  private void preparingOver() { //Dans Preparing ?
-    stock.removeCup();
+  private void preparingOver() {
+    String logMsg = "New order:\n\t" + chosenDrink.getName();
+    stock.removeDrink(chosenDrink);
+    logMsg +=  " (" + stock.getDrinkQty(chosenDrink) + " remaining);\n";
+    
+    if (chosenSugar > 0) {
+      stock.removeSugarCubes(chosenSugar);
+    }
+    logMsg += "\tWith " + chosenSugar + " sugar cubes (" + stock.getSugarCubesNbr() + " remaining);\n";
+    
     boolean spoon = false;
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
       spoon = true;
+      logMsg += "\tWith a spoon (" + stock.getSpoonsNbr() + " remaining);\n";
     }
+    
+    stock.removeCup();
+    logMsg += "\t" + stock.getCupsNbr() + " cups remaining.";
+
     setCupBool(true, spoon);
-    machineGUI.setCupText(chosenDrink.getName());
-    stock.removeDrink(chosenDrink);
+    log.info(logMsg);
+    machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
+    machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
     SoundLoader.play(SoundLoader.getInstance().BEEP);
+    
     heatingSystem.drinkOrdered();
+    chosenSugar = 0;
     if (!state.isProblem()) {
       changeState(Idle.getInstance());
     }
-    machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
   }
 
   @Override
@@ -468,6 +489,20 @@ public class Context implements IMachine, IContext {
   @Override
   public boolean isCoinAccepted(Coin coin) {
     return changeMachine.isCoinAccepted(coin);
+  }
+
+  /**
+   * @return the quantity of sugar chosen by the client
+   */
+  public int getChosenSugar() {
+    return chosenSugar;
+  }
+
+  /**
+   * @param chosenSugar the new quantity of sugar chosen by the client
+   */
+  public void setChosenSugar(int chosenSugar) {
+    this.chosenSugar = chosenSugar;
   }
 
 }
