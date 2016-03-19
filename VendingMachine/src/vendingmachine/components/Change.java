@@ -18,14 +18,14 @@ public class Change {
   }
 
   /**
-   * @return
+   * @return a Map of the Coin's stock
    */
   public Map<Coin, Integer> getCoinsStock() {
     return coinsStock;
   }
 
   /**
-   * @return a Map<Coin, Boolean> that tells for each coin if it is accepted
+   * @return a Map that tells for each coin if it is accepted or not
    */
   public Map<Coin, Boolean> getAcceptedCoins() {
     return acceptedCoins;

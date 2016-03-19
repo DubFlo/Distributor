@@ -10,10 +10,10 @@ import java.util.Map;
 public final class Utils {
 
   /**
-   * Returns the total amount stored in a Map<Coin, Integer>.
+   * Returns the total amount stored in a Map.
    * (The sum for each Coin of its value times the Integer it is mapped to.)
    * 
-   * @param map the Map<Coin, Integer> whose value must be computed
+   * @param map the Map whose value must be computed
    * @return the value stored in {@code map}
    */
   public static int totalValue(Map<Coin, Integer> map) {
@@ -25,9 +25,9 @@ public final class Utils {
   }
 
   /**
-   * Creates a copy of the Map<Coin, Integer> passed as a parameter.
+   * Creates a copy of the Map passed as a parameter.
    * 
-   * @param map the Map<Coin, Integer> to copy
+   * @param map the Map to copy
    * @return a copy of the map
    */
   public static Map<Coin, Integer> copy(Map<Coin, Integer> map) {
@@ -51,7 +51,7 @@ public final class Utils {
   }
 
   /**
-   * Checks if an integer is positive (>= 0).
+   * Checks if an integer is positive.
    * If it is not positive, throws a NumberFormatException.
    * 
    * @param i the int to check

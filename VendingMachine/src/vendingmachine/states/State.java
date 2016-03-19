@@ -19,6 +19,8 @@ public abstract class State {
   /**
    * Called when the button "Cancel" is pressed.
    * If not overridden, this method gives back change on what is currently inserted.
+   * 
+   * @param c the Context associated with the State
    */
   public void cancel(Context c) {
     if (c.getAmountInside() > 0) {
@@ -51,6 +53,8 @@ public abstract class State {
   
   /**
    * Called when the button "Confirm" is pressed. Does nothing if not overridden.
+   * 
+   * @param c the Context associated with the State
    */
   public void confirm(Context c) {}
   
@@ -58,16 +62,21 @@ public abstract class State {
    * Called when a drink button is pressed. Does nothing if not overridden.
    * 
    * @param drink the Drink associated with the button
+   * @param c the Context associated with the State
    */
   public void drinkButton(Drink drink, Context c) {}
   
   /**
    * Called when the button "-" is pressed. Does nothing if not overridden.
+   * 
+   * @param c the Context associated with the State
    */
   public void less(Context c) {}
   
   /**
    * Called when the button "+" is pressed. Does nothing if not overridden.
+   * 
+   * @param c the Context associated with the State
    */
   public void more(Context c) {}
 

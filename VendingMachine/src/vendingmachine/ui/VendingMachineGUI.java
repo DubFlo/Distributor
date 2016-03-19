@@ -421,7 +421,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (temperature < 0) {
       temperatureLabel.setText("NO WATER");
     } else {
-      temperatureLabel.setText(FORMAT.format(temperature) + " °C");
+      temperatureLabel.setText(FORMAT.format(temperature) + " Â°C");
     }
   }
 

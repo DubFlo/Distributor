@@ -65,8 +65,8 @@ public class ChangeMachineTest {
   }
 
   @Test
-  // Problème avec CoinsStockTemp(utilisation de isChangePossible pr effet de bord)
-  // Pas tester si coinsStock avait bien été remplacé par coinsStockTemp(trivial)
+  // ProblÃ¨me avec CoinsStockTemp(utilisation de isChangePossible pr effet de bord)
+  // Pas tester si coinsStock avait bien Ã©tÃ© remplacÃ© par coinsStockTemp(trivial)
   public void giveChangeTest() {
     cm.isChangePossible(109);
     Hashtable<Coin,Integer>otherMTG = new Hashtable<Coin,Integer>();

@@ -71,9 +71,9 @@ public class Context implements IMachine, IContext {
   private final Map<Coin, Integer> stuckCoins;
 
   /**
-   * @param drinkList the Drink's the machine must dispense
    * @param changeMachine the ChangeMachine associated with the Context
    * @param stock the Stock associated with the Context
+   * @param coinStuckProb the probability (between 0 and 1) of a coin getting stuck
    */
   public Context(ChangeMachine changeMachine, Stock stock, double coinStuckProb) {
     this.state = Idle.getInstance();
@@ -211,7 +211,7 @@ public class Context implements IMachine, IContext {
     final StringBuilder sb = new StringBuilder(30);
     sb.append("State: ").append(state).append("\n\n")
     .append("Stuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
-    .append(amountInside / 100.0).append(" € inserted.\n");
+    .append(amountInside / 100.0).append(" â‚¬ inserted.\n");
 
     sb.append("\n").append(changeMachine.getInfo());
 
@@ -375,7 +375,7 @@ public class Context implements IMachine, IContext {
       sb.append(coin.TEXT).append(": ");
       sb.append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" €.</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" â‚¬.</html>");
     return sb.toString();
   }
 
@@ -391,9 +391,9 @@ public class Context implements IMachine, IContext {
   }
 
   /**
-   * Adds a Map<Coin, Integer> of Coin's to the outside container.
+   * Adds a Map of Coin's to the outside container.
    * 
-   * @param moneyToGive the Map<Coin, Integer> to add to {@code changeOut}
+   * @param moneyToGive the Map to add to {@code changeOut}
    */
   @Override
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {

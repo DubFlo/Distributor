@@ -36,8 +36,8 @@ public class ChangeMachine {
    * Throws an IllegalArgumentException if a stock value is negative, or if
    * {@code coinsStock} or {@code acceptedCoins} do not list all the coins of Coin.
    * 
-   * @param coinsStock a Map<Coin, Integer> that maps each Coin to its stock value.
-   * @param acceptedCoins a Map<Coin, Boolean> that tells if each Coin is accepted or not.
+   * @param coinsStock a Map that maps each Coin to its stock value
+   * @param acceptedCoins a Map that tells if each Coin is accepted or not with a boolean
    */
   public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
     for (Integer i: coinsStock.values()) {
@@ -59,8 +59,12 @@ public class ChangeMachine {
   }
 
   /**
-   * Updates the coinsStock with the value computed in isChangePossible(int) and stored
-   * in coinsStockTemp. Returns a Map<Coin, Integer> of the money that is given back.
+   * Gives change on the amount specified and updates the coins stock accordingly.
+   * If it is not possible, throws an IllegalArgumentException.
+   * Returns a Map of the Coin's given back (mapping each Coin to the number of times it is given)
+   * 
+   * @param amount the amount to give change on
+   * @return a Map of the money that is given back.
    */
   public Map<Coin, Integer> giveChange(int amount) {
     if (!isChangePossible(amount)) {
@@ -91,7 +95,8 @@ public class ChangeMachine {
    * accordingly, which is the new value coinsStock should take after giving the change.
    * Throws an IllegalArgumentException if {@code amount} is negative.
    * 
-   * @param amount  number of cents to give change for.
+   * @param amount number of cents to give change for.
+   * @return true if change on the amount is possible, false otherwise
    */
   public boolean isChangePossible(int amount) {
     if (amount < 0) {

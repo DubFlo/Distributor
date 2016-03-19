@@ -43,7 +43,7 @@ public class Stock {
    * @param sugarCubesNbr the number of sugar cubes
    * @param cupsNbr the number of cups
    * @param spoonsNbr the number of spoons
-   * @param drinkQty a Map<Drink, Integer> mapping each Drink to its stock value
+   * @param drinkQty a Map mapping each Drink to its stock value
    */
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
     if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
@@ -61,7 +61,7 @@ public class Stock {
   }
 
   /**
-   * @return an ArrayList<Drink> of the drinks the machine can dispense
+   * @return an ArrayList of the drinks the machine can dispense
    */
   public List<Drink> getDrinks() {
     return new ArrayList<Drink>(drinkQty.keySet());
