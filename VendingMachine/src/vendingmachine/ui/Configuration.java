@@ -198,10 +198,12 @@ public class Configuration extends JFrame {
       coinPanel.add(coinsStockValues.get(coin), cCoin);
       cCoin.gridx = 2;
       coinPanel.add(acceptedCoinsBoxes.get(coin), cCoin);
-      acceptedCoinsBoxes.get(coin).setSelected(true);
+      if (coin.VALUE >= 10) { // to refuse small coins by default
+        acceptedCoinsBoxes.get(coin).setSelected(true);
+      }
     }
 
-    cMain.gridwidth = 2; cMain.gridy += 1; cMain.gridx = 0;
+    cMain.gridwidth = 1; cMain.gridy += 1; cMain.gridx = 0;
     mainPanel.add(coinPanel, cMain);
 
     // Creates the stock Panel
@@ -233,7 +235,7 @@ public class Configuration extends JFrame {
     cStock.gridx = 1;
     stockPanel.add(coinStuckProbValue, cStock);
 
-    cMain.gridx = 2;
+    cMain.gridx = 1;
     mainPanel.add(stockPanel, cMain);
 
     // Places the button, the problem label and makes the final operations

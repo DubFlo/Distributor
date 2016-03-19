@@ -85,7 +85,7 @@ public interface IMachine {
   
   void setChangeBool(boolean bool);
 
-  void setCupBool(boolean bool);
+  void setCupBool(boolean cup, boolean spoon);
 
   <T extends IMachineGUI & TemperatureListener> void setObserver(T observer);
   
@@ -96,6 +96,10 @@ public interface IMachine {
   void setDrinkStock(Drink drink, int value);
   
   void setCupStock(int value);
+  
+  void setSugarStock(int value);
+
+  void setSpoonsStock(int value);
 
   /**
    * @return true if the stocks of the machine can be currently changed, false otherwise

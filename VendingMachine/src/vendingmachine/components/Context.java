@@ -112,11 +112,13 @@ public class Context implements IMachine, IContext {
   }
 
   private void preparingOver() { //Dans Preparing ?
-    setCupBool(true);
+    boolean spoon = false;
     stock.removeCup();
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
+      spoon = true;
     }
+    setCupBool(true, spoon);
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.getInstance().BEEP);
     heatingSystem.drinkOrdered();
@@ -320,11 +322,15 @@ public class Context implements IMachine, IContext {
   public void setChosenDrink(Drink chosenDrink) {
     this.chosenDrink = chosenDrink;
   }
+  
+  public Drink getChosenDrink() {
+    return chosenDrink;
+  }
 
   @Override
-  public void setCupBool(boolean bool) {
-    machineGUI.setCupBool(bool);
-    cupInside = bool;
+  public void setCupBool(boolean cup, boolean spoon) {
+    machineGUI.setCupBool(cup, spoon);
+    cupInside = cup;
   }
 
   @Override
@@ -358,7 +364,7 @@ public class Context implements IMachine, IContext {
    */
   @Override
   public void takeCup() {
-    setCupBool(false);
+    setCupBool(false, false);
     SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken.
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
@@ -447,6 +453,18 @@ public class Context implements IMachine, IContext {
   @Override
   public void setCupStock(int value) {
     stock.setCupStock(value);
+    machineGUI.updateInfo();
+  }
+  
+  @Override
+  public void setSugarStock(int value) {
+    stock.setSugarStock(value);
+    machineGUI.updateInfo();
+  }
+
+  @Override
+  public void setSpoonsStock(int value) {
+    stock.setSpoonsStock(value);
     machineGUI.updateInfo();
   }
 

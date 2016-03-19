@@ -28,6 +28,11 @@ public final class PictureLoader {
   public final ImageIcon CUP_ICON = getIcon("cup.jpg");
 
   /**
+   * The ImageIcon of a gray background.
+   */
+  public final ImageIcon GRAY_RECTANGLE = getIcon("gray.jpg");
+  
+  /**
    * The ImageIcon of a stack of coins.
    * Source: https://goo.gl/IsWpYR
    */

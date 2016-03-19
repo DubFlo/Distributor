@@ -1,6 +1,3 @@
-//Elegant solution for allowing only digits in JTextField found on the 12-02-2016
-//on http://stackoverflow.com/a/9478124
-
 package vendingmachine.ui;
 
 import java.awt.Toolkit;
@@ -9,6 +6,12 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
+/**
+ * Creates a DocumentFilter that allows only digits (used in JTextField's).
+ * Deals with the case that something is typed or something is pasted.
+ * 
+ * Found on the 12-02-2016 on http://stackoverflow.com/a/9478124
+ */
 public class MyDocumentFilter extends DocumentFilter {
   @Override
   public void insertString(DocumentFilter.FilterBypass fp,

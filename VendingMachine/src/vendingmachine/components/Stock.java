@@ -61,6 +61,13 @@ public class Stock {
   }
 
   /**
+   * @return an ArrayList<Drink> of the drinks the machine can dispense
+   */
+  public List<Drink> getDrinks() {
+    return new ArrayList<Drink>(drinkQty.keySet());
+  }
+
+  /**
    * @return true if there is a cup in stock, false otherwise
    */
   public boolean isCupInStock() {
@@ -237,8 +244,32 @@ public class Stock {
     this.cupsNbr = newCupsNbr;
   }
 
-  public List<Drink> getDrinks() {
-    return new ArrayList<Drink>(drinkQty.keySet());
+  public void setSugarStock(int newSugarCubesNbr) {
+    if (newSugarCubesNbr < 0) {
+      throw new IllegalArgumentException();
+    }
+    final int difference = newSugarCubesNbr - this.sugarCubesNbr;
+    if (difference > 0) {
+      log.info(difference + " cubes resupplied (now " + newSugarCubesNbr + " available).");
+    } else if (difference < 0) {
+      log.info(-difference + " cubes removed from the stock (now " + newSugarCubesNbr + " available).");
+    }
+    
+    this.sugarCubesNbr = newSugarCubesNbr;
+  }
+
+  public void setSpoonsStock(int newSpoonsNbr) {
+    if (newSpoonsNbr < 0) {
+      throw new IllegalArgumentException();
+    }
+    final int difference = newSpoonsNbr - this.spoonsNbr;
+    if (difference > 0) {
+      log.info(difference + " spoons resupplied (now " + newSpoonsNbr + " available).");
+    } else if (difference < 0) {
+      log.info(-difference + " spoons removed from the stock (now " + newSpoonsNbr + " available).");
+    }
+    
+    this.spoonsNbr = newSpoonsNbr;
   }
 
 }

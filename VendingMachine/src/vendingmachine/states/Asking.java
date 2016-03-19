@@ -38,7 +38,7 @@ public final class Asking extends State {
 
   @Override
   public String getDefaultText(Context c) {
-    return "Choose your sugar quantity with + and -";
+    return "Choose sugar quantity for " + c.getChosenDrink().getName();
   }
 
   @Override
