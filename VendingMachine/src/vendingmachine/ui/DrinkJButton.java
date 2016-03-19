@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 
 import vendingmachine.Drink;
 import vendingmachine.PictureLoader;
+import vendingmachine.Utils;
 
 /**
  * The DrinkJButton class extends JButton and only adds a Drink attribute.
@@ -30,7 +31,7 @@ public class DrinkJButton extends JButton {
   public DrinkJButton(Drink drink) {
     super();
     this.drink = drink;
-    this.setText("<html>" + drink.getName() + "<br><center>" + drink.getPrice()/100.0 + " \u20ac");
+    this.setText("<html>" + drink.getName() + "<br><center>" + drink.getPrice()/100.0 + " " + Utils.EURO);
     this.setForeground(Color.WHITE);
     PictureLoader pictures = PictureLoader.getInstance();
     if (pictures.DRINK_BUTTON != null) {
