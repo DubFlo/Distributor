@@ -150,19 +150,22 @@ public class Context implements IMachine, IContext {
   
   @Override
   public void addProblem(Problem problem) {
-    currentProblems.add(problem);
-    if (!this.state.isProblem()) {
-      changeState(problem);
-    } else {
-      this.state = problem;
-      this.state.entry(this);
-      machineGUI.updateUI();
+    if (currentProblems.add(problem)) {
+      log.warn(problem + " problem encountered!");
+      if (!this.state.isProblem()) {
+        changeState(problem);
+      } else {
+        this.state = problem;
+        this.state.entry(this);
+        machineGUI.updateUI();
+      }
     }
   }
   
   @Override
   public void problemSolved(Problem problem) {
     if (currentProblems.remove(problem)) {
+      log.warn(problem + " problem solved!");
       if (currentProblems.isEmpty()) {
         changeState(Idle.getInstance());
       } else if (this.state == problem) {
@@ -278,6 +281,7 @@ public class Context implements IMachine, IContext {
   public void insertCoin(Coin coin) {
     amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
+    log.info(coin.TEXT + " inserted (" + amountInside/100.0 + " " + Utils.EURO + " in total).");
     machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
     machineGUI.updateInfo();
   }
@@ -350,12 +354,13 @@ public class Context implements IMachine, IContext {
   @Override
   public void takeChange() {
     setChangeBool(false);
-    for (Coin coin: Coin.COINS) {
-      changeOut.put(coin, 0);
+    final int value = Utils.totalValue(changeOut);
+    if (value > 0) {
+      log.info(value/100.0 + " " + Utils.EURO + " of change taken.");
+      Utils.resetCoinsMap(changeOut);
+      machineGUI.updateChangeOutInfo();
+      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken.
     }
-    machineGUI.updateChangeOutInfo();
-    SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken.
-    log.info("Change taken.");
   }
 
   /**

@@ -86,7 +86,6 @@ public class ChangeMachine {
    */
   public void insertCoin(Coin coin) {
     coinsStock.put(coin, coinsStock.get(coin) + 1);
-    log.info(coin.TEXT + " inserted.");
   }
 
   /**
