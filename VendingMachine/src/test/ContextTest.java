@@ -100,10 +100,10 @@ public class ContextTest {
     c.addProblem(NoCup.getInstance());
     c.addProblem(NoWater.getInstance());
     
-    c.problemSolved(NoWater.getInstance());
-    assertSame(c.getState(),StuckCoin.getInstance());
-    
     c.problemSolved(NoCup.getInstance());
+    assertSame(c.getState(),NoWater.getInstance());
+    
+    c.problemSolved(NoWater.getInstance());
     assertSame(c.getState(),StuckCoin.getInstance());
     
     c.problemSolved(StuckCoin.getInstance());
