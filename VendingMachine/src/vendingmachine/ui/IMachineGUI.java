@@ -63,6 +63,11 @@ public interface IMachineGUI {
    */
   void enableRepair(boolean bool);
 
+  /**
+   * Sets the tooltip text of the cup button with the specified message.
+   * 
+   * @param msg the String to put as a tooltip text of the cup
+   */
   void setCupText(String msg);
 
 }

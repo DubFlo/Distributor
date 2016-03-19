@@ -106,12 +106,6 @@ public class Stock {
     } else {
       throw new IllegalArgumentException("Can't remove a cup when none in stock");
     }
-    if (isCupInStock()) {
-      log.info(cupsNbr + " cups remaining.");
-    } else {
-      log.warn("No more cups!");
-      context.addProblem(NoCup.getInstance());
-    }
   }
 
   /**
@@ -124,11 +118,6 @@ public class Stock {
     } else {
       throw new IllegalArgumentException("Can't remove a " + drink.getName() + "; none left in stock");
     }
-    if (isDrinkInStock(drink)) {
-      log.info(drink.getName() + " prepared (" + drinkQty.get(drink) + " remaining).");
-    } else {
-      log.warn(drink.getName() + " prepared, no more in stock!");
-    }
   }
 
   /**
@@ -139,11 +128,6 @@ public class Stock {
       spoonsNbr -= 1;
     } else {
       throw new IllegalArgumentException("Can't remove a spoon when none in stock");
-    }
-    if (isSpoonInStock()) {
-      log.info(spoonsNbr + " spoons remaining.");
-    } else {
-      log.warn("No more spoons in stock!");
     }
   }
 
@@ -158,11 +142,6 @@ public class Stock {
     } else {
       throw new IllegalArgumentException(
           "Can't remove " + i + " sugar cubes; only " + sugarCubesNbr + " remaining.");
-    }
-    if (sugarCubesNbr > 0) {
-      log.info(i + " sugar cubes ordered (" + sugarCubesNbr + " remaining).");
-    } else {
-      log.warn("No more sugar in stock!");
     }
   }
 
@@ -270,6 +249,22 @@ public class Stock {
     }
     
     this.spoonsNbr = newSpoonsNbr;
+  }
+
+  public int getDrinkQty(Drink drink) {
+    return drinkQty.get(drink);
+  }
+
+  public int getCupsNbr() {
+    return cupsNbr;
+  }
+
+  public int getSugarCubesNbr() {
+    return sugarCubesNbr;
+  }
+
+  public int getSpoonsNbr() {
+    return spoonsNbr;
   }
 
 }

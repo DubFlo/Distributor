@@ -1,4 +1,4 @@
-package vendingmachine.ui;
+package vendingmachine;
 
 import java.awt.Toolkit;
 

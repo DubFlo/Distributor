@@ -6,8 +6,6 @@ public final class Asking extends State {
 
   private static final Asking INSTANCE = new Asking();
   private static final byte MAX_SUGAR = 5;
-  
-  private int chosenSugar = 0;
 
   public static Asking getInstance() {
     return INSTANCE;
@@ -24,16 +22,8 @@ public final class Asking extends State {
 
   @Override
   public void confirm(Context c) {
-    if (chosenSugar > 0) {
-      c.getStock().removeSugarCubes(chosenSugar);
-    }
     c.giveChange(c.getAmountInside() - c.getChosenDrink().getPrice());
     c.changeState(Preparing.getInstance());
-  }
-  
-  @Override
-  public void entry(Context c) {
-    chosenSugar = 0;
   }
 
   @Override
@@ -43,21 +33,21 @@ public final class Asking extends State {
 
   @Override
   public String getSugarText(Context c) {
-    return "Sugar: " + chosenSugar + "/" + MAX_SUGAR;
+    return "Sugar: " + c.getChosenSugar() + "/" + MAX_SUGAR;
   }
 
   @Override
   public void less(Context c) {
-    if (chosenSugar > 0) {
-      chosenSugar -= 1;
+    if (c.getChosenSugar() > 0) {
+      c.setChosenSugar(c.getChosenSugar() - 1);
     }
   }
 
   @Override
   public void more(Context c) {
-    if (chosenSugar < MAX_SUGAR && c.getStock().isSugarInStock(chosenSugar + 1)) {
-      chosenSugar += 1;
-    } else if (chosenSugar == MAX_SUGAR) {
+    if (c.getChosenSugar() < MAX_SUGAR && c.getStock().isSugarInStock(c.getChosenSugar() + 1)) {
+      c.setChosenSugar(c.getChosenSugar() + 1);
+    } else if (c.getChosenSugar() == MAX_SUGAR) {
       c.setTemporaryNorthText("Maximum quantity of sugar : " + MAX_SUGAR);
     } else {
       c.setTemporaryNorthText("No more sugar in stock");
