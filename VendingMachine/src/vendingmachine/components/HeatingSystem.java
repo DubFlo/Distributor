@@ -25,7 +25,7 @@ public class HeatingSystem {
   
   private final Timer timer;
 
-  public HeatingSystem(Context context) {
+  public HeatingSystem(IContext context) {
     this.waterSupply = true;
     this.temperature = 90.1;
     this.heating = false;
