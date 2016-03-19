@@ -27,7 +27,7 @@ public final class Asking extends State {
     if (chosenSugar > 0) {
       c.getStock().removeSugarCubes(chosenSugar);
     }
-    c.giveChangeOnDrink(); // On a vérifié que le change était possible dans Idle
+    c.giveChangeOnDrink();
     c.changeState(Preparing.getInstance());
   }
   

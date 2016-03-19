@@ -47,7 +47,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   /**
    * Used to format the display of the temperature.
    */
-  private static final DecimalFormat format = new DecimalFormat("#.#");
+  private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
 
   /**
    * The DoorJPanel allowing the animation of the door.
@@ -421,7 +421,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (temperature < 0) {
       temperatureLabel.setText("NO WATER");
     } else {
-      temperatureLabel.setText(format.format(temperature) + " °C");
+      temperatureLabel.setText(FORMAT.format(temperature) + " °C");
     }
   }
 

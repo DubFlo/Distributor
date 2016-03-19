@@ -62,7 +62,7 @@ public class ChangeMachine {
    * Updates the coinsStock with the value computed in isChangePossible(int) and stored
    * in coinsStockTemp. Returns a Map<Coin, Integer> of the money that is given back.
    */
-  public Map<Coin, Integer> giveChange(int amount) { // à n'utiliser que si isPossibleChange(amount) == true
+  public Map<Coin, Integer> giveChange(int amount) {
     if (!isChangePossible(amount)) {
       throw new IllegalArgumentException();
     }
