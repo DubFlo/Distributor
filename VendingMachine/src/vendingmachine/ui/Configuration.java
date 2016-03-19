@@ -24,6 +24,7 @@ import javax.swing.text.AbstractDocument;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.MyDocumentFilter;
 import vendingmachine.Utils;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
