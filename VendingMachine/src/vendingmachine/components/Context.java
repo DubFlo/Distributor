@@ -119,6 +119,7 @@ public class Context implements IMachine, IContext {
       spoon = true;
     }
     setCupBool(true, spoon);
+    machineGUI.setCupText(chosenDrink.getName());
     stock.removeDrink(chosenDrink);
     SoundLoader.play(SoundLoader.getInstance().BEEP);
     heatingSystem.drinkOrdered();
@@ -321,8 +322,6 @@ public class Context implements IMachine, IContext {
   @Override
   public void setCupBool(boolean cup, boolean spoon) {
     machineGUI.setCupBool(cup, spoon);
-
-    machineGUI.setCupText(cup ? chosenDrink.getName(): "");
     cupInside = cup;
   }
 

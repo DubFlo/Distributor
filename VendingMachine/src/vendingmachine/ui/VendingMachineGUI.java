@@ -373,6 +373,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       leftPanel.openDoor();
     } else {
       cupButton.setIcon(pictures.GRAY_RECTANGLE);
+      setCupText("");
       leftPanel.closeDoor();
     }
   }
