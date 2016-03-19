@@ -413,7 +413,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
   @Override
   public void enableRepair(boolean bool) {
-    unstickCoins.setEnabled(bool);
+    unstickCoins.setEnabled(bool); 
   }
 
   @Override

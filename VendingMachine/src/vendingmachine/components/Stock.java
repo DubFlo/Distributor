@@ -120,7 +120,7 @@ public class Stock {
    */
   public void removeDrink(Drink drink) {
     if (isDrinkInStock(drink)) {
-      drinkQty.put(drink, drinkQty.get(drink) - 1);
+      drinkQty.put(drink, drinkQty.get(drink) - 1); 
     } else {
       throw new IllegalArgumentException("Can't remove a " + drink.getName() + "; none left in stock");
     }

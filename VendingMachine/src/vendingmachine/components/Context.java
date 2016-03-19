@@ -172,7 +172,13 @@ public class Context implements IMachine, IContext {
       }
     }
   }
-
+  public boolean isDrinksFree() {
+    for (Drink drink : stock.getDrinks()) {
+      if (drink.getPrice() != 0)
+        return false;
+    }
+    return true;
+  }  
   @Override
   public void coinInserted(Coin coin) {
     state.coinInserted(coin, this);
@@ -407,7 +413,7 @@ public class Context implements IMachine, IContext {
   public String getSugarText() {
     return state.getSugarText(this);
   }
-
+  
   @Override
   public void setCoinStock(Coin coin, int value) {
     changeMachine.setCoinStock(coin, value);

@@ -166,7 +166,7 @@ public class Configuration extends JFrame {
     final JPanel mainPanel = new JPanel(new GridBagLayout());
     final GridBagConstraints cMain = new GridBagConstraints();
     final Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
-    cMain.insets = new Insets(5, 10, 5, 10); // puts some space around the components
+    cMain.insets = new Insets(5, 10, 5, 10); // puts some space around the components 
     cMain.gridwidth = GridBagConstraints.REMAINDER;
 
     final JLabel drinkNbrLabel = new JLabel("Number of drinks:");

@@ -26,7 +26,7 @@ public final class Idle extends State {
         c.setChangeBool(true);
         c.addChangeOutCoin(coin);
         c.setTemporaryNorthText("Coin not recognized by the machine");
-      }
+      } 
     }
   }
 
@@ -60,9 +60,13 @@ public final class Idle extends State {
 
   @Override
   public String getDefaultText(Context c) {
-    String msg = "Please make your choice";
+    String msg = "Please insert coins";
+   
     if (c.getAmountInside() > 0) {
-      msg += " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
+      msg = "Please make your choice" + " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
+    }
+    else if (c.isDrinksFree()) {
+      msg = "Please make your choice, all is FREE";
     }
     return msg;
   }
