@@ -59,7 +59,7 @@ public class HeatingSystemTest {
   public void testDrinkOrdered() {
     assertEquals(90.1,heatSys.getTemperature(),0.1);
     heatSys.drinkOrdered();
-    assertEquals(84.45, heatSys.getTemperature(), 0.1);
+    assertEquals(84.45, heatSys.getTemperature(), 1);
   }
 
 }
