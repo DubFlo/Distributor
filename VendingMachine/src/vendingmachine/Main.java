@@ -12,6 +12,8 @@ public final class Main {
   /**
    * Calls static method {@code run()} to display the configuration.
    * Loads resources while user inputs information to load the machine faster.
+   * 
+   * @param args /
    */
   public static void main(String[] args) {
     run();

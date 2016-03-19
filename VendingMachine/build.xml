@@ -59,8 +59,7 @@
   
   <!-- Création d'une archive jar depuis les fichiers compilés. -->
   <target name="dist" depends="build" description="création du jar">
-    <mkdir dir="${build.dir}/jar"/>
-    <jar jarfile="${build.dir}/jar/${ant.project.name}.jar" basedir="${build.dir}">
+    <jar jarfile="${build.dir}/${ant.project.name}.jar" basedir="${build.dir}">
       <manifest>
         <attribute name="Main-Class" value="${main.class}"/>
       </manifest>
@@ -108,11 +107,11 @@
   </target>
 
   <!-- Lance l'application depuis le fichier jar. -->
-  <target name="run" depends="dist" description="lance l'application">
+  <target name="run" depends="clean, dist" description="lance l'application">
     <java fork="true" classname="${main.class}">
       <classpath>
         <path refid="classpath"/>
-        <path location="${build.dir}/jar/${ant.project.name}.jar"/>
+        <path location="${build.dir}/${ant.project.name}.jar"/>
       </classpath>
     </java>
   </target>
@@ -122,6 +121,11 @@
     <mkdir dir="${doc.dir}"/>
     <javadoc destdir="${doc.dir}" additionalparam="-encoding utf8 -docencoding utf8 -charset utf8">
       <fileset dir="${src.dir}" includes="**/*.java" />
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
     </javadoc>
   </target>
 </project>

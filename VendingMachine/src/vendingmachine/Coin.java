@@ -10,14 +10,14 @@ import java.util.List;
  * Coins are and should be listed in descending order of their values.
  */
 public enum Coin {
-  COIN200 (200, "2 €"),
-  COIN100 (100, "1 €"),
-  COIN50  (50, "0.50 €"),
-  COIN20  (20, "0.20 €"), 
-  COIN10  (10, "0.10 €"),
-  COIN5   (5, "0.05 €"),
-  COIN2   (2, "0.02 €"),
-  COIN1   (1, "0.01 €");
+  COIN200 (200, "2 \u20ac"),
+  COIN100 (100, "1 \u20ac"),
+  COIN50  (50, "0.50 \u20ac"),
+  COIN20  (20, "0.20 \u20ac"), 
+  COIN10  (10, "0.10 \u20ac"),
+  COIN5   (5, "0.05 \u20ac"),
+  COIN2   (2, "0.02 \u20ac"),
+  COIN1   (1, "0.01 \u20ac");
 
   /**
    * Unmodifiable List of all the coins, in descending order of their values.
@@ -30,7 +30,7 @@ public enum Coin {
   public final int VALUE;
   
   /**
-   * The String representation of the coin ("0.50 €" for instance).
+   * The String representation of the coin ("0.50 \u20ac" for instance).
    */
   public final String TEXT;
 

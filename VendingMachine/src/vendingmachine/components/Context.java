@@ -211,7 +211,7 @@ public class Context implements IMachine, IContext {
     final StringBuilder sb = new StringBuilder(30);
     sb.append("State: ").append(state).append("\n\n")
     .append("Stuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
-    .append(amountInside / 100.0).append(" € inserted.\n");
+    .append(amountInside / 100.0).append(" \u20ac inserted.\n");
 
     sb.append("\n").append(changeMachine.getInfo());
 
@@ -375,7 +375,7 @@ public class Context implements IMachine, IContext {
       sb.append(coin.TEXT).append(": ");
       sb.append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" €.</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" \u20ac.</html>");
     return sb.toString();
   }
 
