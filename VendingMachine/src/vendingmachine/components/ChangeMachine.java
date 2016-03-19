@@ -27,8 +27,6 @@ public class ChangeMachine {
   //private final Change change;
   
   private Map<Coin, Integer> coinsStockTemp;
-  
-  private IContext context;
 
   /**
    * Builds a change machine with the specified coins stock.
@@ -66,7 +64,7 @@ public class ChangeMachine {
    * @param amount the amount to give change on
    * @return a Map of the money that is given back.
    */
-  public Map<Coin, Integer> giveChange(int amount) {
+  public Map<Coin, Integer> giveChange(int amount, IContext context) {
     if (!isChangePossible(amount)) {
       throw new IllegalArgumentException();
     }
@@ -153,13 +151,6 @@ public class ChangeMachine {
     }
     
     coinsStock.put(coin, value);
-  }
-
-  /**
-   * @param context the IContext to set
-   */
-  public void setContext(IContext context) {
-    this.context = context;
   }
   
 }
