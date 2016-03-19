@@ -11,7 +11,7 @@ public class HeatingSystem {
   private static final double MIN_TEMPERATURE = 90.0;
   private static final double MAX_TEMPERATURE = 96.0;
   private static final double COLD_LIMIT = 80.0;
-  private static final double RUNNING_WATER_TEMPERATURE = 60.0;
+  private static final double RUNNING_WATER_TEMPERATURE = 50.0;
   
   //private static final double diffTemperature = 2000/(4.18 * 2500); // Q/(C*m)
   
@@ -48,7 +48,7 @@ public class HeatingSystem {
     if (waterSupply) {
       updateState();
     }
-    if (observer != null) {
+    if (observer != null) { 
       observer.setTemperature(this.temperature);
     }
   }
@@ -96,6 +96,7 @@ public class HeatingSystem {
   public boolean isWaterSupplyEnabled() {
     return waterSupply;
   }
+
   
   public void drinkOrdered() {
     if (waterSupply) {
