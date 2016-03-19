@@ -111,9 +111,6 @@ public class Context implements IMachine, IContext {
     preparingTimer = new Timer(delay, e -> this.preparingOver());
     preparingTimer.setRepeats(false);
 
-    this.stock.setContext(this);
-    this.changeMachine.setContext(this);
-
     log.info("New Vending Machine Built");
   }
 
@@ -274,7 +271,7 @@ public class Context implements IMachine, IContext {
    */
   public void giveChange(int amount) {
     if (amount > 0) {
-      changeMachine.giveChange(amount);
+      changeMachine.giveChange(amount, this);
       log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);
       SoundLoader.play(SoundLoader.getInstance().CLING);
@@ -466,7 +463,7 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void setCupStock(int value) {
-    stock.setCupStock(value);
+    stock.setCupStock(value, this);
     machineGUI.updateInfo();
   }
   

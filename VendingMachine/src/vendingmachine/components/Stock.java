@@ -31,12 +31,6 @@ public class Stock {
   private final Map<Drink, Integer> drinkQty;
 
   /**
-   * The Context that is associated with the Stock.
-   * It must be set to the Stock after building each Stock instance.
-   */
-  private IContext context; // Dans un constructeur ?
-
-  /**
    * Creates a Stock with the specified values.
    * Throws an IllegalArgumentException if a value is negative.
    * 
@@ -151,7 +145,7 @@ public class Stock {
   public String getInfo() {
     final StringBuilder sb = new StringBuilder();
     sb.append("Drink(s): \n");
-    for (Drink drink: context.getDrinks()) {
+    for (Drink drink: this.getDrinks()) {
       sb.append(drink.getName()).append(": ")
       .append(drinkQty.get(drink)).append(" available.\n");
     }
@@ -161,19 +155,6 @@ public class Stock {
     .append(sugarCubesNbr).append(" sugar cube(s) available.\n")
     .append(spoonsNbr).append(" spoon(s) available.\n");
     return sb.toString();
-  }
-
-  /**
-   * Sets a Context as an attribute of the stock. Can be accessed only once.
-   * Should be accessed only once from the class Context.
-   * 
-   * @param context the Context to associate with the Stock
-   */
-  public void setContext(IContext context) {
-    if (this.context != null) { // Can only be set once (makes context almost final)
-      throw new IllegalArgumentException("setContext(c) can only be called once");
-    }
-    this.context = context;
   }
 
   /**
@@ -199,12 +180,12 @@ public class Stock {
   }
 
   /**
-   * Sets a new number of cups in stock.
-   * Logs the change that is done.
+   * Sets a new number of cups in stock. Logs the change that is done.
+   * If the number of cups reaches 0 or is no more 0, updates the Context accordingly.
    * 
    * @param newCupsNbr the number of cups to set
    */
-  public void setCupStock(int newCupsNbr) {
+  public void setCupStock(int newCupsNbr, IContext context) {
     if (newCupsNbr < 0) {
       throw new IllegalArgumentException();
     }
