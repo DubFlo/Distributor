@@ -274,7 +274,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
    */
   private void addListeners() {
     cupButton.addActionListener(e -> {
-      if (!leftPanel.animationIsRunning()) {
+      if (!leftPanel.isAnimationRunning()) {
         machine.takeCup();
       }
     });

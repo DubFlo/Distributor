@@ -282,11 +282,12 @@ public class Context implements IMachine, IContext {
 
   /**
    * Simulates the giving of the change on the amount specified.
+   * The amount must be positive.
    * 
    * @param amount the value (in cents) to give change on
    */
   public void giveChange(int amount) {
-    if (amount > 0) {
+    if (amount != 0) {
       changeMachine.giveChange(amount, this);
       log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);

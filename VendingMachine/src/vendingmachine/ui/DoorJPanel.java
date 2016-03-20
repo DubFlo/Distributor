@@ -100,8 +100,8 @@ public class DoorJPanel extends JPanel {
   /**
    * @return true if the door is currently opening, false otherwise
    */
-  public boolean animationIsRunning() {
-    return (doorOpeningTimer.isRunning() || doorClosingTimer.isRunning());
+  public boolean isAnimationRunning() {
+    return doorOpeningTimer.isRunning() || doorClosingTimer.isRunning();
   }
 
 }
