@@ -62,7 +62,7 @@ public class ContextTest {
     coinStuck = 0;
     //init new context
     c = new Context(cm,stock,coinStuck);
-    c.setUI(new VendingMachineGUI(c));  
+    c.setUI(new EmptyUI());  
   }
   @Test
   public void testchangeState() {
