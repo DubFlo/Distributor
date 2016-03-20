@@ -6,10 +6,13 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.FontLoader;
+import vendingmachine.SoundLoader;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.IContext;
@@ -29,6 +32,13 @@ public class ContextTest {
   private static Context c;
   private int coinStuck;
   private Stock stock;
+  
+  @BeforeClass
+  public static void load() {
+    SoundLoader.getInstance();
+    FontLoader.getInstance();
+  }
+  
   @Before 
   public void setUp() {
     //init ChangeMachine

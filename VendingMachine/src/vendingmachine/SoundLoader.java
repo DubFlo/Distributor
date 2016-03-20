@@ -57,7 +57,13 @@ public final class SoundLoader {
    * Credit: http://www.freesfx.co.uk/
    */
   public final Clip FOP = getSound("fop.wav");
-
+  
+  /**
+   * Sound of a machine being repaired.
+   * Source:
+   */
+  //public final Clip REPAIR = getSount("repair.wav");
+  
   /**
    * Plays the specified clip from the beginning (if it exists).
    * If the clip is already running, stops it and plays it again.
