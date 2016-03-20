@@ -31,7 +31,8 @@ public class DrinkJButton extends JButton {
   public DrinkJButton(Drink drink) {
     super();
     this.drink = drink;
-    this.setText("<html>" + drink.getName() + "<br><center>" + drink.getPrice()/100.0 + " " + Utils.EURO);
+    this.setText("<html>" + drink.getName() + "<br><center>" 
+                + drink.getPrice() / 100.0 + " " + Utils.EURO);
     this.setForeground(Color.WHITE);
     PictureLoader pictures = PictureLoader.getInstance();
     if (pictures.DRINK_BUTTON != null) {

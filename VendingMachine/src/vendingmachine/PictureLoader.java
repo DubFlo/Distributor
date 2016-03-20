@@ -17,8 +17,8 @@ import org.apache.logging.log4j.Logger;
  * solution has been found on
  * <a href="http://stackoverflow.com/a/11165975">http://stackoverflow.com/a/11165975</a>.
  * As explained on this link,
- * "The class [PictureLoader].Loader is first accessed inside the getInstance() method, so the Loader
- * class loads when getInstance() is called for the first time. Further, the class loader
+ * "The class [PictureLoader].Loader is first accessed inside the getInstance() method, so the
+ * Loader class loads when getInstance() is called for the first time. Further, the class loader
  * guarantees that all static initialization is complete before you get access to the class -
  * that's what gives you thread-safety."
  */
