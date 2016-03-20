@@ -36,7 +36,6 @@ public class ContextTest {
   @BeforeClass
   public static void load() {
     SoundLoader.getInstance();
-    FontLoader.getInstance();
   }
   
   @Before 

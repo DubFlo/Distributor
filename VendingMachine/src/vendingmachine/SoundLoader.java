@@ -60,9 +60,9 @@ public final class SoundLoader {
   
   /**
    * Sound of a machine being repaired.
-   * Source:
+   * Source: https://goo.gl/NoYEIX
    */
-  //public final Clip REPAIR = getSount("repair.wav");
+  public final Clip REPAIR = getSound("repair.wav");
   
   /**
    * Plays the specified clip from the beginning (if it exists).

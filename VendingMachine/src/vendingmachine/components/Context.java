@@ -115,27 +115,29 @@ public class Context implements IMachine, IContext {
   }
 
   private void preparingOver() {
-    String logMsg = "New order:\n\t" + chosenDrink.getName();
+    final StringBuilder logMsg = new StringBuilder(100);
+    logMsg.append("New order:\n\t").append(chosenDrink.getName());
     stock.removeDrink(chosenDrink);
-    logMsg +=  " (" + stock.getDrinkQty(chosenDrink) + " remaining);\n";
+    logMsg.append(" (").append(stock.getDrinkQty(chosenDrink)).append(" remaining);\n");
     
     if (chosenDrink.isSugar()) {
       stock.removeSugarCubes(chosenSugar);
-      logMsg += "\tWith " + chosenSugar + " sugar cubes (" + stock.getSugarCubesNbr() + " remaining);\n";
+      logMsg.append("\tWith ").append(chosenSugar).append(" sugar cubes (")
+            .append(stock.getSugarCubesNbr()).append(" remaining);\n");
     }
     
     boolean spoon = false;
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
       spoon = true;
-      logMsg += "\tWith a spoon (" + stock.getSpoonsNbr() + " remaining);\n";
+      logMsg.append("\tWith a spoon (").append(stock.getSpoonsNbr()).append(" remaining);\n");
     }
     
     stock.removeCup(this);
-    logMsg += "\t" + stock.getCupsNbr() + " cups remaining.";
-
+    logMsg.append('\t').append(stock.getCupsNbr()).append(" cups remaining.");
     setCupBool(true, spoon);
-    log.info(logMsg);
+    
+    log.info(logMsg.toString());
     machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
     machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
     SoundLoader.play(SoundLoader.getInstance().BEEP);
@@ -149,7 +151,6 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void cancel() {
-    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.cancel(this);
   }
 
@@ -208,13 +209,11 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void confirm() {
-    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.confirm(this);
   }
 
   @Override
   public void drinkButton(Drink drink) {
-    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.drinkButton(drink, this);
   }
 
@@ -236,7 +235,7 @@ public class Context implements IMachine, IContext {
 
   @Override
   public String getInfo() {
-    final StringBuilder sb = new StringBuilder(30);
+    final StringBuilder sb = new StringBuilder(300);
     sb.append("State: ").append(state).append("\n\n")
     .append("Stuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
     .append(amountInside / 100.0).append(" " + Utils.EURO + " inserted.\n");
@@ -302,7 +301,6 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void less() {
-    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.less(this);
     machineGUI.updateSugarText();
   }
@@ -313,7 +311,6 @@ public class Context implements IMachine, IContext {
    */
   @Override
   public void more() {
-    SoundLoader.play(SoundLoader.getInstance().CLICK);
     state.more(this);
     machineGUI.updateSugarText();
   }

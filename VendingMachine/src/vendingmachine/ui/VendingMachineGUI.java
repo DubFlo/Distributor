@@ -34,6 +34,7 @@ import vendingmachine.Drink;
 import vendingmachine.FontLoader;
 import vendingmachine.Main;
 import vendingmachine.PictureLoader;
+import vendingmachine.SoundLoader;
 import vendingmachine.components.IMachine;
 
 /**
@@ -278,14 +279,30 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       }
     });
     changeButton.addActionListener(e -> machine.takeChange());
-    lessSugar.addActionListener(e -> machine.less());
-    moreSugar.addActionListener(e -> machine.more());
-    okButton.addActionListener(e -> machine.confirm());
-    cancelButton.addActionListener(e -> machine.cancel());
+    lessSugar.addActionListener(e -> {
+      machine.less();
+      SoundLoader.play(SoundLoader.getInstance().CLICK);
+    });
+    moreSugar.addActionListener(e -> {
+      machine.more();
+      SoundLoader.play(SoundLoader.getInstance().CLICK);
+    });
+    okButton.addActionListener(e -> {
+      machine.confirm();
+      SoundLoader.play(SoundLoader.getInstance().CLICK);
+    });
+    cancelButton.addActionListener(e -> {
+      machine.cancel();
+      SoundLoader.play(SoundLoader.getInstance().CLICK);
+    });
 
     for (DrinkJButton drinkButton: drinkButtonsList) {
-      drinkButton.addActionListener(e -> machine.drinkButton(drinkButton.getDrink()));
+      drinkButton.addActionListener(e -> {
+        machine.drinkButton(drinkButton.getDrink());
+        SoundLoader.play(SoundLoader.getInstance().CLICK);
+      });
     }
+    
     for (CoinJButton coinButton: coinButtonsList) {
       coinButton.addActionListener(e -> machine.coinInserted(coinButton.getCoin()));
     }
@@ -318,7 +335,10 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
     waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
     instantWarming.addActionListener(e -> machine.setTemperature(93));
-    unstickCoins.addActionListener(e -> machine.repairStuckCoins());
+    unstickCoins.addActionListener(e -> {
+      machine.repairStuckCoins();
+      SoundLoader.play(SoundLoader.getInstance().REPAIR);
+    });
     unstickCoins.setEnabled(false);
     newVM.addActionListener(e -> {
       dispose();
@@ -513,4 +533,5 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   public void setCupText(String msg) {
     cupButton.setToolTipText(msg);
   }
+  
 }
