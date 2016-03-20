@@ -376,8 +376,10 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (bool) {
       PictureLoader pictures = PictureLoader.getInstance();
       changeButton.setIcon(pictures.CHANGE_ICON);
+      SoundLoader.play(SoundLoader.getInstance().CLING);
     } else {
       changeButton.setIcon(null);
+      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken
     }
   }
 
@@ -385,6 +387,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   public void setCupBool(boolean cup, boolean spoon) {
     PictureLoader pictures = PictureLoader.getInstance();
     if (cup) {
+      SoundLoader.play(SoundLoader.getInstance().BEEP);
       if (spoon) {
         cupButton.setIcon(pictures.CUP_SPOON_ICON);
       } else {
@@ -394,6 +397,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     } else {
       cupButton.setIcon(pictures.GRAY_RECTANGLE);
       setCupText("");
+      SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken
       leftPanel.closeDoor();
     }
   }

@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
-import vendingmachine.SoundLoader;
 import vendingmachine.Utils;
 import vendingmachine.states.Idle;
 import vendingmachine.states.NoCup;
@@ -106,13 +105,7 @@ public class Context implements IMachine, IContext {
       currentProblems.add(NoCup.getInstance());
     }
     
-    int delay;
-    if (SoundLoader.getInstance().FILLING != null) {
-      delay = (int) (SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000);
-    } else {
-      delay = 3000; // milliseconds
-    }
-    preparingTimer = new Timer(delay, e -> this.preparingOver());
+    preparingTimer = new Timer(3000, e -> this.preparingOver());
     preparingTimer.setRepeats(false); // makes its action only once
 
     log.info("New Vending Machine Built");
@@ -150,7 +143,6 @@ public class Context implements IMachine, IContext {
     log.info(logMsg.toString()); 
     machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
     machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
-    SoundLoader.play(SoundLoader.getInstance().BEEP);
     
     heatingSystem.drinkOrdered();
     chosenSugar = 0;
@@ -276,6 +268,9 @@ public class Context implements IMachine, IContext {
     return state;
   }
 
+  /**
+   * @return the Stock associated with the machine
+   */
   public Stock getStock() {
     return stock;
   }
@@ -291,7 +286,6 @@ public class Context implements IMachine, IContext {
       changeMachine.giveChange(amount, this);
       log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);
-      SoundLoader.play(SoundLoader.getInstance().CLING);
     }
     amountInside = 0;
     machineGUI.updateInfo();
@@ -322,11 +316,6 @@ public class Context implements IMachine, IContext {
     state.less(this);
     machineGUI.updateSugarText();
   }
-
-  /**
-   * Called when "+" button is pressed.
-   * Calls the {@code more()} method of the current State.
-   */
   @Override
   public void more() {
     state.more(this);
@@ -340,20 +329,30 @@ public class Context implements IMachine, IContext {
     this.chosenDrink = chosenDrink;
   }
   
+  /**
+   * @return the Drink that is currently ordered by the client
+   */
   public Drink getChosenDrink() {
     return chosenDrink;
   }
 
+  /**
+   * Tells the UI to display or not the cup, with or without a spoon.
+   * The {@code spoon} parameter is useless if {@code cup} is false.
+   * 
+   * @param cup true if the cup must be displayed, false otherwise
+   * @param spoon true if a spoon is given with the cup 
+   */
   public void setCupBool(boolean cup, boolean spoon) {
     machineGUI.setCupBool(cup, spoon);
     cupInside = cup;
   }
 
+  /**
+   * @param bool
+   */
   public void setChangeBool(boolean bool) {
     machineGUI.setChangeBool(bool);
-    if (bool) {
-      SoundLoader.play(SoundLoader.getInstance().CLING);
-    }
   }
 
   @Override
@@ -378,14 +377,12 @@ public class Context implements IMachine, IContext {
     if (value > 0) {
       Utils.resetCoinsMap(changeOut);
       machineGUI.updateChangeOutInfo();
-      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken
     }
   }
   
   @Override
   public void takeCup() {
     this.setCupBool(false, false);
-    SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 

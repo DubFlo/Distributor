@@ -48,7 +48,6 @@ public final class Idle extends State {
           c.changeState(Asking.getInstance());
         }
       } else {
-        log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
       }
     } else {
