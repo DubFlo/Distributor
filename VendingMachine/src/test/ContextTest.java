@@ -2,13 +2,16 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 import java.util.Map;
+import javax.swing.Timer;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.FontLoader;
@@ -24,6 +27,7 @@ import vendingmachine.states.NoWater;
 import vendingmachine.states.Preparing;
 import vendingmachine.states.StuckCoin;
 import vendingmachine.ui.VendingMachineGUI;
+
 
 public class ContextTest {
 
@@ -54,15 +58,15 @@ public class ContextTest {
     cm = new ChangeMachine(coinsStock,acceptedCoins);
     //init Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
-    boolean[] drinkSugarTab = {true,false,true,true,true};
-    int[] drinkPriceTab = {100,95,80,0,45};
-    int[] drinkStockTab = {0,1,2,3,1};
+    boolean[] drinkSugarTab = {true,true,false,true,true};
+    int[] drinkPriceTab = {30,40,80,0,20};
+    int[] drinkStockTab = {0,5,2,3,1};
     Drink[] drinkTab = new Drink[5];
     Map<Drink,Integer> drinkQty = new Hashtable<Drink,Integer>();
    
     for (int i = 0; i < drinkNameTab.length; i++) {
       drinkTab[i] = new Drink(drinkNameTab[i],drinkSugarTab[i],drinkPriceTab[i]);
-      drinkQty.put(drinkTab[i], drinkStockTab[i] );  
+      drinkQty.put(drinkTab[i], drinkStockTab[i]);  
     }
      
   
@@ -83,11 +87,15 @@ public class ContextTest {
   
   @Test
   public void testCoinInserted() {
-    //Idle
+    //Idle - Coin accepted
     assertEquals(c.getAmountInside(),0);
     c.coinInserted(Coin.COIN100);
     assertEquals(c.getAmountInside(),100);
     assertEquals(c.getChangeMachine().getCoinsStock(Coin.COIN100),2);
+    //Idle - Coin not accepted 
+    int oldAmountInside = c.getAmountInside();
+    c.coinInserted(Coin.COIN200);
+    assertEquals(c.getAmountInside(),oldAmountInside);
     //Asking
     c.setChosenDrink(c.getStock().getDrinks().get(1));
     c.changeState(Asking.getInstance());
@@ -128,5 +136,22 @@ public class ContextTest {
     c.giveChange(25);
     assertEquals(0,c.getAmountInside());
   }
- 
+  @Test
+  public void areDRinksFree() {
+    assertFalse(c.areDrinksFree());//Il faut recréer un context pour mettre tous les prix à 0
+  }
+  @Test
+  public void testPreparingOver() throws InterruptedException {
+    int oldStock = c.getStock().getDrinkQty(c.getDrinks().get(1));
+    
+    c.coinInserted(Coin.COIN100);
+    c.setChosenDrink(c.getDrinks().get(1));
+    c.changeState(Asking.getInstance());
+    c.setChosenSugar(2);
+    c.changeState(Preparing.getInstance());
+    Thread.sleep(35000);
+    assertEquals(c.getStock().getDrinkQty(c.getDrinks().get(1)),oldStock);
+    
+  }
+
 }

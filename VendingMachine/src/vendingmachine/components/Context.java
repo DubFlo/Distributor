@@ -137,7 +137,7 @@ public class Context implements IMachine, IContext {
     logMsg.append('\t').append(stock.getCupsNbr()).append(" cups remaining.");
     setCupBool(true, spoon);
     
-    log.info(logMsg.toString());
+    log.info(logMsg.toString()); 
     machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
     machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
     SoundLoader.play(SoundLoader.getInstance().BEEP);
@@ -393,6 +393,9 @@ public class Context implements IMachine, IContext {
     sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" " + Utils.EURO + ".</html>");
     return sb.toString();
   }
+    public Map<Coin,Integer> getChangeOut() {
+      return this.changeOut;
+    }
 
   /**
    * Adds the specified Coin to the container to be taken by the client.
