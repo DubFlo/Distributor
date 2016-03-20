@@ -3,7 +3,7 @@ package vendingmachine.states;
 import vendingmachine.components.Context;
 
 /**
- * State that must be reached when no cups are left in the Stock of the Context.
+ * State that must be reached when no cups are left in stock.
  * No drink can obviously be ordered.
  */
 public final class NoCup extends Problem {

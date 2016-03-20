@@ -15,10 +15,10 @@ public final class Idle extends State {
   }
 
   private Idle() {}
-  
+
   @Override
   public void coinInserted(Coin coin, Context c) {
-    if (!isCoinStuck(coin, c)) {
+    if (!coinGetStuck(coin, c)) {
       if (c.isCoinAccepted(coin)) {
         c.insertCoin(coin);
         SoundLoader.play(SoundLoader.getInstance().FOP);
@@ -26,7 +26,7 @@ public final class Idle extends State {
         c.setChangeBool(true);
         c.addChangeOutCoin(coin);
         c.setTemporaryNorthText("Coin not recognized by the machine");
-      } 
+      }
     }
   }
 
@@ -51,7 +51,7 @@ public final class Idle extends State {
         c.giveChange(c.getAmountInside() - c.getChosenDrink().getPrice());
         log.info(d.getName() + " ordered.");
         c.changeState(Preparing.getInstance());
-      }    
+      }
     } else {
       c.setTemporaryNorthText("Unable to give the exact change");
       log.warn(d.getName() + " ordered but machine unable to give the exact change.");
@@ -61,7 +61,7 @@ public final class Idle extends State {
   @Override
   public String getDefaultText(Context c) {
     String msg = "Please insert coins";
-   
+
     if (c.getAmountInside() > 0) {
       msg = "Please make your choice" + " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
     }
@@ -75,5 +75,5 @@ public final class Idle extends State {
   public boolean isAvailableForMaintenance() {
     return true;
   }
-  
+
 }

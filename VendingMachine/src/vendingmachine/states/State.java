@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
-import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
 /**
@@ -40,8 +39,8 @@ public abstract class State {
    * @param c the Context associated with the State
    */
   public void coinInserted(Coin coin, Context c) {
-    if (Utils.totalValue(c.getStuckCoins()) == 0) {
-      if (!isCoinStuck(coin, c)) {
+    if (!c.isACoinStuck()) {
+      if (!coinGetStuck(coin, c)) {
         c.setChangeBool(true);
         c.addChangeOutCoin(coin);
       }
@@ -50,14 +49,14 @@ public abstract class State {
       c.setTemporaryNorthText("Please do not add more coins!");
     }
   }
-  
+
   /**
    * Called when the button "Confirm" is pressed. Does nothing if not overridden.
    * 
    * @param c the Context associated with the State
    */
   public void confirm(Context c) {}
-  
+
   /**
    * Called when a drink button is pressed. Does nothing if not overridden.
    * 
@@ -65,14 +64,14 @@ public abstract class State {
    * @param c the Context associated with the State
    */
   public void drinkButton(Drink drink, Context c) {}
-  
+
   /**
    * Called when the button "-" is pressed. Does nothing if not overridden.
    * 
    * @param c the Context associated with the State
    */
   public void less(Context c) {}
-  
+
   /**
    * Called when the button "+" is pressed. Does nothing if not overridden.
    * 
@@ -80,8 +79,18 @@ public abstract class State {
    */
   public void more(Context c) {}
 
+  /**
+   * This method is called by the machine just after changing its state.
+   * 
+   * @param c the Context associated with the State
+   */
   public void entry(Context c) {}
-  
+
+  /**
+   * This method is called by the machine just before changing its state.
+   * 
+   * @param c the Context associated with the State
+   */
   public void exit(Context c) {}
 
   /**
@@ -115,13 +124,21 @@ public abstract class State {
    * Tells if the stocks may currently be changed without causing errors.
    * By default, returns false.
    * 
-   * @return true if the stocks can be changed without causing problems, false otherwise
+   * @return true if the stocks can be changed without problems, false otherwise
    */
   public boolean isAvailableForMaintenance() {
     return false;
   }
 
-  protected final boolean isCoinStuck(Coin coin, Context c) {
+  /**
+   * Checks if a the specified coin is stuck in the machine.
+   * Uses the COIN_STUCK_PROB of the Context. Can not be overridden.
+   * 
+   * @param coin the Coin that may get stuck
+   * @param c the Context associated with the State
+   * @return true if the coins has been stuck, false otherwise
+   */
+  protected final boolean coinGetStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
       c.addProblem(StuckCoin.getInstance());
       c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
@@ -130,6 +147,9 @@ public abstract class State {
     return false;
   }
 
+  /**
+   * @return true if this state indicates a problem, false otherwise.
+   */
   public boolean isProblem() {
     return false;
   }

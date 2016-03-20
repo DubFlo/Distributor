@@ -4,6 +4,10 @@ import vendingmachine.Coin;
 import vendingmachine.SoundLoader;
 import vendingmachine.components.Context;
 
+/**
+ * State reached when everything is okay and a drink is ordered.
+ * The user has to wait for the end of the preparation before inserting more coins.
+ */
 public final class Preparing extends State {
 
   private static final Preparing INSTANCE = new Preparing();
@@ -11,25 +15,32 @@ public final class Preparing extends State {
   public static Preparing getInstance() {
     return INSTANCE;
   }
-  
-  // Singleton design pattern
+
   private Preparing() {}
 
+  /**
+   * Restarts the timer indicating the end of the preparation of a drink.
+   * Plays the sound of a cup filling with water.
+   */
+  @Override
   public void entry(Context c) {
     super.entry(c);
     c.restartPreparingTimer();
     SoundLoader.play(SoundLoader.getInstance().FILLING);
   }
-  
+
+  /**
+   * Refuses the coin and displays to wait for the end of the preparation.
+   */
   @Override
   public void coinInserted(Coin coin, Context c) {
     super.coinInserted(coin, c);
     c.setTemporaryNorthText("Wait for the end of the preparation...");
   }
-  
+
   @Override
   public String getDefaultText(Context c) {
     return "Your drink is in preparation...";
   }
-  
+
 }

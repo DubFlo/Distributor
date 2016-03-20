@@ -44,7 +44,7 @@ import vendingmachine.components.IMachine;
 public class VendingMachineGUI extends JFrame implements IMachineGUI, TemperatureListener {
 
   private static final long serialVersionUID = 1L;
-  
+
   /**
    * Used to format the display of the temperature.
    */
@@ -302,7 +302,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
         SoundLoader.play(SoundLoader.getInstance().CLICK);
       });
     }
-    
+
     for (CoinJButton coinButton: coinButtonsList) {
       coinButton.addActionListener(e -> machine.coinInserted(coinButton.getCoin()));
     }
@@ -361,11 +361,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     final JMenuItem cupNbrItem = new JMenuItem("Cups Stock");
     cupNbrItem.addActionListener(e -> cupStockDialog());
     otherMenu.add(cupNbrItem);
-    
+
     final JMenuItem sugarNbrItem = new JMenuItem("Sugar Stock");
     sugarNbrItem.addActionListener(e -> sugarStockDialog());
     otherMenu.add(sugarNbrItem);
-    
+
     final JMenuItem spoonsNbrItem = new JMenuItem("Spoons Stock");
     spoonsNbrItem.addActionListener(e -> spoonsStockDialog());
     otherMenu.add(spoonsNbrItem);
@@ -434,7 +434,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
   @Override
   public void enableRepair(boolean bool) {
-    unstickCoins.setEnabled(bool); 
+    unstickCoins.setEnabled(bool);
   }
 
   @Override
@@ -518,7 +518,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       machine.setSugarStock(value);
     }
   }
-  
+
   /**
    * Creates a JOptionPane to change the number of spoons in Stock.
    */
@@ -533,5 +533,5 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   public void setCupText(String msg) {
     cupButton.setToolTipText(msg);
   }
-  
+
 }
