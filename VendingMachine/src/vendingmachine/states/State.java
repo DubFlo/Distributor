@@ -1,8 +1,5 @@
 package vendingmachine.states;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.components.Context;
@@ -12,8 +9,6 @@ import vendingmachine.components.Context;
  * All the substates should implement the singleton design pattern.
  */
 public abstract class State {
-
-  protected static final Logger log = LogManager.getLogger("State");
 
   /**
    * Called when the button "Cancel" is pressed.
