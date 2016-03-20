@@ -38,7 +38,7 @@ public final class Idle extends State {
       c.setTemporaryNorthText("Please remove the cup before ordering");
     } else if (d.getPrice() > c.getAmountInside()) {
       c.setTemporaryNorthText("Price: " + d.getPrice() / 100.0 + " " + Utils.EURO);
-    } else if (c.getChangeMachine().isChangePossible(c.getAmountInside() - d.getPrice())) {
+    } else if (c.isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
         if (!c.getStock().isSpoonInStock()) {
