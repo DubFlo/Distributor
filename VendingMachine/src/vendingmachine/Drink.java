@@ -1,8 +1,8 @@
 package vendingmachine;
 
 /**
- * Defines drinks objects consisting of three attributes. 
- * The attributes are a String name, an price (in cents) and a 
+ * Defines drinks objects consisting of a name, a price and a boolean "sugar". 
+ * The attributes are a String name, a price (in cents) and a 
  * boolean "sugar" to tell if the drink is likely or not to contain sugar.
  */
 public class Drink {

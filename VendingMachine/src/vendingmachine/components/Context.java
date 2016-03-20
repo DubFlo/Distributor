@@ -291,9 +291,9 @@ public class Context implements IMachine, IContext {
       log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);
       SoundLoader.play(SoundLoader.getInstance().CLING);
-      amountInside = 0;
-      machineGUI.updateInfo();
     }
+    amountInside = 0;
+    machineGUI.updateInfo();
   }
 
   /**

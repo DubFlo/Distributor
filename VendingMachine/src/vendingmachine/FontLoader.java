@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Supply a digital font which looks like a vending machine display.
+ * Supplies a digital font which looks like a vending machine display.
  * Uses the singleton design pattern to be created only once when needed (thread-safe). This
  * solution has been found on http://stackoverflow.com/a/11165975 . As explained on this link,
  * "The class [FontLoader].Loader is first accessed inside the getInstance() method, so the Loader
@@ -23,7 +23,7 @@ public final class FontLoader {
 
   /**
    * Font that looks like a vending machine display.
-   * Source: 
+   * Source: http://goo.gl/W4xrrd
    */
   public final Font DIGITAL_FONT = getFont("digitalFont.ttf");
 
