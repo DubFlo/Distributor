@@ -10,7 +10,8 @@ import javax.swing.text.DocumentFilter;
  * Creates a DocumentFilter that allows only digits (used in JTextField's).
  * Deals with the case that something is typed or something is pasted.
  * 
- * Found on the 12-02-2016 on http://stackoverflow.com/a/9478124
+ * Found on the 12-02-2016 on
+ * <a href="http://stackoverflow.com/a/9478124">http://stackoverflow.com/a/9478124</a>.
  */
 public class MyDocumentFilter extends DocumentFilter {
   @Override

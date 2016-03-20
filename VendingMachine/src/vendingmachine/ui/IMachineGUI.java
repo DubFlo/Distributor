@@ -24,17 +24,17 @@ public interface IMachineGUI {
   void setCupBool(boolean cup, boolean spoon);
 
   /**
-   * Sets a temporary north text. The north text then rebecomes the default one.
-   * 
-   * @param msg the String to display temporarily
-   */
-  void setTemporaryNorthText(String msg);
-
-  /**
    * Updates the tool tip of the change button.
    * It gets all the information about the coins waiting to be taken.
    */
   void updateChangeOutInfo();
+
+  /**
+   * Sets the tooltip text of the cup button with the specified message.
+   * 
+   * @param msg the String to put as a tooltip text of the cup
+   */
+  void setCupText(String msg);
 
   /**
    * Updates the JTextArea with the String provided by the IMachine.
@@ -42,9 +42,16 @@ public interface IMachineGUI {
   void updateInfo();
 
   /**
-   * Updates the the north text with the String provided by the IMachine.
+   * Updates the north text with the String provided by the IMachine.
    */
   void updateNorthText();
+
+  /**
+   * Sets a temporary north text. The north text then rebecomes the default one.
+   * 
+   * @param msg the String to display temporarily
+   */
+  void setTemporaryNorthText(String msg);
 
   /**
    * Updates the value of the sugar text with the String provided by the IMachine.
@@ -62,12 +69,5 @@ public interface IMachineGUI {
    * @param bool true to enable the "coins stuck repair", false to disable it
    */
   void enableRepair(boolean bool);
-
-  /**
-   * Sets the tooltip text of the cup button with the specified message.
-   * 
-   * @param msg the String to put as a tooltip text of the cup
-   */
-  void setCupText(String msg);
 
 }

@@ -45,7 +45,7 @@ public final class Utils {
 
   /**
    * Maps each Coin defined in the Coin class to the Integer 0.
-   * If the key set is empty, add all the Coin's and maps it to 0.
+   * If the key set is empty, add all the Coin's and maps them to 0.
    * 
    * @param map the map to reset/init
    */

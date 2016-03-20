@@ -14,7 +14,9 @@ import org.apache.logging.log4j.Logger;
 /**
  * Supplies ImageIcon's or BufferedImage's useful to display a vending machine.
  * Uses the singleton design pattern to be created only once when needed (thread-safe). This
- * solution has been found on http://stackoverflow.com/a/11165975 . As explained on this link,
+ * solution has been found on
+ * <a href="http://stackoverflow.com/a/11165975">http://stackoverflow.com/a/11165975</a>.
+ * As explained on this link,
  * "The class [PictureLoader].Loader is first accessed inside the getInstance() method, so the Loader
  * class loads when getInstance() is called for the first time. Further, the class loader
  * guarantees that all static initialization is complete before you get access to the class -

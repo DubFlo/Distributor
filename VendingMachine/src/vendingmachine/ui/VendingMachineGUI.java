@@ -95,11 +95,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   private final Timer textTimer;
 
   /**
-   * Initializes the fields according to the Machine specified.
-   * Associates the Machine specified and the VendingMachineGUI itself together.
+   * Initializes the fields according to the IMachine specified.
+   * Associates the IMachine specified and the VendingMachineGUI itself together.
    * The method {@code init()} must be called to display the frame.
    * 
-   * @param machine the Machine to link with the GUI
+   * @param machine the IMachine to link with the GUI
    */
   public VendingMachineGUI(IMachine machine) {
     super();
