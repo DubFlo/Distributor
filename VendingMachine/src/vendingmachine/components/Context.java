@@ -22,6 +22,10 @@ import vendingmachine.states.StuckCoin;
 import vendingmachine.ui.IMachineGUI;
 import vendingmachine.ui.TemperatureListener;
 
+/**
+ * This class defines a vending machine selling hot drinks.
+ * It consists of a Stock, a ChangeMachine and a HeatingSystem object.
+ */
 public class Context implements IMachine, IContext {
 
   private static final Logger log = LogManager.getLogger("Context");
@@ -104,16 +108,21 @@ public class Context implements IMachine, IContext {
     
     int delay;
     if (SoundLoader.getInstance().FILLING != null) {
-      delay = (int) SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000;
+      delay = (int) (SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000);
     } else {
       delay = 3000; // milliseconds
     }
     preparingTimer = new Timer(delay, e -> this.preparingOver());
-    preparingTimer.setRepeats(false);
+    preparingTimer.setRepeats(false); // makes its action only once
 
     log.info("New Vending Machine Built");
   }
 
+  /**
+   * Called at the end of the preparation of a drink.
+   * Updates all the stock values and logs all the information about the order.
+   * If no problems were created during the preparation, changes state to Idle.
+   */
   private void preparingOver() {
     final StringBuilder logMsg = new StringBuilder(100);
     logMsg.append("New order:\n\t").append(chosenDrink.getName());
@@ -144,9 +153,16 @@ public class Context implements IMachine, IContext {
     
     heatingSystem.drinkOrdered();
     chosenSugar = 0;
-    if (!state.isProblem()) {
+    if (currentProblems.isEmpty()) {
       changeState(Idle.getInstance());
     }
+  }
+
+  /**
+   * 
+   */
+  public void restartPreparingTimer() {
+    preparingTimer.restart();
   }
 
   @Override
@@ -315,14 +331,6 @@ public class Context implements IMachine, IContext {
     machineGUI.updateSugarText();
   }
 
-  @Override
-  public void setChangeBool(boolean bool) {
-    machineGUI.setChangeBool(bool);
-    if (bool) {
-      SoundLoader.play(SoundLoader.getInstance().CLING);
-    }
-  }
-
   /**
    * @param chosenDrink the new Drink that may be ordered by the client
    */
@@ -334,10 +342,16 @@ public class Context implements IMachine, IContext {
     return chosenDrink;
   }
 
-  @Override
   public void setCupBool(boolean cup, boolean spoon) {
     machineGUI.setCupBool(cup, spoon);
     cupInside = cup;
+  }
+
+  public void setChangeBool(boolean bool) {
+    machineGUI.setChangeBool(bool);
+    if (bool) {
+      SoundLoader.play(SoundLoader.getInstance().CLING);
+    }
   }
 
   @Override
@@ -360,20 +374,16 @@ public class Context implements IMachine, IContext {
     setChangeBool(false);
     final int value = Utils.totalValue(changeOut);
     if (value > 0) {
-      log.info(value/100.0 + " " + Utils.EURO + " of change taken.");
       Utils.resetCoinsMap(changeOut);
       machineGUI.updateChangeOutInfo();
-      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken.
+      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken
     }
   }
-
-  /**
-   * Simulates what happens when the client takes his cup.
-   */
+  
   @Override
   public void takeCup() {
     this.setCupBool(false, false);
-    SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken.
+    SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 
@@ -445,10 +455,6 @@ public class Context implements IMachine, IContext {
     heatingSystem.setTemperature(i);
   }
 
-  public void restartPreparingTimer() {
-    preparingTimer.restart();
-  }
-
   @Override
   public void repairStuckCoins() {
     problemSolved(StuckCoin.getInstance());
@@ -497,6 +503,13 @@ public class Context implements IMachine, IContext {
    */
   public void setChosenSugar(int chosenSugar) {
     this.chosenSugar = chosenSugar;
+  }
+
+  /**
+   * @return true if at least a coin is stuck, false otherwise
+   */
+  public boolean isACoinStuck() {
+    return currentProblems.contains(StuckCoin.getInstance());
   }
 
 }

@@ -24,7 +24,7 @@ public class Stock {
   private int sugarCubesNbr;
   private int cupsNbr;
   private int spoonsNbr;
-
+  
   /**
    * A Map that maps to each Drink its stock as an Integer.
    */
@@ -256,7 +256,7 @@ public class Stock {
     }
     final int difference = newSpoonsNbr - this.spoonsNbr;
     if (difference > 0) {
-      log.info(difference + " spoons resupplied (now " + newSpoonsNbr + " available).");
+      log.info(difference + " spoons resupplied (now " + newSpoonsNbr + " in stock).");
     } else if (difference < 0) {
       log.info(-difference + " spoons removed from the stock (now " + newSpoonsNbr + " available).");
     }

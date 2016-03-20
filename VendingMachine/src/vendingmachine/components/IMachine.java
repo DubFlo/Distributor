@@ -37,7 +37,7 @@ public interface IMachine {
   /**
    * Orders the drink specified or displays the price of the drink.
    * 
-   * @param drink the Drink that is ordered
+   * @param drink the Drink ordered
    */
   void drinkButton(Drink drink);
   
@@ -82,34 +82,65 @@ public interface IMachine {
    * @return the String message about sugar that must be displayed by default
    */
   String getSugarText();
-  
-  void setChangeBool(boolean bool);
 
-  void setCupBool(boolean cup, boolean spoon);
-
+  /**
+   * Sets the machineGUI attribute of the machine.
+   * 
+   * @param observer the UI that must be updated by the machine and its heating system
+   */
   <T extends IMachineGUI & TemperatureListener> void setUI(T observer);
   
+  /**
+   * @param bool true to enable the water supply, false to disable it
+   */
   void setWaterSupply(boolean bool);
 
+  /**
+   * @param coin the Coin whose stock value must be changed
+   * @param value the new stock value for the specified Coin
+   */
   void setCoinStock(Coin coin, int value);
 
+  /**
+   * @param drink the Drink whose stock value must be changed
+   * @param value the new stock value for the specified Drink
+   */
   void setDrinkStock(Drink drink, int value);
   
+  /**
+   * @param value the new stock value for the cups
+   */
   void setCupStock(int value);
   
+  /**
+   * @param value the new stock value for the sugar cubes
+   */
   void setSugarStock(int value);
 
+  /**
+   * @param value the new stock value for the spoons
+   */
   void setSpoonsStock(int value);
 
   /**
-   * @return true if the stocks of the machine can be currently changed, false otherwise
+   * @return true if the stocks can be currently changed, false otherwise
    */
   boolean isAvailableForMaintenance();
 
-  void setTemperature(int i);
+  /**
+   * @param temperature the new temperature to set
+   */
+  void setTemperature(int temperature);
 
+  /**
+   * Removes the StuckCoin Problem from the set of problems.
+   */
   void repairStuckCoins();
   
+  /**
+   * @param coin the Coin that may be accepted
+   * @return true if the Coin is accepted by the machine, false otherwise
+   */
   boolean isCoinAccepted(Coin coin);
 
 }

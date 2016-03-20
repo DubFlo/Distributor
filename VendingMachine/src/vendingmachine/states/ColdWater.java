@@ -14,7 +14,6 @@ public final class ColdWater extends Problem {
     return INSTANCE;
   }
 
-  // Singleton design pattern
   private ColdWater() {}
 
   @Override
