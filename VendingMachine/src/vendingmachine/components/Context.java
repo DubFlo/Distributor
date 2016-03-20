@@ -324,7 +324,7 @@ public class Context implements IMachine, IContext {
   public void giveChange(int amount) {
     if (amount != 0) {
       changeMachine.giveChange(amount, this);
-      log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
+      log.info(amount / 100.0 + " " + Utils.EURO + " of change given back.");
       setChangeBool(true);
     }
     amountInside = 0;
@@ -347,7 +347,7 @@ public class Context implements IMachine, IContext {
   public void insertCoin(Coin coin) {
     amountInside += coin.VALUE;
     changeMachine.insertCoin(coin);
-    log.info(coin.TEXT + " inserted (" + amountInside/100.0 + " " + Utils.EURO + " in total).");
+    log.info(coin.TEXT + " inserted (" + amountInside / 100.0 + " " + Utils.EURO + " in total).");
     machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
     machineGUI.updateInfo();
   }
@@ -429,7 +429,7 @@ public class Context implements IMachine, IContext {
       sb.append(coin.TEXT).append(": ");
       sb.append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" " + Utils.EURO + ".</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut) / 100.0).append(" " + Utils.EURO + ".</html>");
     return sb.toString();
   }
 

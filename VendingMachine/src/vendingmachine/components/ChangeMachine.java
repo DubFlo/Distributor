@@ -104,17 +104,17 @@ public class ChangeMachine {
       throw new IllegalArgumentException("Can't give change on negative amount");
     }
     coinsStockTemp = Utils.copy(coinsStock);
-    int i = amount;
+    int remainder = amount;
     for (Coin coin: Coin.COINS) {
-      while (i >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
+      while (remainder >= coin.VALUE && coinsStockTemp.get(coin) > 0) {
         coinsStockTemp.put(coin, coinsStockTemp.get(coin) - 1);
-        i -= coin.VALUE;
+        remainder -= coin.VALUE;
       }
     }
-    if (i != 0) {
-      log.warn("Can not give " + amount/100.0 + " " + Utils.EURO + " of change.");
+    if (remainder != 0) {
+      log.warn("Can not give " + amount / 100.0 + " " + Utils.EURO + " of change.");
     }
-    return i == 0;
+    return remainder == 0;
   }
 
   /**

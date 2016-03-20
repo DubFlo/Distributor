@@ -85,10 +85,10 @@ public class HeatingSystem {
     if (waterSupply) {
       if (heating) {
         //setTemperature(temperature + diffTemperature);
-        setTemperature(temperature - 100*0.6*(temperature - 150)/(4.18*2500));
+        setTemperature(temperature - 100 * 0.6 * (temperature - 150) / (4.18 * 2500));
         //http://www.engineeringtoolbox.com/convective-heat-transfer-d_430.html
       } else {
-        setTemperature(temperature - 100*0.6*(temperature - 20)/(4.18*2500));
+        setTemperature(temperature - 100 * 0.6 * (temperature - 20 )/ (4.18 * 2500));
       }
     }
   }
@@ -100,7 +100,7 @@ public class HeatingSystem {
   
   public void drinkOrdered() {
     if (waterSupply) {
-      setTemperature((4*temperature + RUNNING_WATER_TEMPERATURE)/5);
+      setTemperature((4 * temperature + RUNNING_WATER_TEMPERATURE) / 5);
       updateState();
     }
   }

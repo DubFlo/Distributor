@@ -60,8 +60,7 @@ public final class Idle extends State {
 
     if (c.getAmountInside() > 0) {
       msg = "Please make your choice" + " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
-    }
-    else if (c.areDrinksFree()) {
+    } else if (c.areDrinksFree()) {
       msg = "Please make your choice, all is FREE";
     }
     return msg;
