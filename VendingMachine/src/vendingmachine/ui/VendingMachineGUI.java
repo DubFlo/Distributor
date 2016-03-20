@@ -63,7 +63,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   private final IMachine machine;
 
   /*
-   * The labels and text areas of the GUI.
+   * The labels and text area of the GUI.
    */
   private final JLabel northLabel;
   private final JLabel sugarLabel;
