@@ -21,11 +21,22 @@ public class ChangeMachine {
 
   private static final Logger log = LogManager.getLogger("ChangeMachine");
   
+  /**
+   * A Map of the coins stock, mapping each Coin to its stock.
+   */
   private final Map<Coin, Integer> coinsStock;
+  
+  /**
+   * A Map mapping each Coin to whether or not it is accepted.
+   */
   private final Map<Coin, Boolean> acceptedCoins;
   
   //private final Change change;
   
+  /**
+   * Used by {@code isChangePossible(int} to use the computation done in
+   * {@code giveChange(int)}. Can not be accessed from the outside.
+   */
   private Map<Coin, Integer> coinsStockTemp;
 
   /**
@@ -35,7 +46,7 @@ public class ChangeMachine {
    * {@code coinsStock} or {@code acceptedCoins} do not list all the coins of Coin.
    * 
    * @param coinsStock a Map that maps each Coin to its stock value
-   * @param acceptedCoins a Map that tells if each Coin is accepted or not with a boolean
+   * @param acceptedCoins a Map that tells if each Coin is accepted or not
    */
   public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
     for (Integer i: coinsStock.values()) {
@@ -59,31 +70,24 @@ public class ChangeMachine {
   /**
    * Gives change on the amount specified and updates the coins stock accordingly.
    * If it is not possible, throws an IllegalArgumentException.
-   * Returns a Map of the Coin's given back (mapping each Coin to the number of times it is given)
+   * Returns a Map of the Coin's given back (mapping each Coin to the number of times it is given).
+   * Updates the specified IContext of the coins that are given back.
    * 
    * @param amount the amount to give change on
+   * @param context the IContext to notify of the coins given
    * @return a Map of the money that is given back.
    */
   public Map<Coin, Integer> giveChange(int amount, IContext context) {
     if (!isChangePossible(amount)) {
       throw new IllegalArgumentException();
     }
-    Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
+    final Map<Coin, Integer> moneyToGive = new Hashtable<Coin, Integer>();
     for (Coin coin: Coin.COINS) {
       moneyToGive.put(coin, coinsStock.get(coin) - coinsStockTemp.get(coin));
       coinsStock.put(coin, coinsStockTemp.get(coin));
     }
     context.addChangeOut(moneyToGive);
     return moneyToGive;
-  }
-
-  /**
-   * Adds the specified coin to the stock.
-   * 
-   * @param coin the Coin to add to the stock
-   */
-  public void insertCoin(Coin coin) {
-    coinsStock.put(coin, coinsStock.get(coin) + 1);
   }
 
   /**
@@ -107,7 +111,16 @@ public class ChangeMachine {
       }
     }
     
-    return (amount == 0);
+    return amount == 0;
+  }
+
+  /**
+   * Adds the specified coin to the stock.
+   * 
+   * @param coin the Coin to add to the stock
+   */
+  public void insertCoin(Coin coin) {
+    coinsStock.put(coin, coinsStock.get(coin) + 1);
   }
 
   /**
@@ -117,12 +130,20 @@ public class ChangeMachine {
   public boolean isCoinAccepted(Coin coin) {
     return acceptedCoins.get(coin);
   }
+  
+  /**
+   * @param coin the Coin whose value must be known
+   * @return the stock value of the specified Coin
+   */
+  public int getCoinsStock(Coin coin) {
+    return coinsStock.get(coin);
+  }
 
   /**
    * @return a String containing all the information about the current coins.
    */
   public Object getInfo() {
-    final StringBuilder sb = new StringBuilder();
+    final StringBuilder sb = new StringBuilder(160);
     sb.append("Coins:\n");
     for (Coin coin: Coin.COINS) {
       sb.append(coin.TEXT).append(": ")
@@ -151,9 +172,6 @@ public class ChangeMachine {
     }
     
     coinsStock.put(coin, value);
-  }
-  public int getCoinsStock(Coin coin) {
-    return coinsStock.get(coin);
   }
   
 }
