@@ -124,6 +124,7 @@ public class Context implements IMachine, IContext {
    * If no problems were created during the preparation, changes state to Idle.
    */
   private void preparingOver() {
+    giveChange(amountInside - chosenDrink.getPrice());
     final StringBuilder logMsg = new StringBuilder(100);
     logMsg.append("New order:\n\t").append(chosenDrink.getName());
     stock.removeDrink(chosenDrink);

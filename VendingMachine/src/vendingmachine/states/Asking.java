@@ -36,7 +36,6 @@ public final class Asking extends State {
    */
   @Override
   public void confirm(Context c) {
-    c.giveChange(c.getAmountInside() - c.getChosenDrink().getPrice());
     c.changeState(Preparing.getInstance());
   }
 
