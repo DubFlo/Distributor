@@ -17,6 +17,7 @@ import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.IContext;
 import vendingmachine.components.Stock;
+import vendingmachine.states.Asking;
 import vendingmachine.states.Idle;
 import vendingmachine.states.NoCup;
 import vendingmachine.states.NoWater;
@@ -29,7 +30,7 @@ public class ContextTest {
   private Hashtable<Coin, Integer> coinsStock;
   private Hashtable<Coin, Boolean> acceptedCoins;
   private ChangeMachine cm;
-  private static Context c;
+  private Context c;
   private int coinStuck;
   private Stock stock;
   
@@ -39,7 +40,7 @@ public class ContextTest {
   }
   
   @Before 
-  public void setUp() {
+  public void setUp() { 
     //init ChangeMachine
     int[] coinsStockTab = {1,1,0,3,0,0,4,1};
     coinsStock = new Hashtable<Coin,Integer>();
@@ -82,17 +83,18 @@ public class ContextTest {
   
   @Test
   public void testCoinInserted() {
-    //IDLE
+    //Idle
     assertEquals(c.getAmountInside(),0);
     c.coinInserted(Coin.COIN100);
     assertEquals(c.getAmountInside(),100);
     assertEquals(c.getChangeMachine().getCoinsStock(Coin.COIN100),2);
-    //Preparing
-    c.changeState(Preparing.getInstance());
+    //Asking
+    c.setChosenDrink(c.getStock().getDrinks().get(1));
+    c.changeState(Asking.getInstance());
     c.coinInserted(Coin.COIN200);
     assertEquals("Nothing should have changed",1,c.getChangeMachine().getCoinsStock(Coin.COIN200));
     //StuckCoin
-    c.changeState(StuckCoin.getInstance());
+    c.addProblem(StuckCoin.getInstance());
     c.coinInserted(Coin.COIN5);
     assertEquals("Nothing should have changed",0,c.getChangeMachine().getCoinsStock(Coin.COIN5));
   }
