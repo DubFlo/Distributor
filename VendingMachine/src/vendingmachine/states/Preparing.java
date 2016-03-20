@@ -37,6 +37,15 @@ public final class Preparing extends State {
     super.coinInserted(coin, c);
     c.setTemporaryNorthText("Wait for the end of the preparation...");
   }
+  
+  /**
+   * Warns the user it is too late to cancel the order.
+   * Does not give back change.
+   */
+  @Override
+  public void cancel(Context c) {
+    c.setTemporaryNorthText("Too late to cancel the order!");
+  }
 
   @Override
   public String getDefaultText(Context c) {
