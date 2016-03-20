@@ -119,10 +119,10 @@ public class Context implements IMachine, IContext {
     stock.removeDrink(chosenDrink);
     logMsg +=  " (" + stock.getDrinkQty(chosenDrink) + " remaining);\n";
     
-    if (chosenSugar > 0) {
+    if (chosenDrink.isSugar()) {
       stock.removeSugarCubes(chosenSugar);
+      logMsg += "\tWith " + chosenSugar + " sugar cubes (" + stock.getSugarCubesNbr() + " remaining);\n";
     }
-    logMsg += "\tWith " + chosenSugar + " sugar cubes (" + stock.getSugarCubesNbr() + " remaining);\n";
     
     boolean spoon = false;
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
@@ -131,7 +131,7 @@ public class Context implements IMachine, IContext {
       logMsg += "\tWith a spoon (" + stock.getSpoonsNbr() + " remaining);\n";
     }
     
-    stock.removeCup();
+    stock.removeCup(this);
     logMsg += "\t" + stock.getCupsNbr() + " cups remaining.";
 
     setCupBool(true, spoon);

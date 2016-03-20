@@ -55,13 +55,6 @@ public class Stock {
   }
 
   /**
-   * @return an ArrayList of the drinks the machine can dispense
-   */
-  public List<Drink> getDrinks() {
-    return new ArrayList<Drink>(drinkQty.keySet());
-  }
-
-  /**
    * @return true if there is a cup in stock, false otherwise
    */
   public boolean isCupInStock() {
@@ -94,11 +87,14 @@ public class Stock {
   /**
    * Removes one cup from the stock.
    */
-  public void removeCup() {
+  public void removeCup(IContext context) {
     if (isCupInStock()) {
       cupsNbr -= 1;
     } else {
       throw new IllegalArgumentException("Can't remove a cup when none in stock");
+    }
+    if (!isCupInStock()) {
+      context.addProblem(NoCup.getInstance());
     }
   }
 
@@ -137,6 +133,13 @@ public class Stock {
       throw new IllegalArgumentException(
           "Can't remove " + i + " sugar cubes; only " + sugarCubesNbr + " remaining.");
     }
+  }
+
+  /**
+   * @return an List of the drinks the machine can dispense
+   */
+  public List<Drink> getDrinks() {
+    return new ArrayList<Drink>(drinkQty.keySet());
   }
 
   /**
