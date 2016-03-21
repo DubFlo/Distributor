@@ -35,6 +35,9 @@ public class HeatingSystem {
     timer.start();
   }
 
+  /**
+   * @return the current temperature
+   */
   public double getTemperature() {
     return this.temperature;
   }
@@ -43,16 +46,20 @@ public class HeatingSystem {
     this.observer = observer;
   }
 
+  /**
+   * @param temperature the new temperature to set
+   */
   public void setTemperature(double temperature) {
     this.temperature = temperature;
     if (waterSupply) {
       updateState();
     }
-    if (observer != null) { 
-      observer.setTemperature(this.temperature);
-    }
+    observer.setTemperature(this.temperature);
   }
 
+  /**
+   * @param bool true to enable the water supply, false to disable it
+   */
   public void setWaterSupply(boolean bool) {
     if (!waterSupply && bool) {
       this.waterSupply = bool;
@@ -67,6 +74,10 @@ public class HeatingSystem {
     }
   }
 
+  /**
+   * Updates the state of the HeatingSystem based on the current temperature.
+   * Notifies the IContext associated if the temperature becomes too cold.
+   */
   private void updateState() {
     if (heating && temperature > MAX_TEMPERATURE) {
       heating = false;
@@ -81,6 +92,10 @@ public class HeatingSystem {
     }
   }
 
+  /**
+   * Simulates the change of temperature happening in one second.
+   * ++
+   */
   private void updateTemperature() {
     if (waterSupply) {
       if (heating) {
@@ -92,12 +107,20 @@ public class HeatingSystem {
       }
     }
   }
-
+  
+  /**
+   * @return true if the water supply is enabled, false otherwise
+   */
   public boolean isWaterSupplyEnabled() {
     return waterSupply;
   }
 
   
+  /**
+   * Simulates the cooling of the water caused by the ordering of a drink.
+   * A drink is supposed to be around 40 cl, and the water container could hold 2 l.
+   * So 1/5 of the water container is replaced by running water.
+   */
   public void drinkOrdered() {
     if (waterSupply) {
       setTemperature((4 * temperature + RUNNING_WATER_TEMPERATURE) / 5);
@@ -105,18 +128,4 @@ public class HeatingSystem {
     }
   }
   
-}
-  
-  /*
-   * if (heating) {
-        timeWarming += 1;
-        setTemperature(temperature + (-10)
-            * (Math.exp(-0.0405 * (timeWarming + 1)) - Math.exp(-0.0405 * timeWarming)));
-        // http://luciole.ca/gilles/mat265/chap3/var-temp.html
-      } else {
-        timeCooling += 1;
-        setTemperature(temperature - 75 * Math.pow((61 / 75.0), (timeCooling / 400.0))
-            * (1 - Math.pow(61 / 75.0, 1 / 400.0)));
-      }
-      */
-   
+} 

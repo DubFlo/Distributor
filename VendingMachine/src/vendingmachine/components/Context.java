@@ -339,6 +339,11 @@ public class Context implements IMachine, IContext {
     return changeMachine.isChangePossible(amount);
   }
 
+  @Override
+  public boolean isCoinAccepted(Coin coin) {
+    return changeMachine.isCoinAccepted(coin);
+  }
+
   /**
    * Simulates the insertion of the specified Coin.
    * 
@@ -374,6 +379,20 @@ public class Context implements IMachine, IContext {
   }
 
   /**
+   * @return the quantity of sugar chosen by the client
+   */
+  public int getChosenSugar() {
+    return chosenSugar;
+  }
+
+  /**
+   * @param chosenSugar the new quantity of sugar chosen by the client
+   */
+  public void setChosenSugar(int chosenSugar) {
+    this.chosenSugar = chosenSugar;
+  }
+
+  /**
    * Tells the UI to display or not the cup, with or without a spoon.
    * The {@code spoon} parameter is useless if {@code cup} is false.
    * 
@@ -395,12 +414,6 @@ public class Context implements IMachine, IContext {
   }
 
   @Override
-  public <T extends IMachineGUI & TemperatureListener> void setUI(T machineGUI) {
-    this.machineGUI = machineGUI;
-    heatingSystem.setObserver(machineGUI);
-  }
-
-  @Override
   public void takeChange() {
     setChangeBool(false);
     final int value = Utils.totalValue(changeOut);
@@ -419,6 +432,12 @@ public class Context implements IMachine, IContext {
   @Override
   public void setWaterSupply(boolean bool) {
     heatingSystem.setWaterSupply(bool);
+  }
+
+  @Override
+  public <T extends IMachineGUI & TemperatureListener> void setUI(T machineGUI) {
+    this.machineGUI = machineGUI;
+    heatingSystem.setObserver(machineGUI);
   }
 
   @Override
@@ -465,6 +484,24 @@ public class Context implements IMachine, IContext {
   }
 
   @Override
+  public void setCupStock(int value) {
+    stock.setCupStock(value, this);
+    machineGUI.updateInfo();
+  }
+
+  @Override
+  public void setSugarStock(int value) {
+    stock.setSugarStock(value);
+    machineGUI.updateInfo();
+  }
+
+  @Override
+  public void setSpoonsStock(int value) {
+    stock.setSpoonsStock(value);
+    machineGUI.updateInfo();
+  }
+
+  @Override
   public boolean isAvailableForMaintenance() {
     return state.isAvailableForMaintenance();
   }
@@ -488,22 +525,11 @@ public class Context implements IMachine, IContext {
     machineGUI.enableRepair(b);
   }
 
-  @Override
-  public void setCupStock(int value) {
-    stock.setCupStock(value, this);
-    machineGUI.updateInfo();
-  }
-
-  @Override
-  public void setSugarStock(int value) {
-    stock.setSugarStock(value);
-    machineGUI.updateInfo();
-  }
-
-  @Override
-  public void setSpoonsStock(int value) {
-    stock.setSpoonsStock(value);
-    machineGUI.updateInfo();
+  /**
+   * @return true if at least a coin is stuck, false otherwise
+   */
+  public boolean isACoinStuck() {
+    return currentProblems.contains(StuckCoin.getInstance());
   }
 
   /**
@@ -511,32 +537,6 @@ public class Context implements IMachine, IContext {
    */
   public Map<Coin, Integer> getStuckCoins() {
     return stuckCoins;
-  }
-
-  @Override
-  public boolean isCoinAccepted(Coin coin) {
-    return changeMachine.isCoinAccepted(coin);
-  }
-
-  /**
-   * @return the quantity of sugar chosen by the client
-   */
-  public int getChosenSugar() {
-    return chosenSugar;
-  }
-
-  /**
-   * @param chosenSugar the new quantity of sugar chosen by the client
-   */
-  public void setChosenSugar(int chosenSugar) {
-    this.chosenSugar = chosenSugar;
-  }
-
-  /**
-   * @return true if at least a coin is stuck, false otherwise
-   */
-  public boolean isACoinStuck() {
-    return currentProblems.contains(StuckCoin.getInstance());
   }
 
 }

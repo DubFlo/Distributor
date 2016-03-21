@@ -47,7 +47,7 @@ public class ContextTest {
   
   @Before 
   public void setUp() { 
-    //init ChangeMachine
+    //initialize ChangeMachine
     int[] coinsStockTab = {1,1,0,5,5,0,4,1};
     coinsStock = new Hashtable<Coin,Integer>();
     boolean[] acceptedCoinsTab = {false, true, true, true, true, true, false, true};
@@ -58,7 +58,7 @@ public class ContextTest {
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
     cm = new ChangeMachine(coinsStock,acceptedCoins);
-    //init Stock
+    //initialize Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
     boolean[] drinkSugarTab = {true,true,true,true,false};
     int[] drinkPriceTab = {30,40,70,0,20};
@@ -72,11 +72,11 @@ public class ContextTest {
     }
      
   
-    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty)
+    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, Map<Drink, Integer> drinkQty)
     
     //coinStuckProb
     coinStuck = 0;
-    //init new context
+    //initialize new context
     c = new Context(cm,stock,coinStuck);
     c.setUI(new EmptyUI());  
   }
@@ -107,7 +107,8 @@ public class ContextTest {
     c.addProblem(StuckCoin.getInstance());
     c.coinInserted(Coin.COIN5);
     assertEquals("Nothing should have changed",0,cm.getCoinsStock(Coin.COIN5));
-  }
+  //verif monnaie coincée
+    }
   @Test
   public void testAddProblem() {
     c.addProblem(StuckCoin.getInstance());
@@ -139,8 +140,8 @@ public class ContextTest {
     assertEquals(0,c.getAmountInside());
   }
   @Test
-  public void areDRinksFree() {
-    assertFalse(c.areDrinksFree());//Il faut recréer un context pour mettre tous les prix à 0
+  public void testAreDrinksFree() {
+    assertFalse(c.areDrinksFree());
   }
   @Test
   public void testPreparingOver() throws InterruptedException {
@@ -165,12 +166,15 @@ public class ContextTest {
   }
   @Test
   public void testDrinkButton() {
+    //Idle
     c.coinInserted(Coin.COIN20);
     c.drinkButton(c.getDrinks().get(2));
     assertEquals(c.getState(), Idle.getInstance());
     c.coinInserted(Coin.COIN50);
     c.drinkButton(c.getDrinks().get(2));
     assertEquals(c.getState(),Asking.getInstance());
+    //StuckCoin
+
   }
-;
+  
 }
