@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.awt.event.ActionEvent;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.swing.Timer;
 
 import org.junit.Before;
@@ -46,9 +48,9 @@ public class ContextTest {
   @Before 
   public void setUp() { 
     //init ChangeMachine
-    int[] coinsStockTab = {1,1,0,3,0,0,4,1};
+    int[] coinsStockTab = {1,1,0,5,5,0,4,1};
     coinsStock = new Hashtable<Coin,Integer>();
-    boolean[] acceptedCoinsTab = {false, true, false, true, false, true, true, true};
+    boolean[] acceptedCoinsTab = {false, true, true, true, true, true, false, true};
     acceptedCoins = new Hashtable<Coin, Boolean>();
 
     for (int i = 0; i < 8 ; i++) {
@@ -58,11 +60,11 @@ public class ContextTest {
     cm = new ChangeMachine(coinsStock,acceptedCoins);
     //init Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
-    boolean[] drinkSugarTab = {true,true,false,true,true};
-    int[] drinkPriceTab = {30,40,80,0,20};
+    boolean[] drinkSugarTab = {true,true,true,true,false};
+    int[] drinkPriceTab = {30,40,70,0,20};
     int[] drinkStockTab = {0,5,2,3,1};
     Drink[] drinkTab = new Drink[5];
-    Map<Drink,Integer> drinkQty = new Hashtable<Drink,Integer>();
+    Map<Drink,Integer> drinkQty = new LinkedHashMap<Drink,Integer>();
    
     for (int i = 0; i < drinkNameTab.length; i++) {
       drinkTab[i] = new Drink(drinkNameTab[i],drinkSugarTab[i],drinkPriceTab[i]);
@@ -70,7 +72,7 @@ public class ContextTest {
     }
      
   
-    stock = new Stock(5,4,2,drinkQty); //(sugarCubesNbr, cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty)
+    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty)
     
     //coinStuckProb
     coinStuck = 0;
@@ -130,8 +132,8 @@ public class ContextTest {
   }
   @Test
   public void testGiveChange() {
+    c.changeState(Idle.getInstance()); 
     c.insertCoin(Coin.COIN50);
-    c.giveChange(-15);
     assertEquals(50,c.getAmountInside());
     c.giveChange(25);
     assertEquals(0,c.getAmountInside());
@@ -142,16 +144,33 @@ public class ContextTest {
   }
   @Test
   public void testPreparingOver() throws InterruptedException {
-    int oldStock = c.getStock().getDrinkQty(c.getDrinks().get(1));
-    
+    int oldStock = c.getStock().getSugarCubesNbr();
+    int old = c.getStock().getDrinkQty(c.getDrinks().get(1));
+    assertEquals(c.getState(),Idle.getInstance());
     c.coinInserted(Coin.COIN100);
-    c.setChosenDrink(c.getDrinks().get(1));
-    c.changeState(Asking.getInstance());
-    c.setChosenSugar(2);
-    c.changeState(Preparing.getInstance());
-    Thread.sleep(35000);
-    assertEquals(c.getStock().getDrinkQty(c.getDrinks().get(1)),oldStock);
+    assertEquals(c.getAmountInside(),100);
+    c.drinkButton(c.getDrinks().get(1));
+    c.more();
+    c.more();
+    c.confirm();
+    assertEquals(c.getState(),Preparing.getInstance());
+    Thread.sleep(3500);
+    assertEquals(c.getState(),Idle.getInstance());
+    assertEquals(oldStock-2,c.getStock().getSugarCubesNbr());
+    assertEquals(old-1,c.getStock().getDrinkQty(c.getDrinks().get(1)));
+  }
+  @Test
+  public void testConfirm() {
     
   }
-
+  @Test
+  public void testDrinkButton() {
+    c.coinInserted(Coin.COIN20);
+    c.drinkButton(c.getDrinks().get(2));
+    assertEquals(c.getState(), Idle.getInstance());
+    c.coinInserted(Coin.COIN50);
+    c.drinkButton(c.getDrinks().get(2));
+    assertEquals(c.getState(),Asking.getInstance());
+  }
+;
 }
