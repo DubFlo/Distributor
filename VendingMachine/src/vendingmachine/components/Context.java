@@ -428,8 +428,11 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void takeCup() {
-    this.setCupBool(false, false);
-    log.info("Cup of " + chosenDrink.getName() + " taken.");
+    if (cupInside) {
+      this.setCupBool(false, false);
+      machineGUI.setTemporaryNorthText("Have a nice day!");
+      log.info("Cup of " + chosenDrink.getName() + " taken.");
+    }
   }
 
   @Override
