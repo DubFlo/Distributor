@@ -27,7 +27,7 @@ public class ChangeMachine {
    * Throws an IllegalArgumentException if {@code acceptedCoins}
    * do not list all the coins of Coin.
    * 
-   * @param coinsStock a Map that maps each Coin to its stock value
+   * @param change a Change that deals with the stock of coins
    * @param acceptedCoins a Map that tells if each Coin is accepted or not
    */
   public ChangeMachine(Change change, Map<Coin, Boolean> acceptedCoins) {

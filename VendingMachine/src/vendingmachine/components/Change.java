@@ -27,6 +27,9 @@ public class Change {
    */
   private Map<Coin, Integer> coinsStockTemp;
   
+  /**
+   * @param coinsStock
+   */
   public Change(Map<Coin, Integer> coinsStock) {
     for (Integer i: coinsStock.values()) {
       Utils.checkPositiveIntIllegal(i, "stock of coins");

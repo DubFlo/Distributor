@@ -141,7 +141,7 @@ public class HeatingSystem {
       heating = true;
     }
     
-    if (context.getState().isProblem() && temperature >= COLD_LIMIT) {
+    if (temperature >= COLD_LIMIT) {
       context.problemSolved(ColdWater.getInstance());
     } else if (context.getState() != ColdWater.getInstance() && temperature < COLD_LIMIT) {
       context.addProblem(ColdWater.getInstance());
