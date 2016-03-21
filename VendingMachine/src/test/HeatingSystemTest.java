@@ -17,6 +17,7 @@ public class HeatingSystemTest {
   public static void setup() {
     c = new EmptyContext();
     heatSys = new HeatingSystem(c);
+    heatSys.setObserver(new EmptyUI());
   }
   
   @Test
@@ -47,12 +48,12 @@ public class HeatingSystemTest {
 
   @Ignore
   public void testUpdate () throws InterruptedException {
-    heatSys.setTemperature(96.1);
+    heatSys.setTemperature(88.1);
     Thread.sleep(2500);
-    assertEquals (95,heatSys.getTemperature(),0.3);
+    assertTrue (88.1 < heatSys.getTemperature());
     heatSys.setTemperature(110);
     Thread.sleep(250);
-    assertEquals(110, heatSys.getTemperature(),0.02);
+    assertTrue(110 > heatSys.getTemperature());
     
   }
   @Test
