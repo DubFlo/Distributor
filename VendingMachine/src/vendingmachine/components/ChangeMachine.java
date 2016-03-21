@@ -50,9 +50,7 @@ public class ChangeMachine {
    */
   public ChangeMachine(Map<Coin, Integer> coinsStock, Map<Coin, Boolean> acceptedCoins) {
     for (Integer i: coinsStock.values()) {
-      if (i < 0) {
-        throw new IllegalArgumentException("coinsStock values can not be negative");
-      }
+      Utils.checkPositiveIntIllegal(i, "stock of coins");
     }
     if (!coinsStock.keySet().containsAll(Coin.COINS)) {
       throw new IllegalArgumentException("coinsStock has to list all the coins defined in Coin");
@@ -70,8 +68,8 @@ public class ChangeMachine {
   /**
    * Gives change on the amount specified and updates the coins stock accordingly.
    * If it is not possible, throws an IllegalArgumentException.
-   * Returns a Map of the Coin's given back (mapping each Coin to the number of times it is given).
-   * Updates the specified IContext of the coins that are given back.
+   * Returns a Map of the Coin's given back (mapping each Coin to the number of times
+   * it is given). Updates the specified IContext of the coins that are given back.
    * 
    * @param amount the amount to give change on
    * @param context the IContext to notify of the coins given
@@ -100,9 +98,7 @@ public class ChangeMachine {
    * @return true if change on the amount is possible, false otherwise
    */
   public boolean isChangePossible(int amount) {
-    if (amount < 0) {
-      throw new IllegalArgumentException("Can't give change on negative amount");
-    }
+    Utils.checkPositiveIntIllegal(amount, "the amount to give change on");
     coinsStockTemp = Utils.copy(coinsStock);
     int remainder = amount;
     for (Coin coin: Coin.COINS) {
@@ -164,15 +160,8 @@ public class ChangeMachine {
    * @param value the new value for the {@code coin} (must be positive)
    */
   public void setCoinStock(Coin coin, int value) {
-    if (value < 0) {
-      throw new IllegalArgumentException("The stock value can't be negative");
-    }
-    final int difference = value - coinsStock.get(coin);
-    if (difference > 0) {
-      log.info(difference + " \"" + coin.TEXT + "\" coin(s) resupplied.");
-    } else if (difference < 0) {
-      log.info(-difference + " \"" + coin.TEXT + "\" coin(s) removed from the stock.");
-    }
+    Utils.checkPositiveIntIllegal(value, "stock of " + coin.TEXT + " coins");
+    Utils.logChange(value - coinsStock.get(coin), value, "\"" + coin.TEXT + "\" coin(s)");
     
     coinsStock.put(coin, value);
   }

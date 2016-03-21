@@ -301,8 +301,8 @@ public class Configuration extends JFrame {
         final int price = Integer.parseInt(drinksPrices[i].getText());
         final int stock = Integer.parseInt(drinksStocks[i].getText());
         Utils.checkName(name);
-        Utils.checkPositiveInt(price);
-        Utils.checkPositiveInt(stock);
+        Utils.checkPositiveIntFormat(price);
+        Utils.checkPositiveIntFormat(stock);
         final Drink d = new Drink(name, drinksSugar[i].isSelected(), price);
         drinkQty.put(d, stock);
       }
@@ -318,7 +318,7 @@ public class Configuration extends JFrame {
     try {
       for (Coin coin: Coin.COINS) {
         final int stock = Integer.parseInt(coinsStockValues.get(coin).getText());
-        Utils.checkPositiveInt(stock);
+        Utils.checkPositiveIntFormat(stock);
         coinsStock.put(coin, stock);
         coinsAccepted.put(coin, acceptedCoinsBoxes.get(coin).isSelected());
       }
@@ -337,9 +337,9 @@ public class Configuration extends JFrame {
       sugarCubesNbr = Integer.parseInt(sugarCubesNbrValue.getText());
       cupsNbr = Integer.parseInt(cupsNbrValue.getText());
       spoonsNbr = Integer.parseInt(spoonsNbrValue.getText());
-      Utils.checkPositiveInt(sugarCubesNbr);
-      Utils.checkPositiveInt(cupsNbr);
-      Utils.checkPositiveInt(spoonsNbr);
+      Utils.checkPositiveIntFormat(sugarCubesNbr);
+      Utils.checkPositiveIntFormat(cupsNbr);
+      Utils.checkPositiveIntFormat(spoonsNbr);
     } catch (NumberFormatException e) {
       problemLabel.setText(getProblemText("stock"));
       this.pack();

@@ -3,6 +3,9 @@ package vendingmachine;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * This class defines static methods useful to a vending machine application.
  * This class is final and is not instantiable.
@@ -13,6 +16,8 @@ public final class Utils {
    * Unicode code for the Euro symbol.
    */
   public static final String EURO = "\u20ac";
+
+  private static final Logger log = LogManager.getLogger("Utils");
   
   /**
    * Returns the total amount stored in a Map.
@@ -60,10 +65,25 @@ public final class Utils {
    * If it is not positive, throws a NumberFormatException.
    * 
    * @param i the int to check
+   * @throws NumberFormatException if the int {@code i} is strictly negative
    */
-  public static void checkPositiveInt(int i) {
+  public static void checkPositiveIntFormat(int i) {
     if (i < 0) {
-      throw new NumberFormatException();
+      throw new NumberFormatException("Number can not be stricly negative.");
+    }
+  }
+  
+  /**
+   * Checks if an integer is positive.
+   * If it is not positive, throws a IllegalArgumentException.
+   * 
+   * @param i the int to check
+   * @throws IllegalArgumentException if the int {@code i} is strictly negative
+   */
+  public static void checkPositiveIntIllegal(int i, String element) {
+    if (i < 0) {
+      throw new IllegalArgumentException(
+          "The value of " + element + " can not be stricty negative.");
     }
   }
 
@@ -99,6 +119,23 @@ public final class Utils {
     PictureLoader.getInstance();
     SoundLoader.getInstance();
     FontLoader.getInstance();
+  }
+  
+  /**
+   * Logs a message indicating a change in stock of the {@code part} specified.
+   * The {@code difference} indicates how much has been resupplied (if positive)
+   * or removed (if negative). The {@code value} is the new value of the part.
+   * 
+   * @param difference the difference of stock from the previous value
+   * @param value the new value in stock
+   * @param part the String name of the element whose stock has been changed
+   */
+  public static void logChange(int difference, int value, String part) {
+    if (difference > 0) {
+      log.info(difference + " " + part + " resupplied (" + value + " in stock).");
+    } else if (difference < 0) {
+      log.info(-difference + " " + part + " removed from the stock (" + value + " remaining).");
+    }
   }
 
   private Utils() {}

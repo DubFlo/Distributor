@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
+import vendingmachine.SoundLoader;
 import vendingmachine.Utils;
 import vendingmachine.states.Idle;
 import vendingmachine.states.NoCup;
@@ -119,7 +120,9 @@ public class Context implements IMachine, IContext {
       currentProblems.add(NoCup.getInstance());
     }
 
-    preparingTimer = new Timer(3000, e -> this.preparingOver());
+    preparingTimer = new Timer(
+        (int) (SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000),
+        e -> this.preparingOver());
     preparingTimer.setRepeats(false); // makes its action only once
 
     log.info("New Vending Machine Built");

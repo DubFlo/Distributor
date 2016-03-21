@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Drink;
+import vendingmachine.Utils;
 import vendingmachine.states.NoCup;
 
 /**
@@ -15,9 +16,7 @@ import vendingmachine.states.NoCup;
  * (sugar cubes, cups, spoons and drinks).
  */
 public class Stock {
-
-  private static final Logger log = LogManager.getLogger("Stock");
-
+  
   /*
    * The number of sugar, cups and spoons in stock.
    */
@@ -40,13 +39,11 @@ public class Stock {
    * @param drinkQty a Map mapping each Drink to its stock value
    */
   public Stock(int sugarCubesNbr, int cupsNbr, int spoonsNbr, Map<Drink, Integer> drinkQty) {
-    if (sugarCubesNbr < 0 || cupsNbr < 0 || spoonsNbr < 0) {
-      throw new IllegalArgumentException("The values for the stock can not be negative");
-    }
+    Utils.checkPositiveIntIllegal(sugarCubesNbr, "sugar stock");
+    Utils.checkPositiveIntIllegal(cupsNbr, "cups stock");
+    Utils.checkPositiveIntIllegal(spoonsNbr, "spoons stock");
     for (Integer i: drinkQty.values()) {
-      if (i < 0) {
-        throw new IllegalArgumentException("The stock of a Drink can not be negative");
-      }
+      Utils.checkPositiveIntIllegal(i, "drinks");
     }
     this.sugarCubesNbr = sugarCubesNbr;
     this.cupsNbr = cupsNbr;
@@ -207,13 +204,7 @@ public class Stock {
     if (newSugarCubesNbr < 0) {
       throw new IllegalArgumentException();
     }
-    final int difference = newSugarCubesNbr - this.sugarCubesNbr;
-    if (difference > 0) {
-      log.info(difference + " cubes resupplied (now " + newSugarCubesNbr + " available).");
-    } else if (difference < 0) {
-      log.info(-difference + " cubes removed from the stock (now " + newSugarCubesNbr + " available).");
-    }
-    
+    Utils.logChange(newSugarCubesNbr - this.sugarCubesNbr, newSugarCubesNbr, "sugar cube(s)");
     this.sugarCubesNbr = newSugarCubesNbr;
   }
 
@@ -226,21 +217,14 @@ public class Stock {
    * @param context the IContext to update if the number of cups reaches 0
    */
   public void setCupStock(int newCupsNbr, IContext context) {
-    if (newCupsNbr < 0) {
-      throw new IllegalArgumentException();
-    }
-    final int difference = newCupsNbr - this.cupsNbr;
-    if (difference > 0) {
-      log.info(difference + " cups resupplied (now " + newCupsNbr + " available).");
-    } else if (difference < 0) {
-      log.info(-difference + " cups removed from the stock (now " + newCupsNbr + " available).");
-    }
+    Utils.checkPositiveIntIllegal(newCupsNbr, "cups stock");
+    Utils.logChange(newCupsNbr - this.cupsNbr, newCupsNbr, "cup(s)");
+    
     if (newCupsNbr == 0) {
       context.addProblem(NoCup.getInstance());
     } else if (this.cupsNbr == 0 && newCupsNbr > 0) {
       context.problemSolved(NoCup.getInstance());
     }
-    
     this.cupsNbr = newCupsNbr;
   }
 
@@ -251,16 +235,8 @@ public class Stock {
    * @param newSpoonsNbr the number of spoons to set
    */
   public void setSpoonsStock(int newSpoonsNbr) {
-    if (newSpoonsNbr < 0) {
-      throw new IllegalArgumentException();
-    }
-    final int difference = newSpoonsNbr - this.spoonsNbr;
-    if (difference > 0) {
-      log.info(difference + " spoons resupplied (now " + newSpoonsNbr + " in stock).");
-    } else if (difference < 0) {
-      log.info(-difference + " spoons removed from the stock (now " + newSpoonsNbr + " available).");
-    }
-    
+    Utils.checkPositiveIntIllegal(newSpoonsNbr, "spoons stock");
+    Utils.logChange(newSpoonsNbr - this.spoonsNbr, newSpoonsNbr, "spoon(s)");   
     this.spoonsNbr = newSpoonsNbr;
   }
 
@@ -273,16 +249,8 @@ public class Stock {
    * @param value the new value for the {@code drink} stock (must be positive)
    */
   public void setDrinkQty(Drink drink, int value) {
-    if (value < 0) {
-      throw new IllegalArgumentException("The value can not be negative");
-    }
-    final int difference = value - drinkQty.get(drink);
-    if (difference > 0) {
-      log.info(difference + " " + drink.getName() + " resupplied (" + value + " in stock).");
-    } else if (difference < 0) {
-      log.info(-difference + " " + drink.getName() + " removed from the stock (" + value + " remaining).");
-    }
-
+    Utils.checkPositiveIntIllegal(value, drink.getName());
+    Utils.logChange(value - drinkQty.get(drink), value, drink.getName() + "(s)");
     drinkQty.put(drink, value);
   }
 
