@@ -12,7 +12,7 @@ import vendingmachine.Utils;
 /**
  *
  */
-public class Change extends Hashtable<Coin, Integer> {
+public class Change {
 
   private static final Logger log = LogManager.getLogger("Change");
   

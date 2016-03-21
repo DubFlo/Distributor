@@ -1,13 +1,8 @@
 package vendingmachine.components;
 
-import java.util.Hashtable;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import vendingmachine.Coin;
-import vendingmachine.Utils;
 
 /**
  * This class is able to perform operations about change and coins.
