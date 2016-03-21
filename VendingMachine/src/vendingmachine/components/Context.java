@@ -166,6 +166,7 @@ public class Context implements IMachine, IContext {
     if (currentProblems.isEmpty()) {
       changeState(Idle.getInstance());
     }
+    machineGUI.updateUI();
   }
 
   /**
