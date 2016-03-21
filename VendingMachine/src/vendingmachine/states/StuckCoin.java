@@ -1,6 +1,5 @@
 package vendingmachine.states;
 
-import vendingmachine.Utils;
 import vendingmachine.components.Context;
 
 /**
@@ -31,11 +30,7 @@ public final class StuckCoin extends Problem {
    */
   @Override
   public void exit(Context c) {
-    if (Utils.totalValue(c.getStuckCoins()) > 0) {
-      c.addChangeOut(c.getStuckCoins());
-      Utils.resetCoinsMap(c.getStuckCoins());
-      c.setChangeBool(true);
-    }
+    c.unstickCoins();
     c.enableRepair(false);
   }
 

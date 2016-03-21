@@ -10,7 +10,19 @@ import vendingmachine.ui.TemperatureListener;
  * This class creates a water heating system linked to a vending machine.
  * Its water temperature is updated every second. May notify an observer of the
  * changes of temperature and notifies an IContext of the changes of states.
- *
+ * 
+ * Here is an explanation of the formula used to simulate water heating/cooling
+ * (source: <a href="http://www.engineersedge.com/heat_transfer/convection.htm">
+ * http://www.engineersedge.com/heat_transfer/convection.htm</a>).
+ * - When water is not heating, it is considered in an air at 20 degrees;
+ * - When water is heating, it is considered to be in a 150 degrees box;
+ * - Water is supposed to have a convective heat transfer coefficient of h = 60;
+ * - Water has a mass m = 2 kg;
+ * - Area is A = 1 m^2 (2 l of water, so in a container of 0,1 m * 0,1 m * 0,2 m);
+ * - Liquid water specific heat capacity is C = 4180 J / (kg * K).
+ * So the heat transferred is computed by h * A * dT (Joules); dividing by
+ * C * m gives thus the difference in temperature at each second.
+ * This may not be exactly realistic but is still satisfactory.
  */
 public class HeatingSystem {
 
@@ -67,6 +79,20 @@ public class HeatingSystem {
 
     timer = new Timer(1000, e -> this.updateTemperature());
     timer.start();
+  }
+
+  /**
+   * Simulates the change of temperature happening in one second.
+   * The explanation of the formula is given in the class comment.
+   */
+  private void updateTemperature() {
+    if (waterSupply) {
+      if (heating) {
+        setTemperature(temperature + 60 * 1 * (150 - temperature) / (4180 * 2));
+      } else {
+        setTemperature(temperature + 60 * 1 * (20 - temperature) / (4180 * 2));
+      }
+    }
   }
 
   /**
@@ -145,28 +171,6 @@ public class HeatingSystem {
       context.problemSolved(ColdWater.getInstance());
     } else if (context.getState() != ColdWater.getInstance() && temperature < COLD_LIMIT) {
       context.addProblem(ColdWater.getInstance());
-    }
-  }
-
-  /**
-   * Simulates the change of temperature happening in one second.
-   * Source: http://www.engineersedge.com/heat_transfer/convection.htm.
-   * - When water is not heating, it is considered in an air at 20 degrees;
-   * - When water is heating, it is considered to be in a 150 degrees box;
-   * - Water is supposed to have a convective heat transfer coefficient of h = 60;
-   * - Water has a mass m = 2 kg;
-   * - Area is A = 1 m^2 (2 l of water, so in a container of 0,1 m * 0,1 m * 0,2 m);
-   * - Liquid water specific heat capacity is C = 4180 J / (kg * K).
-   * So the heat transferred is computed by h*A*dT (Joules); dividing by
-   * C * m gives thus the difference in temperature.
-   */
-  private void updateTemperature() {
-    if (waterSupply) {
-      if (heating) {
-        setTemperature(temperature + 60 * 1 * (150 - temperature) / (4180 * 2));
-      } else {
-        setTemperature(temperature + 60 * 1 * (20 - temperature) / (4180 * 2));
-      }
     }
   }
   

@@ -40,7 +40,7 @@ public abstract class State {
         c.addChangeOutCoin(coin);
       }
     } else {
-      c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
+      c.addStuckCoin(coin);
       c.setTemporaryNorthText("Please do not add more coins!");
     }
   }
@@ -136,7 +136,7 @@ public abstract class State {
   protected final boolean coinGetStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
       c.addProblem(StuckCoin.getInstance());
-      c.getStuckCoins().put(coin, c.getStuckCoins().get(coin) + 1);
+      c.addStuckCoin(coin);
       return true;
     }
     return false;

@@ -231,11 +231,13 @@ public class Context implements IMachine, IContext {
   @Override
   public void confirm() {
     state.confirm(this);
+    machineGUI.updateUI();
   }
 
   @Override
   public void cancel() {
     state.cancel(this);
+    machineGUI.updateUI();
   }
 
   @Override
@@ -539,11 +541,16 @@ public class Context implements IMachine, IContext {
     return currentProblems.contains(StuckCoin.getInstance());
   }
 
-  /**
-   * @return the Map consisting of the coins that are stuck
-   */
-  public Map<Coin, Integer> getStuckCoins() {
-    return stuckCoins;
+  public void addStuckCoin(Coin coin) {
+    stuckCoins.put(coin, stuckCoins.get(coin) + 1);
+  }
+
+  public void unstickCoins() {
+    if (Utils.totalValue(stuckCoins) > 0) {
+      this.addChangeOut(stuckCoins);
+      Utils.resetCoinsMap(stuckCoins);
+      this.setChangeBool(true);
+    }
   }
 
 }
