@@ -231,13 +231,11 @@ public class Context implements IMachine, IContext {
   @Override
   public void confirm() {
     state.confirm(this);
-    machineGUI.updateUI();
   }
 
   @Override
   public void cancel() {
     state.cancel(this);
-    machineGUI.updateUI();
   }
 
   @Override
@@ -305,6 +303,13 @@ public class Context implements IMachine, IContext {
    */
   public void setTemporaryNorthText(String msg) {
     machineGUI.setTemporaryNorthText(msg);
+  }
+  
+  /**
+   * Updates the IMachineGUI associated with the Context.
+   */
+  public void updateUI() {
+    machineGUI.updateUI();
   }
 
   /**

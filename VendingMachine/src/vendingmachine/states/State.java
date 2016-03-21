@@ -20,6 +20,7 @@ public abstract class State {
     if (c.getAmountInside() > 0) {
       if (c.isChangePossible(c.getAmountInside())) {
         c.giveChange(c.getAmountInside());
+        c.updateUI();
       } else {
         c.setTemporaryNorthText("Unable to give back change");
       }

@@ -20,6 +20,11 @@ public final class Asking extends State {
   }
 
   private Asking() {}
+  
+  @Override
+  public void entry(Context c) {
+    c.setChosenSugar(0);
+  }
 
   /**
    * Gives back change and changes the state of the machine to Idle.
