@@ -26,6 +26,7 @@ import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.MyDocumentFilter;
 import vendingmachine.Utils;
+import vendingmachine.components.Change;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.Stock;
@@ -327,7 +328,7 @@ public class Configuration extends JFrame {
       this.pack();
       return;
     }
-    final ChangeMachine changeMachine = new ChangeMachine(coinsStock, coinsAccepted);
+    final ChangeMachine changeMachine = new ChangeMachine(new Change(coinsStock), coinsAccepted);
 
     // Fetches the values for the stock
     int sugarCubesNbr;
