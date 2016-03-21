@@ -153,7 +153,7 @@ public class HeatingSystem {
    * Source: http://www.engineersedge.com/heat_transfer/convection.htm.
    * - When water is not heating, it is considered in an air at 20 degrees;
    * - When water is heating, it is considered to be in a 150 degrees box;
-   * - Water is supposed to have a convective heat transfer coefficient of h = 80;
+   * - Water is supposed to have a convective heat transfer coefficient of h = 60;
    * - Water has a mass m = 2 kg;
    * - Area is A = 1 m^2 (2 l of water, so in a container of 0,1 m * 0,1 m * 0,2 m);
    * - Liquid water specific heat capacity is C = 4180 J / (kg * K).
@@ -163,9 +163,9 @@ public class HeatingSystem {
   private void updateTemperature() {
     if (waterSupply) {
       if (heating) {
-        setTemperature(temperature + 80 * 1 * (150 - temperature) / (4180 * 2));
+        setTemperature(temperature + 60 * 1 * (150 - temperature) / (4180 * 2));
       } else {
-        setTemperature(temperature + 80 * 1 * (20 - temperature) / (4180 * 2));
+        setTemperature(temperature + 60 * 1 * (20 - temperature) / (4180 * 2));
       }
     }
   }
