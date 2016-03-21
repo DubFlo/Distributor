@@ -70,7 +70,7 @@
   <!-- Nettoye le répertoire du code. C'est à dire:
        - la documentation
        - les fichiers class
-       - l'archive jar -->
+       - l'archive jar et l'archive tar -->
   <target name="clean" description="nettoyage">
     <delete dir="${doc.dir}"/>
     <delete dir="${build.dir}"/>
@@ -81,7 +81,7 @@
        la documentation et les fichiers compilés. -->
   <target name="tar" depends="clean" description="création d'un tarball du projet">
     <tar destfile="${ant.project.name}.tar.bz2" compression="bzip2">
-      <tarfileset dir="." prefix="${ant.project.name}"/>
+      <tarfileset dir="." prefix="${ant.project.name}" excludes="${ant.project.name}.tar.bz2"/>
     </tar>
   </target>
 

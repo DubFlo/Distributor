@@ -14,8 +14,8 @@ public class Drink {
   /**
    * Creates a Drink instance with the specified attributes.
    * 
-   * @param name the String that is the name of the Drink
-   * @param sugar a boolean: true if the Drink can contain sugar, false otherwise
+   * @param name the String name of the Drink
+   * @param sugar true if the Drink can contain sugar, false otherwise
    * @param price the price of the Drink (in cents)
    */
   public Drink(String name, boolean sugar, int price) {

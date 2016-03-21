@@ -11,12 +11,32 @@ import vendingmachine.states.State;
  */
 public interface IContext {
 
+  /**
+   * Adds a Map of Coin's to the outside container.
+   * 
+   * @param moneyToGive the Map to add to {@code changeOut}
+   */
   void addChangeOut(Map<Coin, Integer> moneyToGive);
 
+  /**
+   * Removes the specified Problem from the list of problems the machine is facing.
+   * Changes the state if the machine was in that particular state.
+   * 
+   * @param problem the Problem that has been solved
+   */
   void problemSolved(Problem problem);
 
-  void addProblem(Problem instance);
+  /**
+   * Adds the specified problem to the list of problems the machine is facing.
+   * The machine changes its state to this new Problem.
+   * 
+   * @param problem the Problem that happened
+   */
+  void addProblem(Problem problem);
 
+  /**
+   * @return the State the machine is currently in
+   */
   State getState(); 
 
 }

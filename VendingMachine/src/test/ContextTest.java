@@ -93,7 +93,7 @@ public class ContextTest {
     assertEquals(c.getAmountInside(),0);
     c.coinInserted(Coin.COIN100);
     assertEquals(c.getAmountInside(),100);
-    assertEquals(c.getChangeMachine().getCoinsStock(Coin.COIN100),2);
+    assertEquals(cm.getCoinsStock(Coin.COIN100),2);
     //Idle - Coin not accepted 
     int oldAmountInside = c.getAmountInside();
     c.coinInserted(Coin.COIN200);
@@ -102,11 +102,11 @@ public class ContextTest {
     c.setChosenDrink(c.getStock().getDrinks().get(1));
     c.changeState(Asking.getInstance());
     c.coinInserted(Coin.COIN200);
-    assertEquals("Nothing should have changed",1,c.getChangeMachine().getCoinsStock(Coin.COIN200));
+    assertEquals("Nothing should have changed",1,cm.getCoinsStock(Coin.COIN200));
     //StuckCoin
     c.addProblem(StuckCoin.getInstance());
     c.coinInserted(Coin.COIN5);
-    assertEquals("Nothing should have changed",0,c.getChangeMachine().getCoinsStock(Coin.COIN5));
+    assertEquals("Nothing should have changed",0,cm.getCoinsStock(Coin.COIN5));
   }
   @Test
   public void testAddProblem() {

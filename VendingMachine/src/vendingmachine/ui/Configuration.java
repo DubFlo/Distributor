@@ -357,7 +357,7 @@ public class Configuration extends JFrame {
       return;
     }
 
-    final Context context = new Context(changeMachine, stock, coinStuckProb/100.0);
+    final Context context = new Context(changeMachine, stock, coinStuckProb / 100.0);
     final VendingMachineGUI gui = new VendingMachineGUI(context);
     this.dispose(); // closes the configuration frame
 

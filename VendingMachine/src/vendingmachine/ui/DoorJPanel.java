@@ -11,8 +11,8 @@ import vendingmachine.PictureLoader;
 
 /**
  * This class defines a JPanel that paints a black rectangle (the door).
- * The size of the rectangle is based on the CUP_ICON of PictureLoader INSTANCE.
- * It supplies an animation of the opening of the door.
+ * The size of the rectangle is based on the CUP_ICON of PictureLoader.
+ * It supplies an animation of the opening and closing of the door.
  */
 public class DoorJPanel extends JPanel {
 
@@ -21,13 +21,13 @@ public class DoorJPanel extends JPanel {
   /**
    * The width of the black rectangle.
    */
-  public final int WIDTH;
+  private final int WIDTH;
   
   /**
    * The maximal height of the black rectangle
    * (from which the step will be subtracted).
    */
-  public final int HEIGHT;
+  private final int HEIGHT;
 
   /**
    * A value that is subtracted from the height to draw the rectangle.
@@ -73,6 +73,9 @@ public class DoorJPanel extends JPanel {
     });
   }
 
+  /**
+   * Calls the overridden method of JComponent and draws the door.
+   */
   @Override
   public void paint(Graphics g) {
     super.paint(g);
@@ -100,8 +103,8 @@ public class DoorJPanel extends JPanel {
   /**
    * @return true if the door is currently opening, false otherwise
    */
-  public boolean animationIsRunning() {
-    return (doorOpeningTimer.isRunning() || doorClosingTimer.isRunning());
+  public boolean isAnimationRunning() {
+    return doorOpeningTimer.isRunning() || doorClosingTimer.isRunning();
   }
 
 }

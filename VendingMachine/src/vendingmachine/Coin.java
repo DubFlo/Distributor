@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This enumeration gives all the coins that could be accepted by a vending machine.
+ * This enumeration supplies all the Euro coins.
  * This gives the eight Euro coins.
  * Coins are and should be listed in descending order of their values.
  */

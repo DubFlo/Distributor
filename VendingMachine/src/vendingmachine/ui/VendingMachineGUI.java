@@ -95,11 +95,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   private final Timer textTimer;
 
   /**
-   * Initializes the fields according to the Machine specified.
-   * Associates the Machine specified and the VendingMachineGUI itself together.
+   * Initializes the fields according to the IMachine specified.
+   * Associates the IMachine specified and the VendingMachineGUI itself together.
    * The method {@code init()} must be called to display the frame.
    * 
-   * @param machine the Machine to link with the GUI
+   * @param machine the IMachine to link with the GUI
    */
   public VendingMachineGUI(IMachine machine) {
     super();
@@ -274,7 +274,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
    */
   private void addListeners() {
     cupButton.addActionListener(e -> {
-      if (!leftPanel.animationIsRunning()) {
+      if (!leftPanel.isAnimationRunning()) {
         machine.takeCup();
       }
     });
@@ -376,8 +376,10 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (bool) {
       PictureLoader pictures = PictureLoader.getInstance();
       changeButton.setIcon(pictures.CHANGE_ICON);
+      SoundLoader.play(SoundLoader.getInstance().CLING);
     } else {
       changeButton.setIcon(null);
+      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect
     }
   }
 
@@ -385,6 +387,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   public void setCupBool(boolean cup, boolean spoon) {
     PictureLoader pictures = PictureLoader.getInstance();
     if (cup) {
+      SoundLoader.play(SoundLoader.getInstance().BEEP);
       if (spoon) {
         cupButton.setIcon(pictures.CUP_SPOON_ICON);
       } else {
@@ -394,6 +397,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     } else {
       cupButton.setIcon(pictures.GRAY_RECTANGLE);
       setCupText("");
+      SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect
       leftPanel.closeDoor();
     }
   }

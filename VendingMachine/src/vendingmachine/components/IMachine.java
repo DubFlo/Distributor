@@ -86,6 +86,7 @@ public interface IMachine {
   /**
    * Sets the machineGUI attribute of the machine.
    * 
+   * @param <T> must implement both IMachineGUI and TemperatureListener
    * @param observer the UI that must be updated by the machine and its heating system
    */
   <T extends IMachineGUI & TemperatureListener> void setUI(T observer);

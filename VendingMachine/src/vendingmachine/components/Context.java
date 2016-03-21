@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.Timer;
 
@@ -12,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import vendingmachine.Coin;
 import vendingmachine.Drink;
-import vendingmachine.SoundLoader;
 import vendingmachine.Utils;
 import vendingmachine.states.Idle;
 import vendingmachine.states.NoCup;
@@ -46,7 +46,7 @@ public class Context implements IMachine, IContext {
    * The amount of money inside of the machine (in cents).
    */
   private int amountInside;
-  
+
   /**
    * The amount of sugar chosen by the client.
    */
@@ -72,11 +72,24 @@ public class Context implements IMachine, IContext {
    */
   private final Map<Coin, Integer> changeOut;
 
+  /**
+   * The UI associated with the machine.
+   */
   private IMachineGUI machineGUI;
 
+  /**
+   * The timer that triggers the end of the preparation after some seconds.
+   */
   private final Timer preparingTimer;
+
+  /**
+   * A Set of the Problem's the machine is currently facing.
+   */
+  private final Set<Problem> currentProblems;
   
-  private final HashSet<Problem> currentProblems;
+  /**
+   * A Map of the Coin's that are stuck inside the machine.
+   */
   private final Map<Coin, Integer> stuckCoins;
 
   /**
@@ -93,11 +106,11 @@ public class Context implements IMachine, IContext {
 
     this.heatingSystem = new HeatingSystem(this);
     this.amountInside = 0;
-    this.setChosenSugar(0);
+    this.chosenSugar = 0;
     this.cupInside = false;
     this.changeOut = new Hashtable<Coin, Integer>();
     Utils.resetCoinsMap(changeOut);
-    
+
     currentProblems = new HashSet<Problem>();
     stuckCoins = new Hashtable<Coin, Integer>();
     Utils.resetCoinsMap(stuckCoins);
@@ -105,14 +118,8 @@ public class Context implements IMachine, IContext {
       this.state = NoCup.getInstance();
       currentProblems.add(NoCup.getInstance());
     }
-    
-    int delay;
-    if (SoundLoader.getInstance().FILLING != null) {
-      delay = (int) (SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000);
-    } else {
-      delay = 3000; // milliseconds
-    }
-    preparingTimer = new Timer(delay, e -> this.preparingOver());
+
+    preparingTimer = new Timer(3000, e -> this.preparingOver());
     preparingTimer.setRepeats(false); // makes its action only once
 
     log.info("New Vending Machine Built");
@@ -129,29 +136,28 @@ public class Context implements IMachine, IContext {
     logMsg.append("New order:\n\t").append(chosenDrink.getName());
     stock.removeDrink(chosenDrink);
     logMsg.append(" (").append(stock.getDrinkQty(chosenDrink)).append(" remaining);\n");
-    
+
     if (chosenDrink.isSugar()) {
       stock.removeSugarCubes(chosenSugar);
       logMsg.append("\tWith ").append(chosenSugar).append(" sugar cubes (")
-            .append(stock.getSugarCubesNbr()).append(" remaining);\n");
+      .append(stock.getSugarCubesNbr()).append(" remaining);\n");
     }
-    
+
     boolean spoon = false;
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
       spoon = true;
       logMsg.append("\tWith a spoon (").append(stock.getSpoonsNbr()).append(" remaining);\n");
     }
-    
+
     stock.removeCup(this);
     logMsg.append('\t').append(stock.getCupsNbr()).append(" cups remaining.");
     setCupBool(true, spoon);
-    
-    log.info(logMsg.toString()); 
+
+    log.info(logMsg.toString());
     machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
     machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
-    SoundLoader.play(SoundLoader.getInstance().BEEP);
-    
+
     heatingSystem.drinkOrdered();
     chosenSugar = 0;
     if (currentProblems.isEmpty()) {
@@ -160,15 +166,10 @@ public class Context implements IMachine, IContext {
   }
 
   /**
-   * 
+   * Restarts the Timer that triggers the end of the preparation.
    */
   public void restartPreparingTimer() {
     preparingTimer.restart();
-  }
-
-  @Override
-  public void cancel() {
-    state.cancel(this);
   }
 
   /**
@@ -181,24 +182,29 @@ public class Context implements IMachine, IContext {
     this.state.exit(this);
     this.state = newState;
     this.state.entry(this);
-    
+
     machineGUI.updateUI();
   }
   
   @Override
+  public State getState() {
+    return state;
+  }
+
+  @Override
   public void addProblem(Problem problem) {
     if (currentProblems.add(problem)) {
       log.warn(problem + " problem encountered!");
-      if (!this.state.isProblem()) {
-        changeState(problem);
-      } else {
+      if (this.state.isProblem()) {
         this.state = problem;
         this.state.entry(this);
         machineGUI.updateUI();
+      } else {
+        changeState(problem);
       }
     }
   }
-  
+
   @Override
   public void problemSolved(Problem problem) {
     if (currentProblems.remove(problem)) {
@@ -212,13 +218,7 @@ public class Context implements IMachine, IContext {
       }
     }
   }
-  public boolean areDrinksFree() {
-    for (Drink drink : stock.getDrinks()) {
-      if (drink.getPrice() != 0)
-        return false;
-    }
-    return true;
-  }  
+
   @Override
   public void coinInserted(Coin coin) {
     state.coinInserted(coin, this);
@@ -230,19 +230,25 @@ public class Context implements IMachine, IContext {
   }
 
   @Override
+  public void cancel() {
+    state.cancel(this);
+  }
+
+  @Override
+  public void less() {
+    state.less(this);
+    machineGUI.updateSugarText();
+  }
+
+  @Override
+  public void more() {
+    state.more(this);
+    machineGUI.updateSugarText();
+  }
+
+  @Override
   public void drinkButton(Drink drink) {
     state.drinkButton(drink, this);
-  }
-
-  /**
-   * @return the amount entered by the client (in cents)
-   */
-  public int getAmountInside() {
-    return amountInside;
-  }
-
-  public ChangeMachine getChangeMachine() {
-    return changeMachine;
   }
 
   @Override
@@ -250,16 +256,28 @@ public class Context implements IMachine, IContext {
     return stock.getDrinks();
   }
 
+  /**
+   * @return true if all the Drinks are free, false otherwise.
+   */
+  public boolean areDrinksFree() {
+    for (Drink drink: stock.getDrinks()) {
+      if (drink.getPrice() != 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @Override
   public String getInfo() {
     final StringBuilder sb = new StringBuilder(300);
-    sb.append("State: ").append(state).append("\n\n")
-    .append("Stuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
-    .append(amountInside / 100.0).append(" " + Utils.EURO + " inserted.\n");
+    sb.append("State: ").append(state)
+    .append("\n\nStuck coin probability: ").append((int) (COIN_STUCK_PROB * 100)).append(" %\n\n")
+    .append(amountInside / 100.0).append(" " + Utils.EURO + " inserted.\n\n")
 
-    sb.append("\n").append(changeMachine.getInfo());
+    .append(changeMachine.getInfo())
 
-    sb.append("\n").append(stock.getInfo());
+    .append('\n').append(stock.getInfo());
 
     return sb.toString();
   }
@@ -269,96 +287,9 @@ public class Context implements IMachine, IContext {
     return state.getDefaultText(this);
   }
 
-  /**
-   * @return the State the Context is currently in
-   */
-  public State getState() {
-    return state;
-  }
-
-  public Stock getStock() {
-    return stock;
-  }
-
-  /**
-   * Simulates the giving of the change on the amount specified.
-   * 
-   * @param amount the value (in cents) to give change on
-   */
-  public void giveChange(int amount) {
-    if (amount > 0) {
-      changeMachine.giveChange(amount, this);
-      log.info(amount/100.0 + " " + Utils.EURO + " of change given back.");
-      setChangeBool(true);
-      SoundLoader.play(SoundLoader.getInstance().CLING);
-    }
-    amountInside = 0;
-    machineGUI.updateInfo();
-  }
-
-  /**
-   * Simulates the insertion of the specified Coin.
-   * 
-   * @param coin the Coin to insert
-   */
-  public void insertCoin(Coin coin) {
-    amountInside += coin.VALUE;
-    changeMachine.insertCoin(coin);
-    log.info(coin.TEXT + " inserted (" + amountInside/100.0 + " " + Utils.EURO + " in total).");
-    machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
-    machineGUI.updateInfo();
-  }
-
-  /**
-   * @return true if a cup is waiting to be taken, false otherwise
-   */
-  public boolean isCupInside() {
-    return cupInside;
-  }
-
   @Override
-  public void less() {
-    state.less(this);
-    machineGUI.updateSugarText();
-  }
-
-  /**
-   * Called when "+" button is pressed.
-   * Calls the {@code more()} method of the current State.
-   */
-  @Override
-  public void more() {
-    state.more(this);
-    machineGUI.updateSugarText();
-  }
-
-  /**
-   * @param chosenDrink the new Drink that may be ordered by the client
-   */
-  public void setChosenDrink(Drink chosenDrink) {
-    this.chosenDrink = chosenDrink;
-  }
-  
-  public Drink getChosenDrink() {
-    return chosenDrink;
-  }
-
-  public void setCupBool(boolean cup, boolean spoon) {
-    machineGUI.setCupBool(cup, spoon);
-    cupInside = cup;
-  }
-
-  public void setChangeBool(boolean bool) {
-    machineGUI.setChangeBool(bool);
-    if (bool) {
-      SoundLoader.play(SoundLoader.getInstance().CLING);
-    }
-  }
-
-  @Override
-  public <T extends IMachineGUI & TemperatureListener> void setUI(T machineGUI) {
-    this.machineGUI = machineGUI;
-    heatingSystem.setObserver(machineGUI);
+  public String getSugarText() {
+    return state.getSugarText(this);
   }
 
   /**
@@ -370,6 +301,105 @@ public class Context implements IMachine, IContext {
     machineGUI.setTemporaryNorthText(msg);
   }
 
+  /**
+   * @return the Stock associated with the machine
+   */
+  public Stock getStock() {
+    return stock;
+  }
+
+  /**
+   * @return the amount entered by the client (in cents)
+   */
+  public int getAmountInside() {
+    return amountInside;
+  }
+
+  /**
+   * Simulates the giving of the change on the amount specified.
+   * The amount must be positive.
+   * 
+   * @param amount the value (in cents) to give change on
+   */
+  public void giveChange(int amount) {
+    if (amount != 0) {
+      changeMachine.giveChange(amount, this);
+      log.info(amount / 100.0 + " " + Utils.EURO + " of change given back.");
+      setChangeBool(true);
+    }
+    amountInside = 0;
+    machineGUI.updateInfo();
+  }
+
+  /**
+   * @param amount the amount to give change on
+   * @return true if it is possible to give change on the amount, false otherwise
+   */
+  public boolean isChangePossible(int amount) {
+    return changeMachine.isChangePossible(amount);
+  }
+
+  /**
+   * Simulates the insertion of the specified Coin.
+   * 
+   * @param coin the Coin to insert
+   */
+  public void insertCoin(Coin coin) {
+    amountInside += coin.VALUE;
+    changeMachine.insertCoin(coin);
+    log.info(coin.TEXT + " inserted (" + amountInside / 100.0 + " " + Utils.EURO + " in total).");
+    machineGUI.setTemporaryNorthText(coin.TEXT + " inserted");
+    machineGUI.updateInfo();
+  }
+
+  /**
+   * @return true if a cup is waiting to be taken, false otherwise
+   */
+  public boolean isCupInside() {
+    return cupInside;
+  }
+
+  /**
+   * @param chosenDrink the new Drink that may be ordered by the client
+   */
+  public void setChosenDrink(Drink chosenDrink) {
+    this.chosenDrink = chosenDrink;
+  }
+
+  /**
+   * @return the Drink that is currently ordered by the client
+   */
+  public Drink getChosenDrink() {
+    return chosenDrink;
+  }
+
+  /**
+   * Tells the UI to display or not the cup, with or without a spoon.
+   * The {@code spoon} parameter is useless if {@code cup} is false.
+   * 
+   * @param cup true if the cup must be displayed, false otherwise
+   * @param spoon true if a spoon is given with the cup
+   */
+  public void setCupBool(boolean cup, boolean spoon) {
+    machineGUI.setCupBool(cup, spoon);
+    cupInside = cup;
+  }
+
+  /**
+   * Tells the UI to display or not the change in the container.
+   * 
+   * @param bool true if change must be displayed, false to remove it from the UI
+   */
+  public void setChangeBool(boolean bool) {
+    machineGUI.setChangeBool(bool);
+  }
+
+  @Override
+  public <T extends IMachineGUI & TemperatureListener> void setUI(T machineGUI) {
+    this.machineGUI = machineGUI;
+    heatingSystem.setObserver(machineGUI);
+  }
+
   @Override
   public void takeChange() {
     setChangeBool(false);
@@ -377,14 +407,12 @@ public class Context implements IMachine, IContext {
     if (value > 0) {
       Utils.resetCoinsMap(changeOut);
       machineGUI.updateChangeOutInfo();
-      SoundLoader.stop(SoundLoader.getInstance().CLING); // stops the sound effect is the change is taken
     }
   }
-  
+
   @Override
   public void takeCup() {
     this.setCupBool(false, false);
-    SoundLoader.stop(SoundLoader.getInstance().BEEP); // stops the sound effect is the cup is taken
     log.info("Cup of " + chosenDrink.getName() + " taken.");
   }
 
@@ -401,12 +429,9 @@ public class Context implements IMachine, IContext {
       sb.append(coin.TEXT).append(": ");
       sb.append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(Utils.totalValue(changeOut)/100.0).append(" " + Utils.EURO + ".</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut) / 100.0).append(" " + Utils.EURO + ".</html>");
     return sb.toString();
   }
-    public Map<Coin,Integer> getChangeOut() {
-      return this.changeOut;
-    }
 
   /**
    * Adds the specified Coin to the container to be taken by the client.
@@ -418,12 +443,7 @@ public class Context implements IMachine, IContext {
     machineGUI.updateChangeOutInfo();
     log.info(coin.TEXT + " inserted but not allowed.");
   }
-
-  /**
-   * Adds a Map of Coin's to the outside container.
-   * 
-   * @param moneyToGive the Map to add to {@code changeOut}
-   */
+  
   @Override
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
     for (Coin coin: Coin.COINS) {
@@ -432,11 +452,6 @@ public class Context implements IMachine, IContext {
     machineGUI.updateChangeOutInfo();
   }
 
-  @Override
-  public String getSugarText() {
-    return state.getSugarText(this);
-  }
-  
   @Override
   public void setCoinStock(Coin coin, int value) {
     changeMachine.setCoinStock(coin, value);
@@ -464,6 +479,11 @@ public class Context implements IMachine, IContext {
     problemSolved(StuckCoin.getInstance());
   }
 
+  /**
+   * Disable/enable the button of the UI to repair the stuck coins.
+   * 
+   * @param b true to enable the repairing, false to disable
+   */
   public void enableRepair(boolean b) {
     machineGUI.enableRepair(b);
   }
@@ -473,7 +493,7 @@ public class Context implements IMachine, IContext {
     stock.setCupStock(value, this);
     machineGUI.updateInfo();
   }
-  
+
   @Override
   public void setSugarStock(int value) {
     stock.setSugarStock(value);
@@ -486,6 +506,9 @@ public class Context implements IMachine, IContext {
     machineGUI.updateInfo();
   }
 
+  /**
+   * @return the Map consisting of the coins that are stuck
+   */
   public Map<Coin, Integer> getStuckCoins() {
     return stuckCoins;
   }
