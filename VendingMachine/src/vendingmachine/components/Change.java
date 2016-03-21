@@ -1,5 +1,6 @@
 package vendingmachine.components;
 
+import java.util.Hashtable;
 import java.util.Map;
 
 import vendingmachine.Coin;
@@ -7,7 +8,7 @@ import vendingmachine.Coin;
 /**
  *
  */
-public class Change {
+public class Change extends Hashtable<Coin, Integer> {
 
   private final Map<Coin, Integer> coinsStock;
   private final Map<Coin, Boolean> acceptedCoins;
