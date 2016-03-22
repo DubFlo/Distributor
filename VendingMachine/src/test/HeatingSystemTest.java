@@ -58,9 +58,10 @@ public class HeatingSystemTest {
   }
   @Test
   public void testDrinkOrdered() {
-    assertEquals(90.1,heatSys.getTemperature(),0.1);
+    assertEquals(93,heatSys.getTemperature(),0.2);
+    double heatSysBefore = heatSys.getTemperature();
     heatSys.drinkOrdered();
-    assertEquals(84.45, heatSys.getTemperature(), 1);
+    assertTrue(heatSys.getTemperature() < heatSysBefore);
   }
 
 }

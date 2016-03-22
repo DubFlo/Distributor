@@ -13,6 +13,7 @@ import org.junit.Test;
 import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.SoundLoader;
+import vendingmachine.components.Change;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.Stock;
@@ -23,6 +24,7 @@ import vendingmachine.states.NoSpoon;
 public class StockTest {
 
   private Hashtable<Coin, Integer> coinsStock;
+  private Change change;
   private Hashtable<Coin, Boolean> acceptedCoins;
   private ChangeMachine cm;
   private Context c;
@@ -46,12 +48,13 @@ public class StockTest {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
-    cm = new ChangeMachine(coinsStock,acceptedCoins);
+    change = new Change(coinsStock);
+    cm = new ChangeMachine(change,acceptedCoins);
     //initialize Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
     boolean[] drinkSugarTab = {true,true,true,true,false};
     int[] drinkPriceTab = {100,40,70,0,20};
-    int[] drinkStockTab = {1,5,2,3,1};
+    int[] drinkStockTab = {1,5,2,0,1};
     Drink[] drinkTab = new Drink[5];
     Map<Drink,Integer> drinkQty = new LinkedHashMap<Drink,Integer>();
    
@@ -61,7 +64,7 @@ public class StockTest {
     }
      
   
-    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, Map<Drink, Integer> drinkQty)
+    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, drinkQty)
     
     //coinStuckProb
     coinStuck = 0;
@@ -113,9 +116,20 @@ public class StockTest {
     c.more();
     assertEquals(0,c.getChosenSugar());
   }   
+  @Test(expected = IllegalArgumentException.class)
+  public void testRemoveDrinkError() {
+    stock.removeDrink(c.getDrinks().get(3));
+  }
+  @Test(expected = IllegalArgumentException.class)
+  public void testRemoveCupError() {
+    stock.setCupStock(0, c);
+    stock.removeCup(c);
+  }
   @Test
-  public void testRemoveDrink() {
-    
+  public void testRemoveCup() {
+    stock.setCupStock(1, c);
+    stock.removeCup(c);
+    assertEquals(NoCup.getInstance(),c.getState());
   }
     
     

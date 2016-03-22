@@ -18,6 +18,7 @@ import vendingmachine.Coin;
 import vendingmachine.Drink;
 import vendingmachine.FontLoader;
 import vendingmachine.SoundLoader;
+import vendingmachine.components.Change;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
 import vendingmachine.components.IContext;
@@ -39,6 +40,7 @@ public class ContextTest {
   private Context c;
   private int coinStuck;
   private Stock stock;
+  private Change change;
   
   @BeforeClass
   public static void load() {
@@ -57,10 +59,11 @@ public class ContextTest {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
-    cm = new ChangeMachine(coinsStock,acceptedCoins);
+    change = new Change(coinsStock);
+    cm = new ChangeMachine(change,acceptedCoins);
     //initialize Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
-    boolean[] drinkSugarTab = {true,true,true,true,false};
+    boolean[] drinkSugarTab = {true,true,true,false,true};
     int[] drinkPriceTab = {30,40,70,0,20};
     int[] drinkStockTab = {0,5,2,3,1};
     Drink[] drinkTab = new Drink[5];
@@ -162,6 +165,15 @@ public class ContextTest {
   }
   @Test
   public void testConfirm() {
+    //Idle
+    c.setChosenDrink(c.getDrinks().get(4));
+    c.confirm();
+    assertEquals(Idle.getInstance(),c.getState());
+    //Asking
+    c.insertCoin(Coin.COIN20);
+    c.drinkButton(c.getDrinks().get(4));
+    c.confirm();
+    assertEquals(Preparing.getInstance(), c.getState());
     
   }
   @Test
@@ -173,7 +185,14 @@ public class ContextTest {
     c.coinInserted(Coin.COIN50);
     c.drinkButton(c.getDrinks().get(2));
     assertEquals(c.getState(),Asking.getInstance());
+    
     //StuckCoin
+    c.cancel(); //return to Idle
+    c.coinInserted(Coin.COIN20);
+    c.coinInserted(Coin.COIN50);
+    c.addProblem(StuckCoin.getInstance());
+    c.drinkButton(c.getDrinks().get(2));
+    
 
   }
   
