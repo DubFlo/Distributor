@@ -26,6 +26,7 @@ import vendingmachine.components.Stock;
 import vendingmachine.states.Asking;
 import vendingmachine.states.Idle;
 import vendingmachine.states.NoCup;
+import vendingmachine.states.NoSpoon;
 import vendingmachine.states.NoWater;
 import vendingmachine.states.Preparing;
 import vendingmachine.states.StuckCoin;
@@ -64,7 +65,7 @@ public class ContextTest {
     //initialize Stock
     String[] drinkNameTab = {"a","b","c","d","e"};
     boolean[] drinkSugarTab = {true,true,true,false,true};
-    int[] drinkPriceTab = {30,40,70,0,20};
+    int[] drinkPriceTab = {30,40,70,10,0};
     int[] drinkStockTab = {0,5,2,3,1};
     Drink[] drinkTab = new Drink[5];
     Map<Drink,Integer> drinkQty = new LinkedHashMap<Drink,Integer>();
@@ -83,12 +84,12 @@ public class ContextTest {
     c = new Context(cm,stock,coinStuck);
     c.setUI(new EmptyUI());  
   }
+  
   @Test
   public void testchangeState() {
     c.changeState(Preparing.getInstance());
     assertEquals(c.getState(), Preparing.getInstance());
   }
-  
   
   @Test
   public void testCoinInserted() {
@@ -106,12 +107,19 @@ public class ContextTest {
     c.changeState(Asking.getInstance());
     c.coinInserted(Coin.COIN200);
     assertEquals("Nothing should have changed",1,cm.getCoinsStock(Coin.COIN200));
+    //Preparing
+    c.confirm();
+    assertSame(Preparing.getInstance(), c.getState());
+    c.coinInserted(Coin.COIN10);
+    int oldAmount = c.getAmountInside();
+    assertEquals(oldAmount, c.getAmountInside());
     //StuckCoin
     c.addProblem(StuckCoin.getInstance());
     c.coinInserted(Coin.COIN5);
     assertEquals("Nothing should have changed",0,cm.getCoinsStock(Coin.COIN5));
-  //verif monnaie coincée
+    //assertEquals(5, c.get) vérif montant coincé
     }
+  
   @Test
   public void testAddProblem() {
     c.addProblem(StuckCoin.getInstance());
@@ -119,6 +127,7 @@ public class ContextTest {
     c.addProblem(NoCup.getInstance());
     assertSame(c.getState(),NoCup.getInstance());//Singleton design pattern
   }
+  
   @Test
   public void testProblemSolved() {
     c.addProblem(StuckCoin.getInstance());
@@ -134,6 +143,7 @@ public class ContextTest {
     c.problemSolved(StuckCoin.getInstance());
     assertSame(c.getState(),Idle.getInstance());
   }
+  
   @Test
   public void testGiveChange() {
     c.changeState(Idle.getInstance()); 
@@ -146,6 +156,7 @@ public class ContextTest {
   public void testAreDrinksFree() {
     assertFalse(c.areDrinksFree());
   }
+  
   @Test
   public void testPreparingOver() throws InterruptedException {
     int oldStock = c.getStock().getSugarCubesNbr();
@@ -163,37 +174,70 @@ public class ContextTest {
     assertEquals(oldStock-2,c.getStock().getSugarCubesNbr());
     assertEquals(old-1,c.getStock().getDrinkQty(c.getDrinks().get(1)));
   }
+  
   @Test
   public void testConfirm() {
     //Idle
     c.setChosenDrink(c.getDrinks().get(4));
     c.confirm();
-    assertEquals(Idle.getInstance(),c.getState());
+    assertSame(Idle.getInstance(),c.getState());
+    
     //Asking
     c.insertCoin(Coin.COIN20);
     c.drinkButton(c.getDrinks().get(4));
     c.confirm();
-    assertEquals(Preparing.getInstance(), c.getState());
-    
+    assertSame(Preparing.getInstance(), c.getState());
+  }
+  
+  @Test
+  public void testNoSpoonConfirm() {
+    c.setSugarStock(0);
+    c.drinkButton(c.getDrinks().get(4));
+    c.confirm();
+    assertSame(Preparing.getInstance(), c.getState());
   }
   @Test
   public void testDrinkButton() {
-    //Idle
-    c.coinInserted(Coin.COIN20);
-    c.drinkButton(c.getDrinks().get(2));
-    assertEquals(c.getState(), Idle.getInstance());
-    c.coinInserted(Coin.COIN50);
-    c.drinkButton(c.getDrinks().get(2));
-    assertEquals(c.getState(),Asking.getInstance());
-    
-    //StuckCoin
-    c.cancel(); //return to Idle
+    //Idle 
     c.coinInserted(Coin.COIN20);
     c.coinInserted(Coin.COIN50);
     c.addProblem(StuckCoin.getInstance());
     c.drinkButton(c.getDrinks().get(2));
-    
-
+    assertSame(StuckCoin.getInstance(),c.getState());
   }
   
+  @Test
+  public void testCancel() {
+    //Cancel authorized in State
+    c.coinInserted(Coin.COIN20);
+    c.coinInserted(Coin.COIN20);
+    c.drinkButton(c.getDrinks().get(1));
+    assertSame(Asking.getInstance(),c.getState());
+    c.cancel();
+    assertSame(Idle.getInstance(), c.getState());
+    assertEquals(0, c.getAmountInside());
+    
+    //Cancel authorized in Problem
+    c.coinInserted(Coin.COIN200);
+    c.addProblem(NoWater.getInstance());
+    c.cancel();
+    assertEquals(0, c.getAmountInside());
+    
+    //Cancel not authorized
+    c.problemSolved(NoWater.getInstance());
+    c.drinkButton(c.getDrinks().get(4));
+    c.confirm();
+    assertSame(Preparing.getInstance(),c.getState());
+    c.cancel();
+    assertSame(Preparing.getInstance(), c.getState());
+  }
+  
+  @Test
+  public void testNoSpoonCancel() {
+    c.setSpoonsStock(0);
+    c.drinkButton(c.getDrinks().get(4));
+    assertSame(NoSpoon.getInstance(),c.getState());
+    c.cancel();
+    assertSame(Idle.getInstance(), c.getState());
+  }
 }
