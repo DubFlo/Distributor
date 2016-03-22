@@ -94,6 +94,10 @@ public class Context implements IMachine, IContext {
   private final Map<Coin, Integer> stuckCoins;
 
   /**
+   * Creates a vending machine with the specified attributes.
+   * Also creates a HeatingSystem linked to the machine.
+   * Initializes all the fields and logs that a new machine has been built.
+   * 
    * @param changeMachine the ChangeMachine associated with the Context
    * @param stock the Stock associated with the Context
    * @param coinStuckProb the probability (between 0 and 1) of a coin getting stuck
@@ -336,7 +340,7 @@ public class Context implements IMachine, IContext {
     if (amount != 0) {
       changeMachine.giveChange(amount, this);
       log.info(amount / 100.0 + " " + Utils.EURO + " of change given back.");
-      setChangeBool(true);
+      machineGUI.setChangeBool(true);
     }
     amountInside = 0;
     machineGUI.updateInfo();
@@ -385,7 +389,7 @@ public class Context implements IMachine, IContext {
   /**
    * @return the Drink that is currently ordered by the client
    */
-  public Drink getChosenDrink() {
+   public Drink getChosenDrink() {
     return chosenDrink;
   }
 
@@ -415,18 +419,9 @@ public class Context implements IMachine, IContext {
     cupInside = cup;
   }
 
-  /**
-   * Tells the UI to display or not the change in the container.
-   * 
-   * @param bool true if change must be displayed, false to remove it from the UI
-   */
-  public void setChangeBool(boolean bool) {
-    machineGUI.setChangeBool(bool);
-  }
-
   @Override
   public void takeChange() {
-    setChangeBool(false);
+    machineGUI.setChangeBool(false);
     final int value = Utils.totalValue(changeOut);
     if (value > 0) {
       Utils.resetCoinsMap(changeOut);
@@ -474,6 +469,7 @@ public class Context implements IMachine, IContext {
   public void addChangeOutCoin(Coin coin) {
     changeOut.put(coin, changeOut.get(coin) + 1);
     machineGUI.updateChangeOutInfo();
+    machineGUI.setChangeBool(true);
     log.info(coin.TEXT + " inserted but not allowed.");
   }
   
@@ -521,8 +517,8 @@ public class Context implements IMachine, IContext {
   }
 
   @Override
-  public void setTemperature(int i) {
-    heatingSystem.setTemperature(i);
+  public void resetTemperature() {
+    heatingSystem.resetTemperature();
   }
 
   @Override
@@ -546,15 +542,23 @@ public class Context implements IMachine, IContext {
     return currentProblems.contains(StuckCoin.getInstance());
   }
 
+  /**
+   * Adds the specified coin to the list of stuck coins.
+   * 
+   * @param coin the Coin that is stuck
+   */
   public void addStuckCoin(Coin coin) {
     stuckCoins.put(coin, stuckCoins.get(coin) + 1);
   }
 
+  /**
+   * "Unsticks" the stuck coins and gives them back in the container to the user.
+   */
   public void unstickCoins() {
     if (Utils.totalValue(stuckCoins) > 0) {
       this.addChangeOut(stuckCoins);
       Utils.resetCoinsMap(stuckCoins);
-      this.setChangeBool(true);
+      machineGUI.setChangeBool(true);
     }
   }
 

@@ -18,7 +18,8 @@ public abstract class Problem extends State {
   }
 
   /**
-   * Returns true because these states are problems. Can not be overridden.
+   * Returns true because these states are problems state.
+   * Can not be overridden.
    * 
    * @return true
    */

@@ -334,7 +334,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     exit.add(quit);
 
     waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
-    instantWarming.addActionListener(e -> machine.setTemperature(93));
+    instantWarming.addActionListener(e -> machine.resetTemperature());
     unstickCoins.addActionListener(e -> {
       machine.repairStuckCoins();
       SoundLoader.play(SoundLoader.getInstance().REPAIR);
@@ -415,6 +415,11 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
   @Override
   public void updateChangeOutInfo() {
     changeButton.setToolTipText(machine.getChangeOutInfo());
+  }
+
+  @Override
+  public void setCupText(String msg) {
+    cupButton.setToolTipText(msg);
   }
 
   @Override
@@ -531,11 +536,6 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (value >= 0) {
       machine.setSpoonsStock(value);
     }
-  }
-
-  @Override
-  public void setCupText(String msg) {
-    cupButton.setToolTipText(msg);
   }
 
 }

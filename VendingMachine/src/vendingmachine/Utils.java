@@ -78,6 +78,7 @@ public final class Utils {
    * If it is not positive, throws a IllegalArgumentException.
    * 
    * @param i the int to check
+   * @param element the String representation of the element whose number is changed
    * @throws IllegalArgumentException if the int {@code i} is strictly negative
    */
   public static void checkPositiveIntIllegal(int i, String element) {

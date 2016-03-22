@@ -6,8 +6,7 @@ import vendingmachine.Coin;
 
 /**
  * This class is able to perform operations about change and coins.
- * It uses as an attribute a stock of Coin's. Coin's can be inserted.
- * It can also give change on a specified amount (if it is possible).
+ * It uses as an attribute a Change object. Coins can be inserted.
  * Some coins can be refused.
  * 
  * @see Coin
@@ -22,7 +21,7 @@ public class ChangeMachine {
   private final Change change;
 
   /**
-   * Builds a change machine with the specified coins stock.
+   * Builds a change machine with the specified Change object.
    * Each coin may be accepted or not by the change machine.
    * Throws an IllegalArgumentException if {@code acceptedCoins}
    * do not list all the coins of Coin.
@@ -77,7 +76,7 @@ public class ChangeMachine {
   }
   
   /**
-   * @param coin the Coin whose value must be known
+   * @param coin the Coin whose stock value must be known
    * @return the stock value of the specified Coin
    */
   public int getCoinsStock(Coin coin) {
@@ -99,7 +98,7 @@ public class ChangeMachine {
   }
 
   /**
-   * Updates the stock of {@code coin} to the {@code value} specified.
+   * Updates the stock of the specified {@code coin} to the specified {@code value}.
    * 
    * @param coin the Coin whose stock must be changed
    * @param value the new value for the {@code coin} (must be positive)
