@@ -121,8 +121,8 @@ public class HeatingSystem {
    * @param temperature the new temperature to set
    */
   public void setTemperature(double temperature) {
-    this.temperature = temperature;
     if (waterSupply) {
+      this.temperature = temperature;
       updateState();
       observer.setTemperature(this.temperature);
     }

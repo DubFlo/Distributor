@@ -13,72 +13,75 @@ import vendingmachine.components.ChangeMachine;
 
 public class ChangeTest {
 
-  private static Hashtable<Coin,Integer> coinsStock;
-  private static Hashtable<Coin,Boolean> acceptedCoins;
-  private ChangeMachine cm;
-  private static EmptyContext c;
+  private Hashtable<Coin,Integer> coinsStock;
+  private Hashtable<Coin,Boolean> acceptedCoins;
+  private ChangeMachine changeMachine;
   private Change change;
   
   @Before
   public void setUp() {
 
-    int[] coinsStockTab = {1,1,0,3,0,0,4,1};
+    int[] coinsStockTab = { 1, 1, 0, 3, 0, 0, 4, 1 };
+    boolean[] acceptedCoinsTab = { false, true, false, true, false, true, true, true };
     coinsStock = new Hashtable<Coin,Integer>();
-    boolean[] acceptedCoinsTab = {false, true, false, true, false, true, true, true};
     acceptedCoins = new Hashtable<Coin, Boolean>();
 
-    for (int i = 0; i < 8 ; i++) {
+    for (int i = 0; i < 8; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
     change = new Change(coinsStock);
-    cm = new ChangeMachine (change, acceptedCoins);
-    c = new EmptyContext();
+    changeMachine = new ChangeMachine(change, acceptedCoins);
   }
   
   @Test(expected = IllegalArgumentException.class)
-  public void testConstructorErrorCoinContain() {
+  public void testConstructorErrorCoinMissing() {
     change.getCoinsStock().remove(Coin.COIN2);
     new Change(coinsStock);
   }
   
   @Test
   public void testGiveChange() {
-    cm.isChangePossible(109);
-    Hashtable<Coin,Integer>otherMTG = new Hashtable<Coin,Integer>();
-    int[] otherMTGTab = {0,1,0,0,0,0,4,1};
-    for (int i = 0; i<8; i++) {
-      otherMTG.put(Coin.COINS.get(i),otherMTGTab[i]);
+    assertTrue(changeMachine.isChangePossible(109));
+    Hashtable<Coin, Integer> changeExpected = new Hashtable<Coin, Integer>();
+    int[] changeExpectedTab = { 0, 1, 0, 0, 0, 0, 4, 1 };
+    for (int i = 0; i < 8; i++) {
+      changeExpected.put(Coin.COINS.get(i), changeExpectedTab[i]);
     }
-    assertEquals("Incorrect return value of giveChange",change.giveChange(109),otherMTG);
+    assertEquals("Incorrect return value of giveChange", change.giveChange(109), changeExpected);
   }
   
   @Test(expected = IllegalArgumentException.class)
-  public void tesGiveChangeError() {
-    cm.giveChange(171,c);
+  public void testImpossibleGivingOfChange() {
+    changeMachine.giveChange(171, new EmptyContext());
   }
   
   @Test
-  public void testSetCoinsStock() {
-    cm.setCoinStock(Coin.COIN10, 5);
-    assertEquals(coinsStock.get(Coin.COIN10), Integer.valueOf(5));
+  public void testModifyCoinsStock() {
+    assertEquals(change.getCoinsStock(Coin.COIN10), 0);
+    changeMachine.setCoinStock(Coin.COIN10, 5);
+    assertEquals(change.getCoinsStock(Coin.COIN10), 5);
+    changeMachine.insertCoin(Coin.COIN10);
+    assertEquals(change.getCoinsStock(Coin.COIN10), 6);
   }
   
   @Test(expected = IllegalArgumentException.class)
-  public void testSetCoinsStockError() {
-    cm.setCoinStock(Coin.COIN1, -1);
+  public void testSetNegativeCoinsStockError() {
+    changeMachine.setCoinStock(Coin.COIN1, -1);
   }
+  
   @Test
   public void testIsChangePossible() {
-    assertFalse("Shortage of stock",cm.isChangePossible(422));
+    assertFalse("Giving back change should not be possible", changeMachine.isChangePossible(422));
 
-    assertTrue("Giving back change should be possible",cm.isChangePossible(342));
+    assertTrue("Giving back change should be possible", changeMachine.isChangePossible(342));
 
-    assertFalse("Problem of accepted coins",cm.isChangePossible(500));
+    assertFalse("Giving back change should not be possible", changeMachine.isChangePossible(500));
   }
+  
   @Test(expected = IllegalArgumentException.class)
   public void testIsChangePossibleError(){
-    cm.isChangePossible(-1);
+    changeMachine.isChangePossible(-1);
   }
+  
 }
-

@@ -23,12 +23,7 @@ import vendingmachine.states.NoSpoon;
 
 public class StockTest {
 
-  private Hashtable<Coin, Integer> coinsStock;
-  private Change change;
-  private Hashtable<Coin, Boolean> acceptedCoins;
-  private ChangeMachine cm;
   private Context c;
-  private int coinStuck;
   private Stock stock;
  
   @BeforeClass
@@ -38,23 +33,25 @@ public class StockTest {
   
   @Before
   public void setUp() {
-  //initialize ChangeMachine
-    int[] coinsStockTab = {1,1,0,5,5,0,4,1};
-    coinsStock = new Hashtable<Coin,Integer>();
-    boolean[] acceptedCoinsTab = {false, true, true, true, true, true, false, true};
-    acceptedCoins = new Hashtable<Coin, Boolean>();
+    //initialize ChangeMachine
+    int[] coinsStockTab = { 1, 1, 0, 5, 5, 0, 4, 1 };
+    boolean[] acceptedCoinsTab = { false, true, true, true, true, true, false, true };
+    Hashtable<Coin, Integer> coinsStock = new Hashtable<Coin,Integer>();
+    Hashtable<Coin, Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
 
-    for (int i = 0; i < 8 ; i++) {
+    for (int i = 0; i < 8; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
-      acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
+      acceptedCoins.put(Coin.COINS.get(i), acceptedCoinsTab[i]);
     }
-    change = new Change(coinsStock);
-    cm = new ChangeMachine(change,acceptedCoins);
-    //initialize Stock
-    String[] drinkNameTab = {"a","b","c","d","e"};
-    boolean[] drinkSugarTab = {true,true,true,true,false};
-    int[] drinkPriceTab = {100,40,70,0,20};
-    int[] drinkStockTab = {1,5,2,0,1};
+    
+    Change change = new Change(coinsStock);
+    ChangeMachine cm = new ChangeMachine(change,acceptedCoins);
+    
+    // Initialize Stock
+    String[] drinkNameTab = { "a", "b", "c", "d", "e" };
+    boolean[] drinkSugarTab = { true, true, true, true, false };
+    int[] drinkPriceTab = { 100, 40, 70, 0, 20 };
+    int[] drinkStockTab = { 1, 5, 2, 0, 1 };
     Drink[] drinkTab = new Drink[5];
     Map<Drink,Integer> drinkQty = new LinkedHashMap<Drink,Integer>();
    
@@ -63,70 +60,80 @@ public class StockTest {
       drinkQty.put(drinkTab[i], drinkStockTab[i]);  
     }
      
-  
-    stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, drinkQty)
+    stock = new Stock(5, 5, 5, drinkQty); //(sugarCubesNbr, cupsNbr, spoonsNbr, drinkQty)
     
-    //coinStuckProb
-    coinStuck = 0;
-    //initialize new context
-    c = new Context(cm,stock,coinStuck);
+    // Initialize new context
+    c = new Context(cm, stock, 0); // A coin should never get stuck
     c.setUI(new EmptyUI());  
   }
   
   @Test
-  public void testSetSpoonsStock() {
+  public void testNoSpoonState() {
     stock.setSpoonsStock(2);
-    assertEquals(2,stock.getSpoonsNbr());
+    assertEquals(2, stock.getSpoonsNbr());
     
-    stock.setSpoonsStock(0);
+    stock.setSpoonsStock(1);
+    stock.removeSpoon();
+    assertEquals(0, stock.getSpoonsNbr());
     c.coinInserted(Coin.COIN100);
     c.drinkButton(c.getDrinks().get(0));
-    assertEquals (NoSpoon.getInstance(),c.getState());
+    assertEquals(NoSpoon.getInstance(), c.getState());
   }
   
   @Test
   public void testSetDrinkQty() {
-    stock.setDrinkQty(c.getDrinks().get(2),3);
+    stock.setDrinkQty(c.getDrinks().get(2), 3);
     assertEquals(3, stock.getDrinkQty(c.getDrinks().get(2)));
     
-    stock.setDrinkQty(c.getDrinks().get(2),0);
-    c.drinkButton(c.getDrinks().get(2));
+    stock.setDrinkQty(c.getDrinks().get(3), 0);
+    c.drinkButton(c.getDrinks().get(3)); // This Drink is free
     assertEquals(Idle.getInstance(), c.getState());
   }
+  
   @Test(expected = IllegalArgumentException.class)
-  public void testErrorSetCupStock() {
+  public void testSetNegativeCupStock() {
     stock.setCupStock(-1, c);
   }
+  
   @Test
   public void testSetCupsStock() {
-    stock.setCupStock(4,c);
-    assertEquals(4,stock.getCupsNbr());
+    stock.setCupStock(4, c);
+    assertEquals(4, stock.getCupsNbr());
     
     stock.setCupStock(0, c);
-    assertEquals(NoCup.getInstance(),c.getState());
-  }
-  @Test
-  public void testSugarStock() {
-    stock.setSugarStock(2);
-    assertEquals (2, stock.getSugarCubesNbr());
+    assertEquals(NoCup.getInstance(), c.getState());
     
-    stock.setSugarStock(0);
+    stock.setCupStock(1, c);
+    assertEquals(Idle.getInstance(), c.getState());
+  }
+  
+  @Test
+  public void testSugarStock() { // A retirer ???????????????????????????????????????????????
+    stock.setSugarStock(2);
+    assertEquals(2, stock.getSugarCubesNbr());
+    
+    stock.setSugarStock(1);
     c.coinInserted(Coin.COIN100);
     c.drinkButton(c.getDrinks().get(0));
     c.more();
-    assertEquals(0,c.getChosenSugar());
+    assertEquals(1, c.getChosenSugar());
+    c.more();
+    assertEquals(1, c.getChosenSugar());
   }   
+  
   @Test(expected = IllegalArgumentException.class)
   public void testRemoveDrinkError() {
     stock.removeDrink(c.getDrinks().get(3));
   }
+  
   @Test(expected = IllegalArgumentException.class)
   public void testRemoveCupError() {
     stock.setCupStock(0, c);
     stock.removeCup(c);
   }
+  
   @Test
-  public void testRemoveCup() {
+  public void testRemoveCupToZero() {
     stock.setCupStock(1, c);
     stock.removeCup(c);
     assertEquals(NoCup.getInstance(),c.getState());

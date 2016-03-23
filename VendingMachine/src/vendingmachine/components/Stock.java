@@ -198,9 +198,7 @@ public class Stock {
    * @param newSugarCubesNbr the number of sugar cubes to set
    */
   public void setSugarStock(int newSugarCubesNbr) {
-    if (newSugarCubesNbr < 0) {
-      throw new IllegalArgumentException();
-    }
+    Utils.checkPositiveIntIllegal(newSugarCubesNbr, "cups stock");
     Utils.logChange(newSugarCubesNbr - this.sugarCubesNbr, newSugarCubesNbr, "sugar cube(s)");
     this.sugarCubesNbr = newSugarCubesNbr;
   }
