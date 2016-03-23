@@ -24,8 +24,7 @@ public interface IMachine {
   void confirm();
   
   /**
-   * Called when "-" button is pressed.
-   * Calls the {@code less()} method of the current State.
+   * Decrement a value (usually the sugar level).
    */
   void less();
   
@@ -84,7 +83,8 @@ public interface IMachine {
   String getSugarText();
 
   /**
-   * Sets the machineGUI attribute of the machine.
+   * Sets the UI that is linked with the machine.
+   * Also links the UI to the HeatingSystem.
    * 
    * @param <T> must implement both IMachineGUI and TemperatureListener
    * @param observer the UI that must be updated by the machine and its heating system
@@ -129,9 +129,9 @@ public interface IMachine {
   boolean isAvailableForMaintenance();
 
   /**
-   * @param temperature the new temperature to set
+   * Changes the temperature to its initial value.
    */
-  void setTemperature(int temperature);
+  void resetTemperature();
 
   /**
    * Removes the StuckCoin Problem from the set of problems.

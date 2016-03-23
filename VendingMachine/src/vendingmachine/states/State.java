@@ -29,7 +29,7 @@ public abstract class State {
 
   /**
    * Simulates the insertion of the specified Coin.
-   * Refuses the coin if not overridden.
+   * Refuses the coin.
    * 
    * @param coin the Coin to insert
    * @param c the Context associated with the State
@@ -37,7 +37,6 @@ public abstract class State {
   public void coinInserted(Coin coin, Context c) {
     if (!c.isACoinStuck()) {
       if (!coinGetStuck(coin, c)) {
-        c.setChangeBool(true);
         c.addChangeOutCoin(coin);
       }
     } else {
@@ -47,14 +46,14 @@ public abstract class State {
   }
 
   /**
-   * Called when the button "Confirm" is pressed. Does nothing if not overridden.
+   * Called when the button "Confirm" is pressed. Does nothing.
    * 
    * @param c the Context associated with the State
    */
   public void confirm(Context c) {}
 
   /**
-   * Called when a drink button is pressed. Does nothing if not overridden.
+   * Called when a drink button is pressed. Does nothing.
    * 
    * @param drink the Drink associated with the button
    * @param c the Context associated with the State
@@ -62,35 +61,35 @@ public abstract class State {
   public void drinkButton(Drink drink, Context c) {}
 
   /**
-   * Called when the button "-" is pressed. Does nothing if not overridden.
+   * Called when the button "-" is pressed. Does nothing.
    * 
    * @param c the Context associated with the State
    */
   public void less(Context c) {}
 
   /**
-   * Called when the button "+" is pressed. Does nothing if not overridden.
+   * Called when the button "+" is pressed. Does nothing.
    * 
    * @param c the Context associated with the State
    */
   public void more(Context c) {}
 
   /**
-   * This method is called by the machine just after changing its state.
+   * This method is called by the machine just after changing to this state.
    * 
    * @param c the Context associated with the State
    */
   public void entry(Context c) {}
 
   /**
-   * This method is called by the machine just before changing its state.
+   * This method is called by the machine just before changing to another state.
    * 
    * @param c the Context associated with the State
    */
   public void exit(Context c) {}
 
   /**
-   * Returns a message that should be displayed by the vending machine.
+   * Returns the message about the current state that should be displayed by the machine.
    * 
    * @param c the Context associated with the State
    * @return the String that should be displayed by the vending machine.
@@ -99,7 +98,7 @@ public abstract class State {
 
   /**
    * Returns a String about the current information about the sugar.
-   * Returns an empty String if not overridden.
+   * Returns an empty String.
    * 
    * @param c the Context associated with the State
    * @return a String containing information about sugar
@@ -109,16 +108,8 @@ public abstract class State {
   }
 
   /**
-   * Returns the name of the State class.
-   */
-  @Override
-  public final String toString() {
-    return this.getClass().getSimpleName(); // instead of getName() to avoid package name
-  }
-
-  /**
    * Tells if the stocks may currently be changed without causing errors.
-   * By default, returns false.
+   * Returns false.
    * 
    * @return true if the stocks can be changed without problems, false otherwise
    */
@@ -127,12 +118,12 @@ public abstract class State {
   }
 
   /**
-   * Checks if a the specified coin is stuck in the machine.
+   * Checks if the specified coin is stuck in the machine.
    * Uses the COIN_STUCK_PROB of the Context. Can not be overridden.
    * 
    * @param coin the Coin that may get stuck
    * @param c the Context associated with the State
-   * @return true if the coins has been stuck, false otherwise
+   * @return true if the coin has been stuck, false otherwise
    */
   protected final boolean coinGetStuck(Coin coin, Context c) {
     if (Math.random() < c.COIN_STUCK_PROB) {
@@ -148,6 +139,14 @@ public abstract class State {
    */
   public boolean isProblem() {
     return false;
+  }
+
+  /**
+   * Returns the name of the State class.
+   */
+  @Override
+  public final String toString() {
+    return this.getClass().getSimpleName(); // instead of getName() to avoid package name
   }
 
 }

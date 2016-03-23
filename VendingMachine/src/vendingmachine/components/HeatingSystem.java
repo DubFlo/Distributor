@@ -10,16 +10,16 @@ import vendingmachine.ui.TemperatureListener;
  * This class creates a water heating system linked to a vending machine.
  * Its water temperature is updated every second. May notify an observer of the
  * changes of temperature and notifies an IContext of the changes of states.
- * 
+ * <p>
  * Here is an explanation of the formula used to simulate water heating/cooling
  * (source: <a href="http://www.engineersedge.com/heat_transfer/convection.htm">
- * http://www.engineersedge.com/heat_transfer/convection.htm</a>).
- * - When water is not heating, it is considered in an air at 20 degrees;
- * - When water is heating, it is considered to be in a 150 degrees box;
- * - Water is supposed to have a convective heat transfer coefficient of h = 60;
- * - Water has a mass m = 2 kg;
- * - Area is A = 1 m^2 (2 l of water, so in a container of 0,1 m * 0,1 m * 0,2 m);
- * - Liquid water specific heat capacity is C = 4180 J / (kg * K).
+ * http://www.engineersedge.com/heat_transfer/convection.htm</a>).<br>
+ * - When water is not heating, it is considered in an air at 20 degrees;<br>
+ * - When water is heating, it is considered to be in a 150 degrees box;<br>
+ * - Water is supposed to have a convective heat transfer coefficient of h = 60;<br>
+ * - Water has a mass m = 2 kg;<br>
+ * - Area is A = 1 m^2 (2 l of water, so in a container of 0,1 m * 0,1 m * 0,2 m);<br>
+ * - Liquid water specific heat capacity is C = 4180 J / (kg * K).<br>
  * So the heat transferred is computed by h * A * dT (Joules); dividing by
  * C * m gives thus the difference in temperature at each second.
  * This may not be exactly realistic but is still satisfactory.
@@ -30,6 +30,7 @@ public class HeatingSystem {
    * Some default temperatures of the system.
    */
   private static final double MIN_TEMPERATURE = 90.0;
+  private static final double DEFAULT_TEMPERATURE = 93.0;
   private static final double MAX_TEMPERATURE = 96.0;
   private static final double COLD_LIMIT = 80.0;
   private static final double RUNNING_WATER_TEMPERATURE = 60.0;
@@ -74,7 +75,7 @@ public class HeatingSystem {
   public HeatingSystem(IContext context) {
     this.context = context;
     this.waterSupply = true;
-    this.temperature = 93.0;
+    this.temperature = DEFAULT_TEMPERATURE;
     this.heating = true;
 
     timer = new Timer(1000, e -> this.updateTemperature());
@@ -125,6 +126,13 @@ public class HeatingSystem {
       updateState();
       observer.setTemperature(this.temperature);
     }
+  }
+
+  /**
+   * Reset the temperature to its default value.
+   */
+  public void resetTemperature() {
+    this.setTemperature(DEFAULT_TEMPERATURE);
   }
 
   /**

@@ -10,7 +10,8 @@ import vendingmachine.Coin;
 import vendingmachine.Utils;
 
 /**
- *
+ * This class deals with a stock of coins and performs operations on it.
+ * It can give change on a specified amount or tell if the change is possible.
  */
 public class Change {
 
@@ -28,7 +29,9 @@ public class Change {
   private Map<Coin, Integer> coinsStockTemp;
   
   /**
-   * @param coinsStock
+   * Creates a Change object based on the coinsStock specified.
+   * 
+   * @param coinsStock a Map mapping each Coin to its stock
    */
   public Change(Map<Coin, Integer> coinsStock) {
     for (Integer i: coinsStock.values()) {
@@ -74,7 +77,6 @@ public class Change {
    * it is given). Updates the specified IContext of the coins that are given back.
    * 
    * @param amount the amount to give change on
-   * @param context the IContext to notify of the coins given
    * @return a Map of the money that is given back.
    */
   public Map<Coin, Integer> giveChange(int amount) {

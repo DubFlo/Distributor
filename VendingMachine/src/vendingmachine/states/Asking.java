@@ -3,7 +3,7 @@ package vendingmachine.states;
 import vendingmachine.components.Context;
 
 /**
- * State reached from Idle when a drink is ordered and sugared.
+ * State reached from Idle when a sugared drink is ordered.
  * Asks the user the sugar quantity he wants.
  */
 public final class Asking extends State {
@@ -21,13 +21,16 @@ public final class Asking extends State {
 
   private Asking() {}
   
+  /**
+   * Resets the sugar quantity chosen by the client to zero.
+   */
   @Override
   public void entry(Context c) {
     c.setChosenSugar(0);
   }
 
   /**
-   * Gives back change and changes the state of the machine to Idle.
+   * Cancels the order. Gives back change and changes the state of the machine to Idle.
    */
   @Override
   public void cancel(Context c) {
@@ -37,7 +40,7 @@ public final class Asking extends State {
 
   /**
    * Gives the change and changes the state of the Context to preparing.
-   * The change is possible and the drink is in stock (checked in Idle state)
+   * The change is possible and the drink is in stock (checked in Idle state).
    */
   @Override
   public void confirm(Context c) {
@@ -57,7 +60,7 @@ public final class Asking extends State {
 
   /**
    * Adds one to the sugar quantity wanted by the client.
-   * Doesn't go above {@code MAX_SUGAR}.
+   * Doesn't go above 5.
    */
   @Override
   public void more(Context c) {
