@@ -1,6 +1,8 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Hashtable;
 
@@ -17,7 +19,7 @@ public class ChangeTest {
   private Hashtable<Coin,Boolean> acceptedCoins;
   private ChangeMachine changeMachine;
   private Change change;
-  
+
   @Before
   public void setUp() {
 
@@ -33,13 +35,13 @@ public class ChangeTest {
     change = new Change(coinsStock);
     changeMachine = new ChangeMachine(change, acceptedCoins);
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorErrorCoinMissing() {
     change.getCoinsStock().remove(Coin.COIN2);
     new Change(coinsStock);
   }
-  
+
   @Test
   public void testGiveChange() {
     assertTrue(changeMachine.isChangePossible(109));
@@ -50,12 +52,12 @@ public class ChangeTest {
     }
     assertEquals("Incorrect return value of giveChange", change.giveChange(109), changeExpected);
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testImpossibleGivingOfChange() {
     changeMachine.giveChange(171, new EmptyContext());
   }
-  
+
   @Test
   public void testModifyCoinsStock() {
     assertEquals(change.getCoinsStock(Coin.COIN10), 0);
@@ -64,12 +66,12 @@ public class ChangeTest {
     changeMachine.insertCoin(Coin.COIN10);
     assertEquals(change.getCoinsStock(Coin.COIN10), 6);
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testSetNegativeCoinsStockError() {
     changeMachine.setCoinStock(Coin.COIN1, -1);
   }
-  
+
   @Test
   public void testIsChangePossible() {
     assertFalse("Giving back change should not be possible", changeMachine.isChangePossible(422));
@@ -78,10 +80,10 @@ public class ChangeTest {
 
     assertFalse("Giving back change should not be possible", changeMachine.isChangePossible(500));
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testIsChangePossibleError(){
     changeMachine.isChangePossible(-1);
   }
-  
+
 }

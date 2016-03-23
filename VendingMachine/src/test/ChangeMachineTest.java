@@ -17,7 +17,7 @@ public class ChangeMachineTest {
   private Hashtable<Coin,Integer> coinsStock;
   private Hashtable<Coin,Boolean> acceptedCoins;
   private Change change;
-  
+
   @Before
   public void setUp() {
 
@@ -32,7 +32,7 @@ public class ChangeMachineTest {
     }
     change = new Change(coinsStock);
   }
-  
+
   @Test
   public void testGettersAndSetters() {
     ChangeMachine changeMachine = new ChangeMachine(change, acceptedCoins);
@@ -41,17 +41,17 @@ public class ChangeMachineTest {
     changeMachine.insertCoin(Coin.COIN2);
     assertEquals(5, changeMachine.getCoinsStock(Coin.COIN2));
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorNegativeStock() {
     change.setCoinStock(Coin.COIN2, -4);
     new ChangeMachine(change, acceptedCoins);
   }
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorErrorCoinMissing() {
     acceptedCoins.remove(Coin.COIN5);
     new ChangeMachine(change, acceptedCoins);
   }
-  
+
 }

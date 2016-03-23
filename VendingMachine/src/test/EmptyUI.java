@@ -68,7 +68,7 @@ public class EmptyUI implements IMachineGUI, TemperatureListener {
   @Override
   public void setTemperature(double temperature) {
     // TODO Auto-generated method stub
-    
+
   }
 
 }
