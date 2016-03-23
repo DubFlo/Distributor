@@ -2,26 +2,21 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.Timer;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
 import vendingmachine.Coin;
 import vendingmachine.Drink;
-import vendingmachine.FontLoader;
 import vendingmachine.SoundLoader;
 import vendingmachine.components.Change;
 import vendingmachine.components.ChangeMachine;
 import vendingmachine.components.Context;
-import vendingmachine.components.IContext;
 import vendingmachine.components.Stock;
 import vendingmachine.states.Asking;
 import vendingmachine.states.Idle;
@@ -30,7 +25,7 @@ import vendingmachine.states.NoSpoon;
 import vendingmachine.states.NoWater;
 import vendingmachine.states.Preparing;
 import vendingmachine.states.StuckCoin;
-import vendingmachine.ui.VendingMachineGUI;
+
 
 
 public class ContextTest {
@@ -80,7 +75,7 @@ public class ContextTest {
     
     //coinStuckProb
     coinStuck = 0;
-    //initialize new context
+    //Initialize new context
     c = new Context(cm,stock,coinStuck);
     c.setUI(new EmptyUI());  
   }
@@ -117,7 +112,7 @@ public class ContextTest {
     c.addProblem(StuckCoin.getInstance());
     c.coinInserted(Coin.COIN5);
     assertEquals("Nothing should have changed",0,cm.getCoinsStock(Coin.COIN5));
-    //assertEquals(5, c.get) vérif montant coincé
+    //assertEquals(5, c.get?) vérif montant coincé
     }
   
   @Test
@@ -177,12 +172,12 @@ public class ContextTest {
   
   @Test
   public void testConfirm() {
-    //Idle
+    //Test in Idle
     c.setChosenDrink(c.getDrinks().get(4));
     c.confirm();
     assertSame(Idle.getInstance(),c.getState());
     
-    //Asking
+    //Test in Asking
     c.insertCoin(Coin.COIN20);
     c.drinkButton(c.getDrinks().get(4));
     c.confirm();
@@ -239,5 +234,38 @@ public class ContextTest {
     assertSame(NoSpoon.getInstance(),c.getState());
     c.cancel();
     assertSame(Idle.getInstance(), c.getState());
+  }
+  @Test
+  public void testMore() {
+    //Test in Idle
+    c.setSugarStock(1);
+    c.more();
+    assertEquals(0, c.getChosenSugar());
+    
+    //Test in Asking
+    c.drinkButton(c.getDrinks().get(4));
+    c.more();
+    assertEquals(1, c.getChosenSugar());
+    c.more();
+    assertEquals("Problem of stock",1, c.getChosenSugar());
+    c.setSugarStock(6);
+    c.setChosenSugar(5);
+    c.more();
+    assertEquals("Maximum 5 sugar chosen",5, c.getChosenSugar());
+  }
+  @Test
+  public void testLess() {
+    //Test in Idle(?)
+    c.setChosenSugar(1);
+    assertEquals(1, c.getChosenSugar());
+    c.less();
+    assertEquals(1, c.getChosenSugar());
+    //Test in Asking
+    c.drinkButton(c.getDrinks().get(4));
+    c.less();
+    assertEquals(0, c.getChosenSugar());
+    c.more();//chosenSugar += 1
+    c.less();
+    assertEquals(0, c.getChosenSugar());
   }
 }
