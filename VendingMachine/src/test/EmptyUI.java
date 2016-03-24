@@ -6,69 +6,36 @@ import vendingmachine.ui.TemperatureListener;
 public class EmptyUI implements IMachineGUI, TemperatureListener {
 
   @Override
-  public void setChangeBool(boolean bool) {
-    // TODO Auto-generated method stub
-
-  }
+  public void setChangeBool(boolean bool) {}
 
   @Override
-  public void setCupBool(boolean cup, boolean spoon) {
-    // TODO Auto-generated method stub
-
-  }
+  public void setCupBool(boolean cup, boolean spoon) {}
 
   @Override
-  public void setTemporaryNorthText(String msg) {
-    // TODO Auto-generated method stub
-
-  }
+  public void setTemporaryNorthText(String msg) {}
 
   @Override
-  public void updateChangeOutInfo() {
-    // TODO Auto-generated method stub
-
-  }
+  public void updateChangeOutInfo() {}
 
   @Override
-  public void updateInfo() {
-    // TODO Auto-generated method stub
-
-  }
+  public void updateInfo() {}
 
   @Override
-  public void updateNorthText() {
-    // TODO Auto-generated method stub
-
-  }
+  public void updateNorthText() {}
+  
+  @Override
+  public void updateSugarText() {}
 
   @Override
-  public void updateSugarText() {
-    // TODO Auto-generated method stub
-
-  }
+  public void updateUI() {}
 
   @Override
-  public void updateUI() {
-    // TODO Auto-generated method stub
-
-  }
+  public void enableRepair(boolean bool) {}
 
   @Override
-  public void enableRepair(boolean bool) {
-    // TODO Auto-generated method stub
-
-  }
+  public void setCupText(String msg) {}
 
   @Override
-  public void setCupText(String msg) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void setTemperature(double temperature) {
-    // TODO Auto-generated method stub
-
-  }
+  public void setTemperature(double temperature) {}
 
 }

@@ -489,7 +489,7 @@ public class Context implements IMachine, IContext {
 
   @Override
   public void setDrinkStock(Drink drink, int value) {
-    stock.setDrinkQty(drink, value);
+    stock.setDrinkStock(drink, value);
     machineGUI.updateInfo();
   }
 

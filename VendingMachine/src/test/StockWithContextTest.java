@@ -29,7 +29,7 @@ public class StockWithContextTest {
 
   @BeforeClass
   public static void load() {
-    SoundLoader.getInstance();
+    SoundLoader.getInstance(); // Increase in performance as it is loaded only once
   }
 
   @Before
@@ -67,14 +67,13 @@ public class StockWithContextTest {
 
   @Test
   public void testNoSpoonState() {
-    context.setSpoonsStock(2);
-    assertEquals(2, stock.getSpoonsNbr());
-
     context.setSpoonsStock(1);
+    assertEquals(1, stock.getSpoonsNbr());
+    
     stock.removeSpoon();
     assertEquals(0, stock.getSpoonsNbr());
     context.coinInserted(Coin.COIN100);
-    context.drinkButton(context.getDrinks().get(0));
+    context.drinkButton(context.getDrinks().get(0)); // costs 1 euro
     assertEquals(NoSpoon.getInstance(), context.getState());
   }
 
@@ -109,14 +108,8 @@ public class StockWithContextTest {
   public void testSugarStock() {
     context.setSugarStock(2);
     assertEquals(2, stock.getSugarCubesNbr());
-
-    context.setSugarStock(1);
-    context.coinInserted(Coin.COIN100);
-    context.drinkButton(context.getDrinks().get(0));
-    context.more();
-    assertEquals(1, context.getChosenSugar());
-    context.more();
-    assertEquals("chosen sugar should not be > 1", 1, context.getChosenSugar());
+    stock.removeSugarCubes(1);
+    assertEquals(1, stock.getSugarCubesNbr());
   }
 
   @Test(expected = IllegalArgumentException.class)

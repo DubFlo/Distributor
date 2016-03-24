@@ -251,7 +251,7 @@ public class Stock {
    * @param drink the Drink whose stock must be changed
    * @param value the new value for the {@code drink} stock (must be positive)
    */
-  void setDrinkQty(Drink drink, int value) {
+  void setDrinkStock(Drink drink, int value) {
     Utils.checkPositiveIntIllegal(value, drink.getName());
     Utils.logChange(value - drinkQty.get(drink), value, drink.getName() + "(s)");
     drinkQty.put(drink, value);
