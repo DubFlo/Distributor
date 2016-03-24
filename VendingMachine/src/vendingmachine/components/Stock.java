@@ -193,11 +193,13 @@ public class Stock {
 
   /**
    * Sets a new number of sugar cubes in stock. Logs the change that is done.
+   * If you want to remove only some sugar cubes from the stock, you should use
+   * {@code removeSugarCubes()} instead.
    * If the number is negative, throws an IllegalArgumentException.
    * 
    * @param newSugarCubesNbr the number of sugar cubes to set
    */
-  public void setSugarStock(int newSugarCubesNbr) {
+  void setSugarStock(int newSugarCubesNbr) {
     Utils.checkPositiveIntIllegal(newSugarCubesNbr, "cups stock");
     Utils.logChange(newSugarCubesNbr - this.sugarCubesNbr, newSugarCubesNbr, "sugar cube(s)");
     this.sugarCubesNbr = newSugarCubesNbr;
@@ -205,13 +207,15 @@ public class Stock {
 
   /**
    * Sets a new number of cups in stock. Logs the change that is done.
-   * If the number is negative, throws an IllegalArgumentException.
+   * If you want to remove only one cup from the stock, you should use
+   * {@code removeCup()} instead.
    * If the number of cups reaches 0 or is no more 0, updates the Context.
+   * If the number is negative, throws an IllegalArgumentException.
    * 
    * @param newCupsNbr the number of cups to set
    * @param context the IContext to update if the number of cups reaches 0
    */
-  public void setCupStock(int newCupsNbr, IContext context) {
+  void setCupStock(int newCupsNbr, IContext context) {
     Utils.checkPositiveIntIllegal(newCupsNbr, "cups stock");
     Utils.logChange(newCupsNbr - this.cupsNbr, newCupsNbr, "cup(s)");
     
@@ -225,11 +229,13 @@ public class Stock {
 
   /**
    * Sets a new number of spoons in stock. Logs the change that is done.
+   * If you want to remove only one spoon from the stock, you should use
+   * {@code removeSpoon()} instead.
    * If the number is negative, throws an IllegalArgumentException.
    * 
    * @param newSpoonsNbr the number of spoons to set
    */
-  public void setSpoonsStock(int newSpoonsNbr) {
+  void setSpoonsStock(int newSpoonsNbr) {
     Utils.checkPositiveIntIllegal(newSpoonsNbr, "spoons stock");
     Utils.logChange(newSpoonsNbr - this.spoonsNbr, newSpoonsNbr, "spoon(s)");   
     this.spoonsNbr = newSpoonsNbr;
@@ -237,13 +243,15 @@ public class Stock {
 
   /**
    * Updates the stock of {@code drink} to the {@code value} specified.
+   * If you want to remove only one drink from the stock, you should use
+   * {@code removeDrink(Drink)} instead.
    * Throws an IllegalArgumentException if {@code value} is negative.
    * Logs the change that is done.
    * 
    * @param drink the Drink whose stock must be changed
    * @param value the new value for the {@code drink} stock (must be positive)
    */
-  public void setDrinkQty(Drink drink, int value) {
+  void setDrinkQty(Drink drink, int value) {
     Utils.checkPositiveIntIllegal(value, drink.getName());
     Utils.logChange(value - drinkQty.get(drink), value, drink.getName() + "(s)");
     drinkQty.put(drink, value);

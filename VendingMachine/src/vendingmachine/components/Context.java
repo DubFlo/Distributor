@@ -31,6 +31,11 @@ public class Context implements IMachine, IContext {
 
   private static final Logger log = LogManager.getLogger("Context");
 
+  /**
+   * The probability for a coin to get stuck (between 0 and 1).
+   */
+  public final double COIN_STUCK_PROB;
+  
   /*
    * The different parts of the machine.
    */
@@ -62,11 +67,6 @@ public class Context implements IMachine, IContext {
    * The drink that is currently ordered.
    */
   private Drink chosenDrink;
-
-  /**
-   * The probability for a coin to get stuck (between 0 and 1).
-   */
-  public final double COIN_STUCK_PROB;
 
   /**
    * The Coin's currently in the container to be given back.
@@ -146,7 +146,7 @@ public class Context implements IMachine, IContext {
 
     if (chosenDrink.isSugar()) {
       stock.removeSugarCubes(chosenSugar);
-      logMsg.append("\tWith ").append(chosenSugar).append(" sugar cubes (")
+      logMsg.append("\tWith ").append(chosenSugar).append(" sugar cube(s) (")
       .append(stock.getSugarCubesNbr()).append(" remaining);\n");
     }
 
@@ -158,11 +158,11 @@ public class Context implements IMachine, IContext {
     }
 
     stock.removeCup(this);
-    logMsg.append('\t').append(stock.getCupsNbr()).append(" cups remaining.");
+    logMsg.append('\t').append(stock.getCupsNbr()).append(" cup(s) remaining.");
     setCupBool(true, spoon);
 
     log.info(logMsg.toString());
-    machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cubes)");
+    machineGUI.setCupText(chosenDrink.getName() + " (" + chosenSugar + " sugar cube(s))");
     machineGUI.setTemporaryNorthText("Your " + chosenDrink.getName() + " is ready!");
 
     heatingSystem.drinkOrdered();

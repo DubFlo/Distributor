@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
   ChangeMachineTest.class,
   ChangeTest.class,
   HeatingSystemTest.class,
-  StockTest.class,
+  StockWithContextTest.class,
   UtilsTest.class,
   ContextTest.class
 })

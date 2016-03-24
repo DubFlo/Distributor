@@ -31,14 +31,13 @@ public class ContextTest {
 
   private Hashtable<Coin, Integer> coinsStock;
   private Hashtable<Coin, Boolean> acceptedCoins;
-  private ChangeMachine cm;
-  private Context c;
+  private ChangeMachine changeMachine;
+  private Context context;
   private Stock stock;
-  private Change change;
 
   @BeforeClass
   public static void load() {
-    SoundLoader.getInstance();
+    SoundLoader.getInstance(); // Increase in performance as it is loaded only once
   }
 
   @Before
@@ -50,10 +49,9 @@ public class ContextTest {
     acceptedCoins = new Hashtable<Coin, Boolean>();
     for (int i = 0; i < 8 ; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
-      acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
+      acceptedCoins.put(Coin.COINS.get(i), acceptedCoinsTab[i]);
     }
-    change = new Change(coinsStock);
-    cm = new ChangeMachine(change,acceptedCoins);
+    changeMachine = new ChangeMachine(new Change(coinsStock), acceptedCoins);
 
     // Initialize Stock
     String[] drinkNameTab = { "a", "b", "c", "d", "e" };
@@ -62,224 +60,219 @@ public class ContextTest {
     int[] drinkStockTab = {0,5,2,3,1};
     Drink[] drinkTab = new Drink[5];
     Map<Drink,Integer> drinkQty = new LinkedHashMap<Drink,Integer>();
-
     for (int i = 0; i < drinkNameTab.length; i++) {
       drinkTab[i] = new Drink(drinkNameTab[i],drinkSugarTab[i],drinkPriceTab[i]);
       drinkQty.put(drinkTab[i], drinkStockTab[i]);
     }
-
     stock = new Stock(5,5,5,drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, Map<Drink, Integer> drinkQty)
 
     //Initialize new context
-    c = new Context(cm, stock, 0); // No coin should get stuck
-    c.setUI(new EmptyUI());
-  }
-
-  @Test
-  public void testchangeState() { //Bizarre
-    c.changeState(Preparing.getInstance());
-    assertEquals(c.getState(), Preparing.getInstance());
+    context = new Context(changeMachine, stock, 0); // No coin should get stuck
+    context.setUI(new EmptyUI());
   }
 
   @Test
   public void testCoinInserted() {
     //Idle - Coin accepted
-    assertEquals(c.getAmountInside(), 0);
-    c.coinInserted(Coin.COIN100);
-    assertEquals(c.getAmountInside(), 100);
-    assertEquals(cm.getCoinsStock(Coin.COIN100), 2);
+    assertEquals(context.getAmountInside(), 0);
+    context.coinInserted(Coin.COIN100);
+    assertEquals(context.getAmountInside(), 100);
+    assertEquals(changeMachine.getCoinsStock(Coin.COIN100), 2);
     
     //Idle - Coin not accepted
-    int oldAmountInside = c.getAmountInside();
-    c.coinInserted(Coin.COIN200);
-    assertEquals(c.getAmountInside(), oldAmountInside);
+    int oldAmountInside = context.getAmountInside();
+    context.coinInserted(Coin.COIN200);
+    assertEquals(context.getAmountInside(), oldAmountInside);
     
     //Asking
-    c.drinkButton(c.getDrinks().get(1));
-    assertSame(Asking.getInstance(), c.getState());
-    c.coinInserted(Coin.COIN200);
-    assertEquals("The coin should not be inserted", 1, cm.getCoinsStock(Coin.COIN200));
+    context.drinkButton(context.getDrinks().get(1));
+    assertSame(Asking.getInstance(), context.getState());
+    context.coinInserted(Coin.COIN200);
+    assertEquals("The coin should not be inserted", 1, changeMachine.getCoinsStock(Coin.COIN200));
     
     //Preparing
-    c.confirm();
-    assertSame(Preparing.getInstance(), c.getState());
-    c.coinInserted(Coin.COIN10);
-    int oldAmount = c.getAmountInside();
-    assertEquals(oldAmount, c.getAmountInside());
+    context.confirm();
+    assertSame(Preparing.getInstance(), context.getState());
+    context.coinInserted(Coin.COIN10);
+    int oldAmount = context.getAmountInside();
+    assertEquals(oldAmount, context.getAmountInside());
     
     //StuckCoin
-    c.addProblem(StuckCoin.getInstance());
-    c.coinInserted(Coin.COIN5);
-    assertEquals("Nothing should have changed", 0, cm.getCoinsStock(Coin.COIN5));
-    //assertEquals(5, c.get?) vérif montant coincé
+    context.addProblem(StuckCoin.getInstance());
+    context.coinInserted(Coin.COIN5);
+    assertEquals("Nothing should have changed", 0, changeMachine.getCoinsStock(Coin.COIN5));
   }
 
   @Test
   public void testAddProblem() {
-    c.addProblem(StuckCoin.getInstance());
-    assertSame(StuckCoin.getInstance(), c.getState()); //Singleton design pattern
-    c.addProblem(NoCup.getInstance());
-    assertSame(NoCup.getInstance(), c.getState()); //Singleton design pattern
+    context.addProblem(StuckCoin.getInstance());
+    assertSame(StuckCoin.getInstance(), context.getState()); //Singleton design pattern
+    context.addProblem(NoCup.getInstance());
+    assertSame(NoCup.getInstance(), context.getState()); //Singleton design pattern
   }
 
   @Test
   public void testProblemSolved() {
-    c.addProblem(StuckCoin.getInstance());
-    c.addProblem(NoCup.getInstance());
-    c.addProblem(NoWater.getInstance());
+    context.addProblem(StuckCoin.getInstance());
+    context.addProblem(NoCup.getInstance());
+    context.addProblem(NoWater.getInstance());
 
-    assertSame(c.getState(), NoWater.getInstance());
-    c.problemSolved(NoCup.getInstance());
-    assertSame(c.getState(), NoWater.getInstance());
+    assertSame(context.getState(), NoWater.getInstance());
+    context.problemSolved(NoCup.getInstance());
+    assertSame(context.getState(), NoWater.getInstance());
 
-    c.problemSolved(NoWater.getInstance());
-    assertSame(c.getState(), StuckCoin.getInstance());
+    context.problemSolved(NoWater.getInstance());
+    assertSame(context.getState(), StuckCoin.getInstance());
 
-    c.problemSolved(StuckCoin.getInstance());
-    assertSame(c.getState(), Idle.getInstance());
+    context.problemSolved(StuckCoin.getInstance());
+    assertSame(context.getState(), Idle.getInstance());
   }
 
   @Test
   public void testGiveChange() {
-    c.insertCoin(Coin.COIN50);
-    assertEquals(50, c.getAmountInside());
-    c.giveChange(25);
-    assertEquals(0, c.getAmountInside());
+    context.insertCoin(Coin.COIN50);
+    assertEquals(50, context.getAmountInside());
+    context.giveChange(25);
+    assertEquals(0, context.getAmountInside());
   }
   
   @Test
   public void testAreDrinksFree() {
-    assertFalse(c.areDrinksFree());
+    assertFalse(context.areDrinksFree());
   }
 
+  /**
+   * Makes a full order of a Drink.
+   * Checks that the states are logical and the stock is correctly updated.
+   */
   @Test
   public void testOrderOfADrink() throws InterruptedException {
-    final int oldSugarStock = c.getStock().getSugarCubesNbr();
-    final int oldCupsStock = c.getStock().getCupsNbr();
-    final int oldSpoonsStock = c.getStock().getSpoonsNbr();
-    final int oldDrinkStock = c.getStock().getDrinkQty(c.getDrinks().get(1));
+    final int oldSugarStock = context.getStock().getSugarCubesNbr();
+    final int oldCupsStock = context.getStock().getCupsNbr();
+    final int oldSpoonsStock = context.getStock().getSpoonsNbr();
+    final int oldDrinkStock = context.getStock().getDrinkQty(context.getDrinks().get(1));
     
-    assertSame(c.getState(), Idle.getInstance());
-    c.coinInserted(Coin.COIN100);
-    assertEquals(c.getAmountInside(), 100);
+    assertSame(context.getState(), Idle.getInstance());
+    context.coinInserted(Coin.COIN100);
+    assertEquals(context.getAmountInside(), 100);
     
-    c.drinkButton(c.getDrinks().get(1));
-    assertSame(Asking.getInstance(), c.getState());
-    assertSame(c.getDrinks().get(1), c.getChosenDrink());
-    c.more();
-    c.more();
-    assertEquals(2, c.getChosenSugar());
+    context.drinkButton(context.getDrinks().get(1));
+    assertSame(Asking.getInstance(), context.getState());
+    assertSame(context.getDrinks().get(1), context.getChosenDrink());
+    context.more();
+    context.more();
+    assertEquals(2, context.getChosenSugar());
     
-    c.confirm();
-    assertEquals(c.getState(), Preparing.getInstance());
+    context.confirm();
+    assertEquals(context.getState(), Preparing.getInstance());
     
     Thread.sleep(SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000 + 100);
-    assertSame(c.getState(), Idle.getInstance());
-    assertEquals(oldSugarStock - 2, c.getStock().getSugarCubesNbr());
-    assertEquals(oldCupsStock - 1, c.getStock().getCupsNbr());
-    assertEquals(oldSpoonsStock - 1, c.getStock().getSpoonsNbr());
-    assertEquals(oldDrinkStock - 1, c.getStock().getDrinkQty(c.getDrinks().get(1)));
+    assertSame(context.getState(), Idle.getInstance());
+    assertEquals(oldSugarStock - 2, context.getStock().getSugarCubesNbr());
+    assertEquals(oldCupsStock - 1, context.getStock().getCupsNbr());
+    assertEquals(oldSpoonsStock - 1, context.getStock().getSpoonsNbr());
+    assertEquals(oldDrinkStock - 1, context.getStock().getDrinkQty(context.getDrinks().get(1)));
   }
 
   @Test
   public void testConfirm() {
     //Test in Idle
-    c.setChosenDrink(c.getDrinks().get(4));
-    c.confirm();
-    assertSame(Idle.getInstance(), c.getState());
+    context.drinkButton(context.getDrinks().get(4));
+    context.confirm();
+    assertSame(Idle.getInstance(), context.getState());
 
     //Test in Asking
-    c.insertCoin(Coin.COIN20);
-    c.drinkButton(c.getDrinks().get(4));
-    c.confirm();
-    assertSame(Preparing.getInstance(), c.getState());
+    context.insertCoin(Coin.COIN20);
+    context.drinkButton(context.getDrinks().get(4));
+    context.confirm();
+    assertSame(Preparing.getInstance(), context.getState());
   }
 
   @Test
   public void testNoSpoonConfirm() {
-    c.setSugarStock(0);
-    c.drinkButton(c.getDrinks().get(4));
-    c.confirm();
-    assertSame(Preparing.getInstance(), c.getState());
+    context.setSugarStock(0);
+    context.drinkButton(context.getDrinks().get(4));
+    context.confirm();
+    assertSame(Preparing.getInstance(), context.getState());
   }
   
   @Test
   public void testDrinkButton() {
     //Idle
-    c.coinInserted(Coin.COIN20);
-    c.coinInserted(Coin.COIN50);
-    c.addProblem(StuckCoin.getInstance());
-    c.drinkButton(c.getDrinks().get(2));
-    assertSame(StuckCoin.getInstance(), c.getState());
+    context.coinInserted(Coin.COIN20);
+    context.coinInserted(Coin.COIN50);
+    context.addProblem(StuckCoin.getInstance());
+    context.drinkButton(context.getDrinks().get(2));
+    assertSame(StuckCoin.getInstance(), context.getState());
   }
 
   @Test
   public void testCancel() {
     //Cancel authorized in Asking
-    c.coinInserted(Coin.COIN20);
-    c.coinInserted(Coin.COIN20);
-    c.drinkButton(c.getDrinks().get(1));
-    assertSame(Asking.getInstance(),c.getState());
-    c.cancel();
-    assertSame(Idle.getInstance(), c.getState());
-    assertEquals(0, c.getAmountInside());
+    context.coinInserted(Coin.COIN20);
+    context.coinInserted(Coin.COIN20);
+    context.drinkButton(context.getDrinks().get(1));
+    assertSame(Asking.getInstance(),context.getState());
+    context.cancel();
+    assertSame(Idle.getInstance(), context.getState());
+    assertEquals(0, context.getAmountInside());
 
     //Cancel authorized in Problem
-    c.coinInserted(Coin.COIN200);
-    c.addProblem(NoWater.getInstance());
-    c.cancel();
-    assertEquals(0, c.getAmountInside());
+    context.coinInserted(Coin.COIN200);
+    context.addProblem(NoWater.getInstance());
+    context.cancel();
+    assertEquals(0, context.getAmountInside());
 
     //Cancel not authorized
-    c.problemSolved(NoWater.getInstance());
-    c.drinkButton(c.getDrinks().get(4));
-    c.confirm();
-    assertSame(Preparing.getInstance(), c.getState());
-    c.cancel();
-    assertSame(Preparing.getInstance(), c.getState());
+    context.problemSolved(NoWater.getInstance());
+    context.drinkButton(context.getDrinks().get(4));
+    context.confirm();
+    assertSame(Preparing.getInstance(), context.getState());
+    context.cancel();
+    assertSame(Preparing.getInstance(), context.getState());
   }
 
   @Test
   public void testNoSpoonCancel() {
-    c.setSpoonsStock(0);
-    c.drinkButton(c.getDrinks().get(4));
-    assertSame(NoSpoon.getInstance(), c.getState());
-    c.cancel();
-    assertSame(Idle.getInstance(), c.getState());
+    context.setSpoonsStock(0);
+    context.drinkButton(context.getDrinks().get(4));
+    assertSame(NoSpoon.getInstance(), context.getState());
+    context.cancel();
+    assertSame(Idle.getInstance(), context.getState());
   }
   @Test
   public void testMore() {
     //Test in Idle
-    c.setSugarStock(1);
-    c.more();
-    assertEquals(0, c.getChosenSugar());
+    context.setSugarStock(1);
+    context.more();
+    assertEquals(0, context.getChosenSugar());
 
     //Test in Asking
-    c.drinkButton(c.getDrinks().get(4));
-    c.more();
-    assertEquals(1, c.getChosenSugar());
-    c.more();
-    assertEquals("Problem of stock",1, c.getChosenSugar());
-    c.setSugarStock(6);
-    c.setChosenSugar(5);
-    c.more();
-    assertEquals("Maximum 5 sugar chosen",5, c.getChosenSugar());
+    context.drinkButton(context.getDrinks().get(4));
+    context.more();
+    assertEquals(1, context.getChosenSugar());
+    context.more();
+    assertEquals("Problem of stock",1, context.getChosenSugar());
+    context.setSugarStock(6);
+    context.setChosenSugar(5);
+    context.more();
+    assertEquals("Maximum 5 sugar chosen",5, context.getChosenSugar());
   }
   
   @Test
   public void testLess() {
     //Test in Idle(?)
-    c.setChosenSugar(1);
-    assertEquals(1, c.getChosenSugar());
-    c.less();
-    assertEquals(1, c.getChosenSugar());
+    context.setChosenSugar(1);
+    assertEquals(1, context.getChosenSugar());
+    context.less();
+    assertEquals(1, context.getChosenSugar());
     //Test in Asking
-    c.drinkButton(c.getDrinks().get(4));
-    c.less();
-    assertEquals(0, c.getChosenSugar());
-    c.more();//chosenSugar += 1
-    c.less();
-    assertEquals(0, c.getChosenSugar());
+    context.drinkButton(context.getDrinks().get(4));
+    context.less();
+    assertEquals(0, context.getChosenSugar());
+    context.more();//chosenSugar += 1
+    context.less();
+    assertEquals(0, context.getChosenSugar());
   }
   
 }
