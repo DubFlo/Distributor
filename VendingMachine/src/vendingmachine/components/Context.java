@@ -533,7 +533,7 @@ public class Context implements IMachine, IContext {
   /**
    * Disable/enable the button of the UI to repair the stuck coins.
    * 
-   * @param b true to enable the repairing, false to disable
+   * @param bool true to enable the repairing, false to disable
    */
   public void enableRepair(boolean bool) {
     machineGUI.enableRepair(bool);

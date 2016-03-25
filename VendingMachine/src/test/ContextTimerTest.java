@@ -20,6 +20,8 @@ public class ContextTimerTest extends ContextTest {
   /**
    * Makes a full order of a Drink. Takes some seconds to wait for the end of the preparation.
    * Checks that the states are logical and the stock is correctly updated.
+   * 
+   * @throws InterruptedException call to Thread.sleep(long)
    */
   @Test
   public void testFullDrinkOrder() throws InterruptedException {
@@ -59,6 +61,7 @@ public class ContextTimerTest extends ContextTest {
    * because a cup is inside the machine. Takes the cup (and the change) and orders again.
    * Takes some second to wait for the end of the preparation.
    * 
+   * @throws InterruptedException call to Thread.sleep(long)
    */
   @Test
   public void cantOrderWhenCupInMachine() throws InterruptedException {
