@@ -323,7 +323,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     menuBar.add(otherMenu);
     menuBar.add(exit);
 
-    final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
+    final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water Supply Enabled", true);
     final JMenuItem instantWarming = new JMenuItem("Instant Warming");
     final JMenuItem newMachine = new JMenuItem("New Vending Machine");
     final JMenuItem quit = new JMenuItem("Quit");
