@@ -48,12 +48,12 @@ public class HeatingSystemTest {
   @Test
   public void testUpdate() throws InterruptedException {
     heatSys.setTemperature(88.1);
-    Thread.sleep(1100); // More than one second
-    assertTrue("Temperature should have been decreased", 88.1 < heatSys.getTemperature());
+    Thread.sleep(1500); // More than one second
+    assertTrue("Temperature should have increased", 88.1 < heatSys.getTemperature());
 
     heatSys.setTemperature(110);
-    Thread.sleep(1100);
-    assertTrue("Temperature should have been increased", 110 > heatSys.getTemperature());
+    Thread.sleep(1500);
+    assertTrue("Temperature should have decreased", 110 > heatSys.getTemperature());
   }
 
   @Test
