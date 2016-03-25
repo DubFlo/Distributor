@@ -37,7 +37,7 @@ public final class Preparing extends State {
     super.coinInserted(coin, c);
     c.setTemporaryNorthText("Wait for the end of the preparation...");
   }
-  
+
   /**
    * Warns the user it is too late to cancel the order.
    * Does not give back change.

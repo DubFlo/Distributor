@@ -13,14 +13,14 @@ import vendingmachine.states.NoCup;
  * (sugar cubes, cups, spoons and drinks).
  */
 public class Stock {
-  
+
   /*
    * The number of sugar, cups and spoons in stock.
    */
   private int sugarCubesNbr;
   private int cupsNbr;
   private int spoonsNbr;
-  
+
   /**
    * A Map that maps to each Drink its stock as an Integer.
    */
@@ -131,7 +131,7 @@ public class Stock {
    */
   public void removeDrink(Drink drink) {
     if (isDrinkInStock(drink)) {
-      drinkQty.put(drink, drinkQty.get(drink) - 1); 
+      drinkQty.put(drink, drinkQty.get(drink) - 1);
     } else {
       throw new IllegalArgumentException("Can't remove a " + drink.getName() + "; none left in stock");
     }
@@ -218,7 +218,7 @@ public class Stock {
   void setCupStock(int newCupsNbr, IContext context) {
     Utils.checkPositiveIntIllegal(newCupsNbr, "cups stock");
     Utils.logChange(newCupsNbr - this.cupsNbr, newCupsNbr, "cup(s)");
-    
+
     if (newCupsNbr == 0) {
       context.addProblem(NoCup.getInstance());
     } else if (this.cupsNbr == 0 && newCupsNbr > 0) {
@@ -237,7 +237,7 @@ public class Stock {
    */
   void setSpoonsStock(int newSpoonsNbr) {
     Utils.checkPositiveIntIllegal(newSpoonsNbr, "spoons stock");
-    Utils.logChange(newSpoonsNbr - this.spoonsNbr, newSpoonsNbr, "spoon(s)");   
+    Utils.logChange(newSpoonsNbr - this.spoonsNbr, newSpoonsNbr, "spoon(s)");
     this.spoonsNbr = newSpoonsNbr;
   }
 

@@ -16,18 +16,18 @@ import vendingmachine.Utils;
 public class Change {
 
   private static final Logger log = LogManager.getLogger("Change");
-  
+
   /**
    * A Map of the coins stock, mapping each Coin to its stock.
    */
   private final Map<Coin, Integer> coinsStock;
-  
+
   /**
    * Used by {@code isChangePossible(int} to use the computation done in
    * {@code giveChange(int)}. Can not be accessed from the outside.
    */
   private Map<Coin, Integer> coinsStockTemp;
-  
+
   /**
    * Creates a Change object based on the coinsStock specified.
    * 
@@ -41,14 +41,14 @@ public class Change {
       throw new IllegalArgumentException("coinsStock has to list all the coins defined in Coin");
     }
     this.coinsStock = coinsStock;
-    
+
     this.coinsStockTemp = new Hashtable<Coin, Integer>();
   }
-  
+
   /**
-   * Returns true if it is possible to give change with the current stock
-   * for the amount value (in cents), false otherwise. Updates coinsStockTemp 
-   * accordingly, which is the new value coinsStock should take after giving the change.
+   * Returns true if it is possible to give change with the current stock for the
+   * amount value (in cents), false otherwise. Updates coinsStockTemp accordingly,
+   * which is the new value coinsStock should take after giving the change.
    * Throws an IllegalArgumentException if {@code amount} is negative.
    * 
    * @param amount number of cents to give change for.
@@ -69,7 +69,7 @@ public class Change {
     }
     return remainder == 0;
   }
-  
+
   /**
    * Gives change on the amount specified and updates the coins stock accordingly.
    * If it is not possible, throws an IllegalArgumentException.
@@ -92,13 +92,6 @@ public class Change {
   }
 
   /**
-   * @return a Map of the Coin's stock
-   */
-  public Map<Coin, Integer> getCoinsStock() {
-    return coinsStock;
-  }
-  
-  /**
    * Adds the specified coin to the stock.
    * 
    * @param coin the Coin to add to the stock
@@ -106,12 +99,12 @@ public class Change {
   public void insertCoin(Coin coin) {
     coinsStock.put(coin, coinsStock.get(coin) + 1);
   }
-  
+
   /**
    * @param coin the Coin whose value must be known
    * @return the stock value of the specified Coin
    */
-  public int getCoinsStock(Coin coin) {
+  public int getCoinStock(Coin coin) {
     return coinsStock.get(coin);
   }
 

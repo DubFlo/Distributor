@@ -168,7 +168,7 @@ public class Configuration extends JFrame {
     final JPanel mainPanel = new JPanel(new GridBagLayout());
     final GridBagConstraints cMain = new GridBagConstraints();
     final Border grayLine = BorderFactory.createLineBorder(Color.GRAY);
-    cMain.insets = new Insets(5, 10, 5, 10); // puts some space around the components 
+    cMain.insets = new Insets(5, 10, 5, 10); // puts some space around the components
     cMain.gridwidth = GridBagConstraints.REMAINDER;
 
     final JLabel drinkNbrLabel = new JLabel("Number of drinks:");
@@ -353,7 +353,8 @@ public class Configuration extends JFrame {
       coinStuckProb = Integer.parseInt(coinStuckProbValue.getText());
       Utils.checkPercentage(coinStuckProb);
     } catch (NumberFormatException e) {
-      problemLabel.setText("Error while parsing probability of stuck coins, should be between 0 and 100.");
+      problemLabel.setText(
+          "Error while parsing probability of stuck coins, should be between 0 and 100.");
       this.pack();
       return;
     }

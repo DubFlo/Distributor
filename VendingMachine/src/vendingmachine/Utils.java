@@ -18,7 +18,7 @@ public final class Utils {
   public static final String EURO = "\u20ac";
 
   private static final Logger log = LogManager.getLogger("Utils");
-  
+
   /**
    * Returns the total amount stored in a Map.
    * (The sum for each Coin of its value times the Integer it is mapped to.)
@@ -72,7 +72,7 @@ public final class Utils {
       throw new NumberFormatException("Number can not be stricly negative.");
     }
   }
-  
+
   /**
    * Checks if an integer is positive.
    * If it is not positive, throws a IllegalArgumentException.
@@ -111,7 +111,7 @@ public final class Utils {
       throw new NumberFormatException();
     }
   }
-  
+
   /**
    * Loads all the images, sounds and font of the project.
    * Run at the right time, it may make the application faster.
@@ -121,7 +121,7 @@ public final class Utils {
     SoundLoader.getInstance();
     FontLoader.getInstance();
   }
-  
+
   /**
    * Logs a message indicating a change in stock of the {@code part} specified.
    * The {@code difference} indicates how much has been resupplied (if positive)

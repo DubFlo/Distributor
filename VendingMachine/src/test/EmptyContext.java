@@ -9,8 +9,6 @@ import vendingmachine.states.State;
 
 public class EmptyContext implements IContext {
 
-  public EmptyContext() {}
-
   @Override
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {}
 

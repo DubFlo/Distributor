@@ -22,7 +22,7 @@ public class EmptyUI implements IMachineGUI, TemperatureListener {
 
   @Override
   public void updateNorthText() {}
-  
+
   @Override
   public void updateSugarText() {}
 

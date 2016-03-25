@@ -22,7 +22,7 @@ public class DoorJPanel extends JPanel {
    * The width of the black rectangle.
    */
   private final int WIDTH;
-  
+
   /**
    * The maximal height of the black rectangle
    * (from which the step will be subtracted).
@@ -38,7 +38,7 @@ public class DoorJPanel extends JPanel {
    * Timer that creates the animation of the opening of the door.
    */
   private final Timer doorOpeningTimer;
-  
+
   /**
    * Timer that creates the animation of the closing of the door.
    */
@@ -51,11 +51,11 @@ public class DoorJPanel extends JPanel {
     super();
     this.step = 0;
     this.setDoubleBuffered(true);
-    
+
     PictureLoader pictures = PictureLoader.getInstance();
     WIDTH = pictures.CUP_ICON.getIconWidth();
     HEIGHT = pictures.CUP_ICON.getIconHeight();
-    
+
     doorOpeningTimer = new Timer(5, e -> {
       step += 1;
       repaint();
@@ -63,7 +63,7 @@ public class DoorJPanel extends JPanel {
         ((Timer)e.getSource()).stop(); // stops the doorTimer
       }
     });
-    
+
     doorClosingTimer = new Timer(3, e -> {
       step -= 1;
       repaint();
@@ -83,9 +83,9 @@ public class DoorJPanel extends JPanel {
     g.setColor(Color.BLACK);
     g.fillRect((getWidth() - WIDTH) / 2, getHeight() - HEIGHT, WIDTH, HEIGHT - step);
   }
-  
+
   /**
-   * Starts the timer triggering the animation of the door.
+   * Starts the timer triggering the animation of the door opening.
    */
   public void openDoor() {
     doorClosingTimer.stop();
@@ -93,15 +93,15 @@ public class DoorJPanel extends JPanel {
   }
 
   /**
-   * Closes the door (ie sets the step to 0 and repaints the panel).
+   * Starts the timer triggering the animation of the door closing.
    */
   public void closeDoor() {
     doorOpeningTimer.stop();
     doorClosingTimer.restart();
   }
-  
+
   /**
-   * @return true if the door is currently opening, false otherwise
+   * @return true if the door is currently opening or closing, false otherwise
    */
   public boolean isAnimationRunning() {
     return doorOpeningTimer.isRunning() || doorClosingTimer.isRunning();

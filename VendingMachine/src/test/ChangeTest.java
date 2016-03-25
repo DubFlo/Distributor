@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +16,7 @@ import vendingmachine.components.ChangeMachine;
 
 public class ChangeTest {
 
-  private Hashtable<Coin,Integer> coinsStock;
-  private Hashtable<Coin,Boolean> acceptedCoins;
+  private Map<Coin,Integer> coinsStock;
   private ChangeMachine changeMachine;
   private Change change;
 
@@ -26,7 +26,7 @@ public class ChangeTest {
     int[] coinsStockTab = { 1, 1, 0, 3, 0, 0, 4, 1 };
     boolean[] acceptedCoinsTab = { false, true, false, true, false, true, true, true };
     coinsStock = new Hashtable<Coin,Integer>();
-    acceptedCoins = new Hashtable<Coin, Boolean>();
+    Map<Coin,Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
 
     for (int i = 0; i < 8; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
@@ -38,14 +38,14 @@ public class ChangeTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorErrorCoinMissing() {
-    change.getCoinsStock().remove(Coin.COIN2);
+    coinsStock.remove(Coin.COIN2);
     new Change(coinsStock);
   }
 
   @Test
   public void testGiveChange() {
     assertTrue(changeMachine.isChangePossible(109));
-    Hashtable<Coin, Integer> changeExpected = new Hashtable<Coin, Integer>();
+    Map<Coin, Integer> changeExpected = new Hashtable<Coin, Integer>();
     int[] changeExpectedTab = { 0, 1, 0, 0, 0, 0, 4, 1 };
     for (int i = 0; i < 8; i++) {
       changeExpected.put(Coin.COINS.get(i), changeExpectedTab[i]);
@@ -60,11 +60,11 @@ public class ChangeTest {
 
   @Test
   public void testModifyCoinsStock() {
-    assertEquals(change.getCoinsStock(Coin.COIN10), 0);
+    assertEquals(change.getCoinStock(Coin.COIN10), 0);
     changeMachine.setCoinStock(Coin.COIN10, 5);
-    assertEquals(change.getCoinsStock(Coin.COIN10), 5);
+    assertEquals(change.getCoinStock(Coin.COIN10), 5);
     changeMachine.insertCoin(Coin.COIN10);
-    assertEquals(change.getCoinsStock(Coin.COIN10), 6);
+    assertEquals(change.getCoinStock(Coin.COIN10), 6);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -82,7 +82,7 @@ public class ChangeTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void testIsChangePossibleError(){
+  public void testIsChangePossibleError() {
     changeMachine.isChangePossible(-1);
   }
 

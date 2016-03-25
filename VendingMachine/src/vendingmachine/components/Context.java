@@ -35,7 +35,7 @@ public class Context implements IMachine, IContext {
    * The probability for a coin to get stuck (between 0 and 1).
    */
   public final double COIN_STUCK_PROB;
-  
+
   /*
    * The different parts of the machine.
    */
@@ -87,7 +87,7 @@ public class Context implements IMachine, IContext {
    * A Set of the Problem's the machine is currently facing.
    */
   private final Set<Problem> currentProblems;
-  
+
   /**
    * A Map of the Coin's that are stuck inside the machine.
    */
@@ -140,21 +140,24 @@ public class Context implements IMachine, IContext {
   private void preparingOver() {
     giveChange(amountInside - chosenDrink.getPrice());
     final StringBuilder logMsg = new StringBuilder(100);
-    logMsg.append("New order:\n\t").append(chosenDrink.getName());
+    logMsg.append("New order:").append(System.lineSeparator())
+          .append("\t").append(chosenDrink.getName());
     stock.removeDrink(chosenDrink);
-    logMsg.append(" (").append(stock.getDrinkQty(chosenDrink)).append(" remaining);\n");
+    logMsg.append(" (").append(stock.getDrinkQty(chosenDrink))
+          .append(" remaining);").append(System.lineSeparator());
 
     if (chosenDrink.isSugar()) {
       stock.removeSugarCubes(chosenSugar);
       logMsg.append("\tWith ").append(chosenSugar).append(" sugar cube(s) (")
-      .append(stock.getSugarCubesNbr()).append(" remaining);\n");
+      .append(stock.getSugarCubesNbr()).append(" remaining);").append(System.lineSeparator());
     }
 
     boolean spoon = false;
     if (chosenDrink.isSugar() && stock.isSpoonInStock()) {
       stock.removeSpoon();
       spoon = true;
-      logMsg.append("\tWith a spoon (").append(stock.getSpoonsNbr()).append(" remaining);\n");
+      logMsg.append("\tWith a spoon (").append(stock.getSpoonsNbr())
+            .append(" remaining);").append(System.lineSeparator());
     }
 
     stock.removeCup(this);
@@ -193,7 +196,7 @@ public class Context implements IMachine, IContext {
 
     machineGUI.updateUI();
   }
-  
+
   @Override
   public State getState() {
     return state;
@@ -308,7 +311,7 @@ public class Context implements IMachine, IContext {
   public void setTemporaryNorthText(String msg) {
     machineGUI.setTemporaryNorthText(msg);
   }
-  
+
   /**
    * Updates the IMachineGUI associated with the Context.
    */
@@ -389,7 +392,7 @@ public class Context implements IMachine, IContext {
   /**
    * @return the Drink that is currently ordered by the client
    */
-   public Drink getChosenDrink() {
+  public Drink getChosenDrink() {
     return chosenDrink;
   }
 
@@ -454,10 +457,11 @@ public class Context implements IMachine, IContext {
     final StringBuilder sb = new StringBuilder(40);
     sb.append("<html>");
     for (Coin coin: Coin.COINS) {
-      sb.append(coin.TEXT).append(": ");
-      sb.append(changeOut.get(coin)).append(" coin(s).<br>");
+      sb.append(coin.TEXT).append(": ")
+        .append(changeOut.get(coin)).append(" coin(s).<br>");
     }
-    sb.append("Total: ").append(Utils.totalValue(changeOut) / 100.0).append(" " + Utils.EURO + ".</html>");
+    sb.append("Total: ").append(Utils.totalValue(changeOut) / 100.0)
+      .append(" " + Utils.EURO + ".</html>");
     return sb.toString();
   }
 
@@ -472,7 +476,7 @@ public class Context implements IMachine, IContext {
     machineGUI.setChangeBool(true);
     log.info(coin.TEXT + " inserted but not allowed.");
   }
-  
+
   @Override
   public void addChangeOut(Map<Coin, Integer> moneyToGive) {
     for (Coin coin: Coin.COINS) {
@@ -531,8 +535,8 @@ public class Context implements IMachine, IContext {
    * 
    * @param b true to enable the repairing, false to disable
    */
-  public void enableRepair(boolean b) {
-    machineGUI.enableRepair(b);
+  public void enableRepair(boolean bool) {
+    machineGUI.enableRepair(bool);
   }
 
   /**

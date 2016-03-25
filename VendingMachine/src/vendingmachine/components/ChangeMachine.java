@@ -12,12 +12,12 @@ import vendingmachine.Coin;
  * @see Coin
  */
 public class ChangeMachine {
-  
+
   /**
    * A Map mapping each Coin to whether or not it is accepted.
    */
   private final Map<Coin, Boolean> acceptedCoins;
-  
+
   private final Change change;
 
   /**
@@ -74,13 +74,13 @@ public class ChangeMachine {
   public boolean isCoinAccepted(Coin coin) {
     return acceptedCoins.get(coin);
   }
-  
+
   /**
    * @param coin the Coin whose stock value must be known
    * @return the stock value of the specified Coin
    */
   public int getCoinsStock(Coin coin) {
-    return change.getCoinsStock(coin);
+    return change.getCoinStock(coin);
   }
 
   /**
@@ -91,7 +91,7 @@ public class ChangeMachine {
     sb.append("Coins:\n");
     for (Coin coin: Coin.COINS) {
       sb.append(coin.TEXT).append(": ")
-      .append(change.getCoinsStock(coin))
+      .append(change.getCoinStock(coin))
       .append(" available.\n");
     }
     return sb.toString();
@@ -106,5 +106,5 @@ public class ChangeMachine {
   public void setCoinStock(Coin coin, int value) {
     change.setCoinStock(coin, value);
   }
-  
+
 }

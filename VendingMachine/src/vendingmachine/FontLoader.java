@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  * that's what gives you thread-safety."
  */
 public final class FontLoader {
-  
+
   private static final Logger log = LogManager.getLogger("FontLoader");
 
   /**
@@ -58,7 +58,7 @@ public final class FontLoader {
   public static FontLoader getInstance() {
     return Loader.INSTANCE;
   }
-  
+
   private static class Loader {
     public static final FontLoader INSTANCE = new FontLoader();
   }

@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * This class supplies Clip sounds useful to a vending machine.
  * Uses the singleton design pattern to be created only once when needed (thread-safe).
- * This solution has been found on 
+ * This solution has been found on
  * <a href="http://stackoverflow.com/a/11165975">http://stackoverflow.com/a/11165975</a>.
  * As explained on this link, "The class [SoundLoader].Loader is first accessed
  * inside the getInstance() method, so the Loader class loads when getInstance() is called
@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
  * is complete before you get access to the class - that's what gives you thread-safety."
  */
 public final class SoundLoader {
-  
+
   private static final Logger log = LogManager.getLogger("PictureLoader");
 
   /**
@@ -58,13 +58,13 @@ public final class SoundLoader {
    * Credit: http://www.freesfx.co.uk/
    */
   public final Clip FOP = getSound("fop.wav");
-  
+
   /**
    * Sound of a machine being repaired.
    * Source: https://goo.gl/NoYEIX
    */
   public final Clip REPAIR = getSound("repair.wav");
-  
+
   /**
    * Plays the specified clip from the beginning (if it exists).
    * If the clip is already running, stops it and plays it again.
@@ -122,7 +122,7 @@ public final class SoundLoader {
   public static SoundLoader getInstance() {
     return Loader.INSTANCE;
   }
-  
+
   private static class Loader {
     public static final SoundLoader INSTANCE = new SoundLoader();
   }

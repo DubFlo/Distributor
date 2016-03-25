@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import vendingmachine.components.HeatingSystem;
@@ -13,8 +13,8 @@ public class HeatingSystemTest {
 
   private static HeatingSystem heatSys;
 
-  @BeforeClass
-  public static void setup() {
+  @Before
+  public void setUp() {
     heatSys = new HeatingSystem(new EmptyContext());
     heatSys.setObserver(new EmptyUI());
   }
@@ -50,7 +50,7 @@ public class HeatingSystemTest {
   public void testUpdate() throws InterruptedException {
     heatSys.setTemperature(88.1);
     Thread.sleep(1100); // More than one second
-    assertTrue ("Temperature should have been decreased", 88.1 < heatSys.getTemperature());
+    assertTrue("Temperature should have been decreased", 88.1 < heatSys.getTemperature());
 
     heatSys.setTemperature(110);
     Thread.sleep(1100);
@@ -59,9 +59,9 @@ public class HeatingSystemTest {
 
   @Test
   public void testDrinkOrdered() {
-    double heatSysBefore = heatSys.getTemperature();
+    final double initTemperature = heatSys.getTemperature();
     heatSys.drinkOrdered();
-    assertTrue(heatSys.getTemperature() < heatSysBefore);
+    assertTrue(heatSys.getTemperature() < initTemperature);
     heatSys.resetTemperature();
     assertEquals(93, heatSys.getTemperature(), 10e-6);
   }

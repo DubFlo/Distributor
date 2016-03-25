@@ -13,7 +13,7 @@ public enum Coin {
   COIN200 (200, "2 " + Utils.EURO),
   COIN100 (100, "1 " + Utils.EURO),
   COIN50  (50, "0.50 " + Utils.EURO),
-  COIN20  (20, "0.20 " + Utils.EURO), 
+  COIN20  (20, "0.20 " + Utils.EURO),
   COIN10  (10, "0.10 " + Utils.EURO),
   COIN5   (5, "0.05 " + Utils.EURO),
   COIN2   (2, "0.02 " + Utils.EURO),
@@ -23,12 +23,12 @@ public enum Coin {
    * Unmodifiable List of all the coins, in descending order of their values.
    */
   public static final List<Coin> COINS = Collections.unmodifiableList(Arrays.asList(Coin.values()));
-  
+
   /**
    * The integer value of the coin, expressed in cents.
    */
   public final int VALUE;
-  
+
   /**
    * The String representation of the coin ("0.50 " + Utils.EURO for instance).
    */
@@ -52,5 +52,5 @@ public enum Coin {
     this.VALUE = value;
     this.TEXT = text;
   }
-  
+
 }

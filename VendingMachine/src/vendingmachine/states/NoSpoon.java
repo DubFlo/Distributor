@@ -32,7 +32,7 @@ public final class NoSpoon extends State {
   public void confirm(Context c) {
     c.changeState(Asking.getInstance());
   }
-  
+
   @Override
   public String getDefaultText(Context c) {
     return "No spoon. Confirm to continue or Cancel";

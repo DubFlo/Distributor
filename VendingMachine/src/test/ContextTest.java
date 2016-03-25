@@ -30,12 +30,12 @@ import vendingmachine.states.StuckCoin;
 
 public class ContextTest {
 
-  private ChangeMachine changeMachine;
-  private Context context;
-  private Stock stock;
+  protected ChangeMachine changeMachine;
+  protected Context context;
+  protected Stock stock;
 
   @BeforeClass
-  public static void load() {
+  public static void setUpClass() {
     SoundLoader.getInstance(); // Increase in performance as it is loaded only once
   }
 
@@ -44,8 +44,8 @@ public class ContextTest {
     // Initialize ChangeMachine
     int[] coinsStockTab = { 1, 1, 0, 5, 5, 0, 4, 1 };
     boolean[] acceptedCoinsTab = { false, true, true, true, true, true, false, true };
-    Hashtable<Coin, Integer> coinsStock = new Hashtable<Coin,Integer>();
-    Hashtable<Coin, Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
+    Map<Coin, Integer> coinsStock = new Hashtable<Coin,Integer>();
+    Map<Coin, Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
     for (int i = 0; i < 8 ; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i), acceptedCoinsTab[i]);
@@ -63,7 +63,7 @@ public class ContextTest {
       drinkTab[i] = new Drink(drinkNameTab[i],drinkSugarTab[i],drinkPriceTab[i]);
       drinkQty.put(drinkTab[i], drinkStockTab[i]);
     }
-    stock = new Stock(5, 5, 5, drinkQty); //(sugarCubesNbr, cupsNbr,spoonsNbr, Map<Drink, Integer> drinkQty)
+    stock = new Stock(5, 5, 5, drinkQty); // (sugarCubesNbr, cupsNbr, spoonsNbr, drinkQty)
 
     //Initialize new context
     context = new Context(changeMachine, stock, 0); // No coin should get stuck
@@ -77,25 +77,25 @@ public class ContextTest {
     context.coinInserted(Coin.COIN100);
     assertEquals(context.getAmountInside(), 100);
     assertEquals(changeMachine.getCoinsStock(Coin.COIN100), 2);
-    
+
     //Idle - Coin not accepted
     int oldAmountInside = context.getAmountInside();
     context.coinInserted(Coin.COIN200);
     assertEquals(context.getAmountInside(), oldAmountInside);
-    
+
     //Asking
     context.drinkButton(context.getDrinks().get(1));
     assertSame(Asking.getInstance(), context.getState());
     context.coinInserted(Coin.COIN200);
     assertEquals("The coin should not be inserted", 1, changeMachine.getCoinsStock(Coin.COIN200));
-    
+
     //Preparing
     context.confirm();
     assertSame(Preparing.getInstance(), context.getState());
     context.coinInserted(Coin.COIN10);
     int oldAmount = context.getAmountInside();
     assertEquals(oldAmount, context.getAmountInside());
-    
+
     //StuckCoin
     context.addProblem(StuckCoin.getInstance());
     context.coinInserted(Coin.COIN5);
@@ -136,63 +136,10 @@ public class ContextTest {
     context.giveChange(25);
     assertEquals(0, context.getAmountInside());
   }
-  
+
   @Test
   public void testAreDrinksFree() {
     assertFalse(context.areDrinksFree());
-  }
-
-  /**
-   * Makes a full order of a Drink. Takes some second to wait for the end of the preparation.
-   * Checks that the states are logical and the stock is correctly updated.
-   */
-  @Test
-  public void testFullDrinkOrder() throws InterruptedException {
-    final int oldSugarStock = context.getStock().getSugarCubesNbr();
-    final int oldCupsStock = context.getStock().getCupsNbr();
-    final int oldSpoonsStock = context.getStock().getSpoonsNbr();
-    final int oldDrinkStock = context.getStock().getDrinkQty(context.getDrinks().get(1));
-    
-    assertSame("Should be default state", context.getState(), Idle.getInstance());
-    context.coinInserted(Coin.COIN20);
-    assertEquals(20, context.getAmountInside());
-    context.drinkButton(context.getDrinks().get(1)); // Costs 0.40 euro
-    assertSame("Not enough money inserted", context.getState(), Idle.getInstance());
-    
-    context.coinInserted(Coin.COIN100);
-    context.drinkButton(context.getDrinks().get(1));
-    assertSame(Asking.getInstance(), context.getState());
-    assertSame(context.getDrinks().get(1), context.getChosenDrink());
-    context.more();
-    context.more();
-    assertEquals(2, context.getChosenSugar());
-    
-    context.confirm();
-    assertEquals(context.getState(), Preparing.getInstance());
-    
-    Thread.sleep(SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000 + 100);
-    assertSame(Idle.getInstance(), context.getState());
-    assertEquals(0, context.getAmountInside());
-    assertEquals(oldSugarStock - 2, context.getStock().getSugarCubesNbr());
-    assertEquals(oldCupsStock - 1, context.getStock().getCupsNbr());
-    assertEquals(oldSpoonsStock - 1, context.getStock().getSpoonsNbr());
-    assertEquals(oldDrinkStock - 1, context.getStock().getDrinkQty(context.getDrinks().get(1)));
-  }
-  
-  @Test
-  public void CantOrderWhenCupInMachine() throws InterruptedException {
-    context.coinInserted(Coin.COIN100);
-    context.drinkButton(context.getDrinks().get(1)); // Costs 0.40 euro
-    context.confirm();
-    Thread.sleep(SoundLoader.getInstance().FILLING.getMicrosecondLength() / 1000 + 100);
-    
-    context.coinInserted(Coin.COIN100);
-    context.drinkButton(context.getDrinks().get(1));
-    assertSame("Order impossible because a cup is inside", Idle.getInstance(), context.getState());
-    context.takeChange();
-    context.takeCup(); // Removes the cup
-    context.drinkButton(context.getDrinks().get(1));
-    assertSame("Order possible because cup has been removed", Asking.getInstance(), context.getState());
   }
 
   @Test
@@ -201,7 +148,7 @@ public class ContextTest {
     context.drinkButton(context.getDrinks().get(3)); // Free drink, not sugared
     assertSame(Preparing.getInstance(), context.getState());
   }
-  
+
   @Test
   public void testConfirmSugaredDrink() {
     //Test in Asking
@@ -221,7 +168,7 @@ public class ContextTest {
     context.confirm();
     assertSame(Preparing.getInstance(), context.getState());
   }
-  
+
   @Test
   public void testNoSpoonStateAndCancel() {
     context.setSpoonsStock(0);
@@ -230,7 +177,7 @@ public class ContextTest {
     context.cancel();
     assertSame(Idle.getInstance(), context.getState());
   }
-  
+
   @Test
   public void testDrinkButton() {
     context.coinInserted(Coin.COIN20);
@@ -250,7 +197,7 @@ public class ContextTest {
     assertSame(Idle.getInstance(), context.getState());
     assertEquals(0, context.getAmountInside());
   }
-  
+
   @Test
   public void testCancelInProblemStateWorks() {
     context.coinInserted(Coin.COIN200);
@@ -259,7 +206,7 @@ public class ContextTest {
     context.cancel();
     assertEquals(0, context.getAmountInside());
   }
-  
+
   @Test
   public void testCancelInPreparingIsRefused() {
     context.drinkButton(context.getDrinks().get(4)); // this drink is free, sugared
@@ -277,7 +224,7 @@ public class ContextTest {
     context.cancel();
     assertSame(Idle.getInstance(), context.getState());
   }
-  
+
   @Test
   public void testMore() {
     //Test in Idle
@@ -296,7 +243,7 @@ public class ContextTest {
     context.more();
     assertEquals("Maximum 5 sugar cubes chosen", 5, context.getChosenSugar());
   }
-  
+
   @Test
   public void testLess() {
     //Test in Idle
@@ -304,7 +251,7 @@ public class ContextTest {
     assertEquals(1, context.getChosenSugar());
     context.less();
     assertEquals(1, context.getChosenSugar());
-    
+
     //Test in Asking
     context.drinkButton(context.getDrinks().get(4)); // Free, sugared
     assertEquals("Chosen sugar should be 0 when entrying Asking", 0, context.getChosenSugar());
@@ -314,15 +261,15 @@ public class ContextTest {
     context.less();
     assertEquals(0, context.getChosenSugar());
   }
-  
+
   @Test
-  public void ShouldBeginInNoCupIfNoCupsInitially() {
+  public void shouldBeginInNoCupIfNoCupsInitially() {
     context.setCupStock(0); // Changes the stock object
     Context newContext = new Context(changeMachine, stock, 0);
     newContext.setUI(new EmptyUI());
     assertSame(NoCup.getInstance(), newContext.getState());
   }
-  
+
   @Test
   public void isMaintenancePossible() {
     assertTrue("Maintenance is possible in Idle", context.isAvailableForMaintenance());
@@ -331,5 +278,5 @@ public class ContextTest {
     assertSame(Asking.getInstance(), context.getState());
     assertFalse("Maintenance is impossible in Asking", context.isAvailableForMaintenance());
   }
-  
+
 }

@@ -15,7 +15,7 @@ import vendingmachine.Utils;
 
 public class UtilsTest {
 
-  private Hashtable<Coin,Integer> hashtable;
+  private Map<Coin,Integer> hashtable;
 
   @Before
   public void init() {
@@ -37,24 +37,24 @@ public class UtilsTest {
   public void testCopy() {
     Map<Coin, Integer> tableCopy = Utils.copy(hashtable);
     assertNotSame(hashtable, tableCopy);
-    assertEquals (hashtable, tableCopy);
+    assertEquals(hashtable, tableCopy);
 
     tableCopy.put(Coin.COIN50, 1);
     assertNotEquals("hashtable should not have been changed",
         hashtable.get(Coin.COIN50), tableCopy.get(Coin.COIN50));
   }
 
-  @Test(expected=NumberFormatException.class)
+  @Test(expected = NumberFormatException.class)
   public void testPositiveIntException() {
     Utils.checkPositiveIntFormat(-1);
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testCheckName() {
     Utils.checkName("aaaaaaaaaaaaaaaaaaa"); // 19 characters
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void testCheckPercentage() {
     Utils.checkPercentage(101);
   }

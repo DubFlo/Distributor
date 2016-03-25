@@ -31,7 +31,7 @@ public final class PictureLoader {
    * Source: http://goo.gl/8TG1ki
    */
   public final ImageIcon CUP_ICON = getIcon("cup.jpg");
-  
+
   /**
    * The ImageIcon of a red cup with a spoon.
    * Source: http://goo.gl/8TG1ki
@@ -83,7 +83,7 @@ public final class PictureLoader {
    * Source of all the images (loaded in constructor): http://goo.gl/3tfjDG
    */
   public final Map<Coin, ImageIcon> COINS_ICONS;
-  
+
   /**
    * Map linking each Coin to its corresponding ImageIcon with a red cross on it.
    * Source of all the images (loaded in constructor): http://goo.gl/3tfjDG
@@ -136,7 +136,7 @@ public final class PictureLoader {
     COINS_ICONS.put(Coin.COIN5, getIcon("5cent.png"));
     COINS_ICONS.put(Coin.COIN2, getIcon("2cent.png"));
     COINS_ICONS.put(Coin.COIN1, getIcon("1cent.png"));
-    
+
     REFUSED_COINS_ICONS = new Hashtable<Coin, ImageIcon>();
     REFUSED_COINS_ICONS.put(Coin.COIN200, getIcon("2euroNO.png"));
     REFUSED_COINS_ICONS.put(Coin.COIN100, getIcon("1euroNO.png"));

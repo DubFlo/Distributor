@@ -50,7 +50,8 @@ public final class Idle extends State {
   @Override
   public void drinkButton(Drink d, Context c) {
     if (!c.getStock().isDrinkInStock(d)) {
-      c.setTemporaryNorthText("Drink out of stock (otherwise " + d.getPrice() / 100.0 + " " + Utils.EURO + ")");
+      c.setTemporaryNorthText("Drink out of stock (otherwise "
+          + d.getPrice() / 100.0 + " " + Utils.EURO + ")");
     } else if (c.isCupInside()) {
       c.setTemporaryNorthText("Please remove the cup before ordering");
     } else if (d.getPrice() > c.getAmountInside()) {
@@ -58,10 +59,10 @@ public final class Idle extends State {
     } else if (c.isChangePossible(c.getAmountInside() - d.getPrice())) {
       c.setChosenDrink(d);
       if (d.isSugar()) {
-        if (!c.getStock().isSpoonInStock()) {
-          c.changeState(NoSpoon.getInstance());
-        } else {
+        if (c.getStock().isSpoonInStock()) {
           c.changeState(Asking.getInstance());
+        } else {
+          c.changeState(NoSpoon.getInstance());
         }
       } else {
         c.changeState(Preparing.getInstance());
@@ -76,7 +77,8 @@ public final class Idle extends State {
     String msg = "Please insert coins";
 
     if (c.getAmountInside() > 0) {
-      msg = "Please make your choice" + " (" + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
+      msg = "Please make your choice" + " ("
+          + c.getAmountInside() / 100.0 + " " + Utils.EURO + " entered)";
     } else if (c.areDrinksFree()) {
       msg = "Please make your choice, everything is FREE";
     }

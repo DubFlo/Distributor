@@ -9,7 +9,7 @@ import vendingmachine.components.Context;
 public final class Asking extends State {
 
   private static final Asking INSTANCE = new Asking();
-  
+
   /**
    * The maximal quantity of sugar in a drink.
    */
@@ -20,7 +20,7 @@ public final class Asking extends State {
   }
 
   private Asking() {}
-  
+
   /**
    * Resets the sugar quantity chosen by the client to zero.
    */

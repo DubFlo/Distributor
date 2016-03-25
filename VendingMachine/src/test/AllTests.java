@@ -1,4 +1,5 @@
 package test;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -13,9 +14,9 @@ import org.junit.runners.Suite;
   HeatingSystemTest.class,
   StockWithContextTest.class,
   UtilsTest.class,
-  ContextTest.class
+  ButtonsTest.class,
+  ContextTest.class,
+  ContextTimerTest.class
 })
 
-public class AllTests {
-
-}
+public class AllTests {}

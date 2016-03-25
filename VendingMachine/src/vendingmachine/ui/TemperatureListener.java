@@ -6,7 +6,7 @@ package vendingmachine.ui;
  * when a temperature has been changed.
  */
 public interface TemperatureListener {
-  
+
   /**
    * Called when a temperature has been updated.
    * A negative temperature is used to indicate that no water is supplied.
@@ -14,5 +14,5 @@ public interface TemperatureListener {
    * @param temperature the (double) temperature to set
    */
   void setTemperature(double temperature);
-  
+
 }

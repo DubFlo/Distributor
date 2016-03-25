@@ -28,7 +28,7 @@ public class StockWithContextTest {
   private Stock stock;
 
   @BeforeClass
-  public static void load() {
+  public static void setUpClass() {
     SoundLoader.getInstance(); // Increase in performance as it is loaded only once
   }
 
@@ -37,8 +37,8 @@ public class StockWithContextTest {
     //initialize ChangeMachine (not concerned by this test but necessary to create Context)
     int[] coinsStockTab = { 1, 1, 0, 5, 5, 0, 4, 1 };
     boolean[] acceptedCoinsTab = { false, true, true, true, true, true, false, true };
-    Hashtable<Coin, Integer> coinsStock = new Hashtable<Coin,Integer>();
-    Hashtable<Coin, Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
+    Map<Coin, Integer> coinsStock = new Hashtable<Coin,Integer>();
+    Map<Coin, Boolean> acceptedCoins = new Hashtable<Coin, Boolean>();
     for (int i = 0; i < 8; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i), acceptedCoinsTab[i]);
@@ -69,7 +69,7 @@ public class StockWithContextTest {
   public void testNoSpoonState() {
     context.setSpoonsStock(1);
     assertEquals(1, stock.getSpoonsNbr());
-    
+
     stock.removeSpoon();
     assertEquals(0, stock.getSpoonsNbr());
     context.coinInserted(Coin.COIN100);

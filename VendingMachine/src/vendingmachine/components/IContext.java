@@ -16,7 +16,7 @@ public interface IContext {
    * 
    * @param moneyToGive the Map to add to {@code changeOut}
    */
-   void addChangeOut(Map<Coin, Integer> moneyToGive);
+  void addChangeOut(Map<Coin, Integer> moneyToGive);
 
   /**
    * Removes the specified Problem from the list of problems the machine is facing.
@@ -37,6 +37,6 @@ public interface IContext {
   /**
    * @return the State the machine is currently in
    */
-   State getState(); 
+  State getState();
 
 }

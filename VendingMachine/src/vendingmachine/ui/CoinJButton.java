@@ -37,11 +37,11 @@ public class CoinJButton extends JButton {
     } else {
       this.setIcon(icons.REFUSED_COINS_ICONS.get(coin));
     }
-    if (this.getIcon() != null) {
+    if (this.getIcon() == null) {
+      this.setText(coin.TEXT);
+    } else {
       this.setBorder(BorderFactory.createEmptyBorder());
       this.setContentAreaFilled(false);
-    } else {
-      this.setText(coin.TEXT);
     }
     this.coin = coin;
   }

@@ -76,6 +76,7 @@ public abstract class State {
 
   /**
    * This method is called by the machine just after changing to this state.
+   * Does nothing.
    * 
    * @param c the Context associated with the State
    */
@@ -83,6 +84,7 @@ public abstract class State {
 
   /**
    * This method is called by the machine just before changing to another state.
+   * Does nothing.
    * 
    * @param c the Context associated with the State
    */

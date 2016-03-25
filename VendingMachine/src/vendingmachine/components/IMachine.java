@@ -9,7 +9,7 @@ import vendingmachine.ui.TemperatureListener;
 
 /**
  * Defines an interface that a vending machine selling hot drinks
- * should implement. 
+ * should implement.
  */
 public interface IMachine {
 
@@ -22,24 +22,24 @@ public interface IMachine {
    * Confirms the current operation.
    */
   void confirm();
-  
+
   /**
    * Decrement a value (usually the sugar level).
    */
   void less();
-  
+
   /**
    * Increment a value (usually the sugar level).
    */
   void more();
-  
+
   /**
    * Orders the drink specified or displays the price of the drink.
    * 
    * @param drink the Drink ordered
    */
   void drinkButton(Drink drink);
-  
+
   /**
    * Simulates what happens when the client takes his change.
    */
@@ -49,19 +49,19 @@ public interface IMachine {
    * Removes the cup from the cup container.
    */
   void takeCup();
-  
+
   /**
    * Simulates the insertion of the specified Coin.
    * 
    * @param coin the Coin to insert
    */
   void coinInserted(Coin coin);
-  
+
   /**
    * @return the List of all the Drink's the machine can dispense
    */
   List<Drink> getDrinks();
-  
+
   /**
    * @return a String with all the information about the coins outside the machine
    */
@@ -90,7 +90,7 @@ public interface IMachine {
    * @param observer the UI that must be updated by the machine and its heating system
    */
   <T extends IMachineGUI & TemperatureListener> void setUI(T observer);
-  
+
   /**
    * @param bool true to enable the water supply, false to disable it
    */
@@ -107,12 +107,12 @@ public interface IMachine {
    * @param value the new stock value for the specified Drink
    */
   void setDrinkStock(Drink drink, int value);
-  
+
   /**
    * @param value the new stock value for the cups
    */
   void setCupStock(int value);
-  
+
   /**
    * @param value the new stock value for the sugar cubes
    */
@@ -137,7 +137,7 @@ public interface IMachine {
    * Removes the StuckCoin Problem from the set of problems.
    */
   void repairStuckCoins();
-  
+
   /**
    * @param coin the Coin that may be accepted
    * @return true if the Coin is accepted by the machine, false otherwise

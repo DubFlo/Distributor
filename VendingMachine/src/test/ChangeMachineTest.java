@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,22 +15,20 @@ import vendingmachine.components.ChangeMachine;
 
 public class ChangeMachineTest {
 
-  private Hashtable<Coin,Integer> coinsStock;
-  private Hashtable<Coin,Boolean> acceptedCoins;
+  private Map<Coin,Boolean> acceptedCoins;
   private Change change;
 
   @Before
   public void setUp() {
-
     int[] coinsStockTab = { 1, 1, 0, 3, 0, 0, 4, 1 };
     boolean[] acceptedCoinsTab = { false, true, false, true, false, true, true, true };
-    coinsStock = new Hashtable<Coin,Integer>();
+    Map<Coin,Integer> coinsStock = new Hashtable<Coin,Integer>();
     acceptedCoins = new Hashtable<Coin, Boolean>();
-
     for (int i = 0; i < 8 ; i++) {
       coinsStock.put(Coin.COINS.get(i), coinsStockTab[i]);
       acceptedCoins.put(Coin.COINS.get(i),acceptedCoinsTab[i]);
     }
+
     change = new Change(coinsStock);
   }
 

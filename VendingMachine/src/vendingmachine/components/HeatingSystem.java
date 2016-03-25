@@ -10,8 +10,8 @@ import vendingmachine.ui.TemperatureListener;
  * This class creates a water heating system linked to a vending machine.
  * Its water temperature is updated every second. May notify an observer of the
  * changes of temperature and notifies an IContext of the changes of states.
- * <p>
- * Here is an explanation of the formula used to simulate water heating/cooling
+ * 
+ * <p>Here is an explanation of the formula used to simulate water heating/cooling
  * (source: <a href="http://www.engineersedge.com/heat_transfer/convection.htm">
  * http://www.engineersedge.com/heat_transfer/convection.htm</a>).<br>
  * - When water is not heating, it is considered in an air at 20 degrees;<br>
@@ -34,17 +34,17 @@ public class HeatingSystem {
   private static final double MAX_TEMPERATURE = 96.0;
   private static final double COLD_LIMIT = 80.0;
   private static final double RUNNING_WATER_TEMPERATURE = 60.0;
-  
+
   /**
    * True if water supply is enabled, false otherwise.
    */
   private boolean waterSupply;
-  
+
   /**
    * The current temperature.
    */
   private double temperature;
-  
+
   /**
    * True if the heater is heating, false if it is not.
    */
@@ -54,12 +54,12 @@ public class HeatingSystem {
    * An observer to notify each time temperature is changed.
    */
   private TemperatureListener observer;
-  
+
   /**
    * The machine to update when state changes.
    */
   private final IContext context;
-  
+
   /**
    * The timer that updates the temperature every second.
    */
@@ -109,7 +109,7 @@ public class HeatingSystem {
   public void setObserver(TemperatureListener observer) {
     this.observer = observer;
   }
-  
+
   /**
    * @return true if the water supply is enabled, false otherwise
    */
@@ -174,12 +174,12 @@ public class HeatingSystem {
     } else if (!heating && temperature < MIN_TEMPERATURE) {
       heating = true;
     }
-    
+
     if (temperature >= COLD_LIMIT) {
       context.problemSolved(ColdWater.getInstance());
     } else if (context.getState() != ColdWater.getInstance() && temperature < COLD_LIMIT) {
       context.addProblem(ColdWater.getInstance());
     }
   }
-  
-} 
+
+}

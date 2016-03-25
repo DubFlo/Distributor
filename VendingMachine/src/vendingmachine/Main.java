@@ -17,7 +17,7 @@ public final class Main {
    */
   public static void main(String[] args) {
     run();
-    Utils.loadResources(); 
+    Utils.loadResources();
   }
 
   /**

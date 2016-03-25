@@ -325,12 +325,12 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
 
     final JCheckBoxMenuItem waterSupplyBox = new JCheckBoxMenuItem("Water supply enabled", true);
     final JMenuItem instantWarming = new JMenuItem("Instant Warming");
-    final JMenuItem newVM = new JMenuItem("New Vending Machine");
+    final JMenuItem newMachine = new JMenuItem("New Vending Machine");
     final JMenuItem quit = new JMenuItem("Quit");
     waterSupplyMenu.add(waterSupplyBox);
     waterSupplyMenu.add(instantWarming);
     otherMenu.add(unstickCoins);
-    exit.add(newVM);
+    exit.add(newMachine);
     exit.add(quit);
 
     waterSupplyBox.addActionListener(e -> machine.setWaterSupply(waterSupplyBox.isSelected()));
@@ -340,7 +340,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
       SoundLoader.play(SoundLoader.getInstance().REPAIR);
     });
     unstickCoins.setEnabled(false);
-    newVM.addActionListener(e -> {
+    newMachine.addActionListener(e -> {
       dispose();
       Main.run();
     });
@@ -451,7 +451,7 @@ public class VendingMachineGUI extends JFrame implements IMachineGUI, Temperatur
     if (temperature < 0) {
       temperatureLabel.setText("NO WATER");
     } else {
-      temperatureLabel.setText(FORMAT.format(temperature) + " \u00B0C");
+      temperatureLabel.setText(FORMAT.format(temperature) + " \u00B0C"); // degree symbol
     }
   }
 
