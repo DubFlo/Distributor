@@ -31,4 +31,5 @@ public class ButtonsTest {
     DrinkJButton drinkButton = new DrinkJButton(new Drink("Coffee", true, 100));
     assertEquals("Coffee", drinkButton.getDrink().getName());
   }
+  
 }

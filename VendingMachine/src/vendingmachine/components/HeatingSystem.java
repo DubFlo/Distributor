@@ -1,5 +1,8 @@
 package vendingmachine.components;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.Timer;
 
 import vendingmachine.states.ColdWater;
@@ -53,7 +56,7 @@ public class HeatingSystem {
   /**
    * An observer to notify each time temperature is changed.
    */
-  private TemperatureListener observer;
+  private Set<TemperatureListener> observers;
 
   /**
    * The machine to update when state changes.
@@ -77,6 +80,8 @@ public class HeatingSystem {
     this.waterSupply = true;
     this.temperature = DEFAULT_TEMPERATURE;
     this.heating = true;
+    
+    observers = new HashSet<TemperatureListener>();
 
     timer = new Timer(1000, e -> this.updateTemperature());
     timer.start();
@@ -106,8 +111,8 @@ public class HeatingSystem {
   /**
    * @param observer the TemperatureListener to notify of a change of temperature
    */
-  public void setObserver(TemperatureListener observer) {
-    this.observer = observer;
+  public void addObserver(TemperatureListener observer) {
+    observers.add(observer);
   }
 
   /**
@@ -124,7 +129,9 @@ public class HeatingSystem {
     if (waterSupply) {
       this.temperature = temperature;
       updateState();
-      observer.setTemperature(this.temperature);
+      for (TemperatureListener observer: observers) {
+        observer.setTemperature(this.temperature);
+      }
     }
   }
 

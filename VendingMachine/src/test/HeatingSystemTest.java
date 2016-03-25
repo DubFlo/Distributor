@@ -16,7 +16,6 @@ public class HeatingSystemTest {
   @Before
   public void setUp() {
     heatSys = new HeatingSystem(new EmptyContext());
-    heatSys.setObserver(new EmptyUI());
   }
 
   @Test
