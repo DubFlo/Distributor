@@ -105,7 +105,7 @@ public final class SoundLoader {
     AudioInputStream stream;
     try {
       stream = AudioSystem.getAudioInputStream(SoundLoader.class.getResource("/resources/sounds/" + file));
-      clip = AudioSystem.getClip();
+      clip = AudioSystem.getClip(null);
       clip.open(stream);
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | NullPointerException e) {
       clip = null;
